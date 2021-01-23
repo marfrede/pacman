@@ -28,8 +28,10 @@
 
 #ifdef WIN32
 #define ASSET_DIRECTORY "../../assets/"
+#define TEXTURE_DIRECTORY "../../assets/texture/"
 #else
 #define ASSET_DIRECTORY "../assets/"
+#define TEXTURE_DIRECTORY "../assets/texture/"
 #endif
 
 
@@ -86,118 +88,46 @@ void Application::end()
 void Application::createScene()
 {
 	Matrix m, n;
+	ConstantShader* pConstShader;
+	PhongShader* pPhongShader;
 
 	pModel = new Model(ASSET_DIRECTORY "skybox.obj", false);
-	pModel->shader(new PhongShader(), true);
+	pPhongShader = new PhongShader();
+	pModel->shader(pPhongShader, true);
 	pModel->shadowCaster(false);
 	Models.push_back(pModel);
 
+	float planeWidth = 30, planeDepth = 33;
 
-	pModel = new Model(ASSET_DIRECTORY "scene.dae", false);
-	pModel->shader(new PhongShader(), true);
-	m.translation(10, 0, -10);
-	pModel->transform(m);
+	pModel = new LinePlaneModel(planeWidth, planeDepth, planeWidth, planeDepth);
+	pConstShader = new ConstantShader();
+	pConstShader->color(Color(1, 0, 0));
+	pModel->shader(pConstShader, true);
 	Models.push_back(pModel);
 
+	// posX 0 bis 29; posZ 0 bis 32;
+	Matrix t;
+	float width, height, posX, posZ;
+	pPhongShader = new PhongShader();
+	//pPhongShader->ambientColor(Color(0.14902f, 0.15294f, 0.8f)); // pacman blue wall color
+	pPhongShader->ambientColor(Color(0.2f, 0.2f, 0.2f));
+	pPhongShader->diffuseColor(Color(1.0f, 1.0f, 1.0f));
+	pPhongShader->specularColor(Color(1.0f, 1.0f, 1.0f));
+	pPhongShader->diffuseTexture(Texture::LoadShared(TEXTURE_DIRECTORY "PaintedPlaster014_4K_Color.jpg"));
 
-	// directional lights
-	DirectionalLight* dl = new DirectionalLight();
-	dl->direction(Vector(0.2f, -1, 1));
-	dl->color(Color(0.25, 0.25, 0.5));
-	dl->castShadows(true);
-	ShaderLightMapper::instance().addLight(dl); // 1
+	width = 4; height = 4; posX = 0.0f; posZ = 0.0f;
+	pModel = new TriangleBoxModel(width, height, 1);
+	pModel->shader(pPhongShader, true);
+	t.translation(2.0f + posX - (planeWidth / 2.0f), height / 2, 0.5f + posZ - planeDepth / 2.0f);
+	pModel->transform(t);
+	Models.push_back(pModel);
 
-	Color c = Color(1.0f, 0.7f, 1.0f);
-	Vector a = Vector(1, 0, 0.1f);
-	float innerradius = 45;
-	float outerradius = 60;
-
-	// point lights
-	PointLight* pl = new PointLight();
-	pl->position(Vector(-1.5, 3, 10));
-	pl->color(c);
-	pl->attenuation(a);
-	ShaderLightMapper::instance().addLight(pl);
-
-	pl = new PointLight();
-	pl->position(Vector(5.0f, 3, 10));
-	pl->color(c);
-	pl->attenuation(a);
-	ShaderLightMapper::instance().addLight(pl);
-
-	pl = new PointLight();
-	pl->position(Vector(-1.5, 3, 28));
-	pl->color(c);
-	pl->attenuation(a);
-	ShaderLightMapper::instance().addLight(pl);
-
-	pl = new PointLight();
-	pl->position(Vector(5.0f, 3, 28));
-	pl->color(c);
-	pl->attenuation(a);
-	ShaderLightMapper::instance().addLight(pl); // 5
-
-	pl = new PointLight();
-	pl->position(Vector(-1.5, 3, -8));
-	pl->color(c);
-	pl->attenuation(a);
-	ShaderLightMapper::instance().addLight(pl);
-
-	pl = new PointLight();
-	pl->position(Vector(5.0f, 3, -8));
-	pl->color(c);
-	pl->attenuation(a);
-	ShaderLightMapper::instance().addLight(pl);
-
-
-	// spot lights
-	SpotLight* sl = new SpotLight();
-	sl->position(Vector(-1.5, 3, 10));
-	sl->color(c);
-	sl->direction(Vector(1, -4, 0));
-	sl->innerRadius(innerradius);
-	sl->outerRadius(outerradius);
-	ShaderLightMapper::instance().addLight(sl);
-
-	sl = new SpotLight();
-	sl->position(Vector(5.0f, 3, 10));
-	sl->color(c);
-	sl->direction(Vector(-1, -4, 0));
-	sl->innerRadius(innerradius);
-	sl->outerRadius(outerradius);
-	ShaderLightMapper::instance().addLight(sl);
-
-	sl = new SpotLight();
-	sl->position(Vector(-1.5, 3, 28));
-	sl->color(c);
-	sl->direction(Vector(1, -4, 0));
-	sl->innerRadius(innerradius);
-	sl->outerRadius(outerradius);
-	ShaderLightMapper::instance().addLight(sl); // 10
-
-	sl = new SpotLight();
-	sl->position(Vector(5.0f, 3, 28));
-	sl->color(c);
-	sl->direction(Vector(-1, -4, 0));
-	sl->innerRadius(innerradius);
-	sl->outerRadius(outerradius);
-	ShaderLightMapper::instance().addLight(sl);
-
-	sl = new SpotLight();
-	sl->position(Vector(-1.5, 3, -8));
-	sl->color(c);
-	sl->direction(Vector(1, -4, 0));
-	sl->innerRadius(innerradius);
-	sl->outerRadius(outerradius);
-	ShaderLightMapper::instance().addLight(sl);
-
-	sl = new SpotLight();
-	sl->position(Vector(5.0f, 3, -8));
-	sl->color(c);
-	sl->direction(Vector(-1, -4, 0));
-	sl->innerRadius(innerradius);
-	sl->outerRadius(outerradius);
-	ShaderLightMapper::instance().addLight(sl); // 13
+	width = 4; height = 4; posX = 4.0f; posZ = 0.0f;
+	pModel = new TriangleBoxModel(width, height, 1);
+	pModel->shader(pPhongShader, true);
+	t.translation(2.0f + posX - (planeWidth / 2.0f), height / 2, 0.5f + posZ - planeDepth / 2.0f);
+	pModel->transform(t);
+	Models.push_back(pModel);
 
 }
 
