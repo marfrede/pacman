@@ -22,6 +22,7 @@
 #include "trianglespheremodel.h"
 #include "lineboxmodel.h"
 #include "triangleboxmodel.h"
+#include "wall.h"
 #include "model.h"
 #include "ShaderLightmapper.h"
 
@@ -91,43 +92,31 @@ void Application::createScene()
 	ConstantShader* pConstShader;
 	PhongShader* pPhongShader;
 
+	// SKY
 	pModel = new Model(ASSET_DIRECTORY "skybox.obj", false);
 	pPhongShader = new PhongShader();
 	pModel->shader(pPhongShader, true);
 	pModel->shadowCaster(false);
 	Models.push_back(pModel);
 
-	float planeWidth = 30, planeDepth = 33;
-
-	pModel = new LinePlaneModel(planeWidth, planeDepth, planeWidth, planeDepth);
+	// CHEQUERED PLAYING FIELD
+	int planeWidth = 30, planeDepth = 33;
+	pModel = new LinePlaneModel((float) planeWidth, (float) planeDepth, (float) planeWidth, (float) planeDepth);
 	pConstShader = new ConstantShader();
 	pConstShader->color(Color(1, 0, 0));
 	pModel->shader(pConstShader, true);
 	Models.push_back(pModel);
 
-	// posX 0 bis 29; posZ 0 bis 32;
-	Matrix t;
-	float width, height, posX, posZ;
+	// WALLS
 	pPhongShader = new PhongShader();
 	//pPhongShader->ambientColor(Color(0.14902f, 0.15294f, 0.8f)); // pacman blue wall color
 	pPhongShader->ambientColor(Color(0.2f, 0.2f, 0.2f));
 	pPhongShader->diffuseColor(Color(1.0f, 1.0f, 1.0f));
 	pPhongShader->specularColor(Color(1.0f, 1.0f, 1.0f));
 	pPhongShader->diffuseTexture(Texture::LoadShared(TEXTURE_DIRECTORY "PaintedPlaster014_4K_Color.jpg"));
-
-	width = 4; height = 4; posX = 0.0f; posZ = 0.0f;
-	pModel = new TriangleBoxModel(width, height, 1);
-	pModel->shader(pPhongShader, true);
-	t.translation(2.0f + posX - (planeWidth / 2.0f), height / 2, 0.5f + posZ - planeDepth / 2.0f);
-	pModel->transform(t);
-	Models.push_back(pModel);
-
-	width = 4; height = 4; posX = 4.0f; posZ = 0.0f;
-	pModel = new TriangleBoxModel(width, height, 1);
-	pModel->shader(pPhongShader, true);
-	t.translation(2.0f + posX - (planeWidth / 2.0f), height / 2, 0.5f + posZ - planeDepth / 2.0f);
-	pModel->transform(t);
-	Models.push_back(pModel);
+	Models.push_back(new Wall(planeWidth, planeDepth, 4, 4, 2, 3, 3, pPhongShader));
+	Models.push_back(new Wall(planeWidth, planeDepth, 5, 4, 2, 8, 3, pPhongShader));
+	//Models.push_back(new Wall(planeWidth, planeDepth, 4, 4, 1, 8, 0, pPhongShader));
 
 }
 
