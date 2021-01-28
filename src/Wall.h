@@ -6,7 +6,7 @@ class Wall : public TriangleBoxModel
 {
 public:
 	/**
-	* create a TriangleBoxModel with depth (z-direction) = 1
+	* create a TriangleBoxModel at given position
 	* @param planeWidth playing field width
 	* @param planeDepth playing field depth
 	* @param width in x-direction of the wall
