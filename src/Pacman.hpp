@@ -31,15 +31,25 @@ public:
     
     void setWindow(GLFWwindow* window) {pWindow = window;}
     void update(float dtime);
-    void steer(float forward, float leftRight);
+    
+    void steer(float forward, float leftRight, float dtime);
+    void rotate(float dtime, bool left);
+    void move(float dtime);
+    bool doCurrentAction(float dtime);
+    
+    
     
 private:
     
     GLFWwindow* pWindow;
     
     //Steering
-    float lR;
-    Matrix trnsfrm;
+    //Rotation
+    float angleToTurn;
+    float moveUnits;
+    float rotateSpeed = 200;
+    float movingSpeed = 3;
+    
     
 };
 

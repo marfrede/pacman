@@ -19,6 +19,7 @@ Pacman::Pacman(int planeWidth, int planeDepth, int posX, int posZ, PhongShader* 
         posZ
     );
     this->transform(t);
+    angleToTurn = 0;
 }
 
 void Pacman::update(float dtime) {
@@ -37,70 +38,123 @@ void Pacman::update(float dtime) {
     }
     // move right
     if (glfwGetKey(this->pWindow, GLFW_KEY_RIGHT) == GLFW_PRESS || glfwGetKey(this->pWindow, GLFW_KEY_D) == GLFW_PRESS) {
-        leftRight = -1.0f;
+        leftRight = 1.0f;
     }
     // move left (even if both left/rigth pressed)
     if (glfwGetKey(this->pWindow, GLFW_KEY_LEFT) == GLFW_PRESS || glfwGetKey(this->pWindow, GLFW_KEY_A) == GLFW_PRESS) {
-        leftRight = 1.0f;
+        leftRight = -1.0f;
     }
     
-    this->steer(forwardBackward * dtime, leftRight * dtime);
+    this->steer(forwardBackward * dtime, leftRight * dtime, dtime);
     
 }
 
-void Pacman::steer(float forward, float leftRight) {
+void Pacman::steer(float forward, float leftRight, float dtime) {
     /*
     float speed = 5;
     ForwardBackward *= speed;
     LeftRight *= speed;
      */
     
-    if(leftRight == 0) {
-        //Der Nutzer dreht nicht aktiv
-        //Speichere aktuelle Position
-        trnsfrm = this->transform();
-        if(lR < 0) {
-            float fl = floor(this->transform().left().X);
-            double angleInRadians = atan2(this->transform().left().X, this->transform().left().Z);
-            double angleInDegrees = (angleInRadians / M_PI) * 180.0;
-            std::cout << "angleInDegrees: " << angleInDegrees << std::endl;
-            std::cout << "FL: " << fl << std::endl;
-            //Pacman muss aber weitergedreht werden
-            //Drehe weiter nach links
-            Matrix mTotal, mMovRot, mRot, mMov;
-            mRot.rotationY(lR);
-            mMov.translation(0, 0, 0);
-            mMovRot = mMov * mRot;
-            mTotal = this->transform() * mMovRot;
-            this->transform(mTotal);
-        } else if(lR > 0) {
-            float cl = ceil(this->transform().left().X);
-            std::cout << "LeftX: " << this->transform().left().X << std::endl;
-            std::cout << "CL: " << cl << std::endl;
-            //Pacman muss aber weitergedreht werden
-            //Drehe weiter nach rechts
-            Matrix mTotal, mMovRot, mRot, mMov;
-            mRot.rotationY(lR);
-            mMov.translation(0, 0, 0);
-            mMovRot = mMov * mRot;
-            mTotal = this->transform() * mMovRot;
-            this->transform(mTotal);
+    if(!doCurrentAction(dtime)) {
+        
+        if(leftRight > 0) {
+            angleToTurn = 90;
+        } else if(leftRight < 0) {
+            angleToTurn = -90;
+        } else if(forward > 0) {
+            moveUnits = 1;
+        } else {
+            return;
         }
-    } else if (leftRight != 0) {
-        lR = leftRight;
+        
+        doCurrentAction(dtime);
+        
     }
     
-    std::cout << this->transform().left() << std::endl;
-    std::cout << this->transform().right() << std::endl;
     
-    Matrix mTotal, mMovRot, mRot, mMov;
-    mRot.rotationY(leftRight);
-    //std::cout << "m0 " << mRot.m00 << ":" << mRot.m01 << ":" << mRot.m02 << ":" << mRot.m03 << ":" << std::endl;
-    //std::cout << "m1 " << mRot.m10 << ":" << mRot.m11 << ":" << mRot.m12 << ":" << mRot.m13 << ":" << std::endl;
-    //std::cout << "m2 " << mRot.m20 << ":" << mRot.m21 << ":" << mRot.m22 << ":" << mRot.m23 << ":" << std::endl;
-    //std::cout << "m3 " << mRot.m30 << ":" << mRot.m31 << ":" << mRot.m32 << ":" << mRot.m33 << ":" << std::endl;
-    mMov.translation(forward, 0, 0);
-    mMovRot = mMov * mRot;
-    mTotal = this->transform() * mMovRot;
+    
+  
+}
+
+bool Pacman::doCurrentAction(float dtime) {
+    
+    //Check rotation
+    if(angleToTurn > 0) {
+        //Führe Rotation nach rechts aus
+
+        rotate(dtime, false);
+        
+        return true;
+        
+    } else if(angleToTurn < 0) {
+        //Führe Rotation nach links aus
+        
+        rotate(dtime, true);
+        
+        return true;
+        
+    } else if(moveUnits > 0) { //Check movement
+        
+        move(dtime);
+        
+        return true;
+        
+    } else {
+        return false;
+    }
+}
+
+void Pacman::rotate(float dtime, bool left) {
+    
+    std::cout << "rotate" << std::endl;
+    
+    float rotateAngle = rotateSpeed * dtime;
+    float angle = rotateAngle * (2*M_PI)/360;
+    
+    if(left) {
+        
+        angle *= -1;
+        
+        if(angleToTurn-rotateAngle > 0) {
+            angle = angleToTurn * (2*M_PI/360);
+            rotateAngle = angleToTurn;
+        }
+        
+    } else {
+        
+        if(angleToTurn-rotateAngle < 0) {
+            angle = angleToTurn * (2*M_PI/360);
+            rotateAngle = angleToTurn;
+        }
+        
+    }
+    
+    
+    
+    Matrix mTotal, mRot;
+    mRot.rotationY(-angle);
+    
+    mTotal = this->transform() * mRot;
     this->transform(mTotal);
+    
+    if(left) {
+        angleToTurn += rotateAngle;
+    } else {
+        angleToTurn -= rotateAngle;
+    }
+    
+    
+}
+
+void Pacman::move(float dtime) {
+    float movingUnits = movingSpeed * dtime;
+    
+    Matrix mTotal, mMov;
+    mMov.translation(movingUnits, 0, 0);
+    
+    mTotal = this->transform() * mMov;
+    this->transform(mTotal);
+    
+    moveUnits -= movingUnits;
 }
