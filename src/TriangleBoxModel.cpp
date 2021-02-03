@@ -12,109 +12,109 @@ TriangleBoxModel::TriangleBoxModel(float Width, float Height, float Depth)
 {
     float W = Width / 2; float H = Height / 2; float D = Depth / 2;
     VB.begin();
-
+    
     // BOTTOM
-    VB.addNormal(0, 0, 1); //Oben links 0
+    VB.addNormal(0, -1, 0); //Oben links 0
     VB.addTexcoord0(0, 0);
     VB.addVertex(-W, -H, D);
-
-    VB.addNormal(0, 0, 1); //Oben rechts 1
+    
+    VB.addNormal(0, -1, 0); //Oben rechts 1
     VB.addTexcoord0(1, 0);
     VB.addVertex(W, -H, D);
-
-    VB.addNormal(0, 0, 1); //Unten rechts 2
+    
+    VB.addNormal(0, -1, 0); //Unten rechts 2
     VB.addTexcoord0(1, 1);
     VB.addVertex(W, -H, -D);
-
-    VB.addNormal(0, 0, 1); //Unten links 3
+    
+    VB.addNormal(0, -1, 0);//Unten links 3
     VB.addTexcoord0(0, 1);
     VB.addVertex(-W, -H, -D);
-
+                    
     // FRONT
     VB.addNormal(0, 0, 1); //Oben links 4
     VB.addTexcoord0(0, 0);
     VB.addVertex(-W, H, D);
-
+    
     VB.addNormal(0, 0, 1); //Oben rechts 5
     VB.addTexcoord0(1, 0);
     VB.addVertex(W, H, D);
-
+    
     VB.addNormal(0, 0, 1); //Unten rechts 6
     VB.addTexcoord0(1, 1);
     VB.addVertex(W, -H, D);
-
+    
     VB.addNormal(0, 0, 1); //Unten links 7
     VB.addTexcoord0(0, 1);
     VB.addVertex(-W, -H, D);
-
+    
     // RIGHT
-    VB.addNormal(0, 0, 1); //Oben links 8
+    VB.addNormal(1, 0, 0); //Oben links 8
     VB.addTexcoord0(0, 0);
     VB.addVertex(W, H, D);
-
-    VB.addNormal(0, 0, 1); //Oben rechts 9
+    
+    VB.addNormal(1, 0, 0); //Oben rechts 9
     VB.addTexcoord0(1, 0);
     VB.addVertex(W, H, -D);
-
-    VB.addNormal(0, 0, 1); //Unten rechts 10
+    
+    VB.addNormal(1, 0, 0); //Unten rechts 10
     VB.addTexcoord0(1, 1);
     VB.addVertex(W, -H, -D);
-
-    VB.addNormal(0, 0, 1); //Unten links 11
+    
+    VB.addNormal(1, 0, 0); //Unten links 11
     VB.addTexcoord0(0, 1);
     VB.addVertex(W, -H, D);
-
+    
     // BACK
-    VB.addNormal(0, 0, 1); //Oben links 12
+    VB.addNormal(0, 0, -1); //Oben links 12
     VB.addTexcoord0(0, 0);
     VB.addVertex(W, H, -D);
-
-    VB.addNormal(0, 0, 1); //Oben rechts 13
+    
+    VB.addNormal(0, 0, -1); //Oben rechts 13
     VB.addTexcoord0(1, 0);
     VB.addVertex(-W, H, -D);
-
-    VB.addNormal(0, 0, 1); //Unten rechts 14
+    
+    VB.addNormal(0, 0, -1); //Unten rechts 14
     VB.addTexcoord0(1, 1);
     VB.addVertex(-W, -H, -D);
-
-    VB.addNormal(0, 0, 1); //Unten links 15
+    
+    VB.addNormal(0, 0, -1); //Unten links 15
     VB.addTexcoord0(0, 1);
     VB.addVertex(W, -H, -D);
-
+    
     // LEFT
-    VB.addNormal(0, 0, 1); //Oben links 16
+    VB.addNormal(-1, 0, 0); //Oben links 16
     VB.addTexcoord0(0, 0);
     VB.addVertex(-W, H, -D);
-
-    VB.addNormal(0, 0, 1); //Oben rechts 17
+    
+    VB.addNormal(-1, 0, 0); //Oben rechts 17
     VB.addTexcoord0(1, 0);
     VB.addVertex(-W, H, D);
-
-    VB.addNormal(0, 0, 1); //Unten rechts 18
+    
+    VB.addNormal(-1, 0, 0); //Unten rechts 18
     VB.addTexcoord0(1, 1);
     VB.addVertex(-W, -H, D);
-
-    VB.addNormal(0, 0, 1); //Unten links 19
+    
+    VB.addNormal(-1, 0, 0); //Unten links 19
     VB.addTexcoord0(0, 1);
     VB.addVertex(-W, -H, -D);
-
+    
     // TOP
-    VB.addNormal(0, 0, 1); //Oben links 20
+    VB.addNormal(0, 1, 0); //Oben links 20
     VB.addTexcoord0(0, 0);
     VB.addVertex(-W, H, -D);
-
-    VB.addNormal(0, 0, 1); //Oben rechts 21
+    
+    VB.addNormal(0, 1, 0); //Oben rechts 21
     VB.addTexcoord0(1, 0);
     VB.addVertex(W, H, -D);
-
-    VB.addNormal(0, 0, 1); //Unten rechts 22
+    
+    VB.addNormal(0, 1, 0); //Unten rechts 22
     VB.addTexcoord0(1, 1);
     VB.addVertex(W, H, D);
-
-    VB.addNormal(0, 0, 1); //Unten links 23
+    
+    VB.addNormal(0, 1, 0); //Unten links 23
     VB.addTexcoord0(0, 1);
     VB.addVertex(-W, H, D);
-
+    
     VB.end();
 
     IB.begin();
@@ -136,19 +136,19 @@ TriangleBoxModel::TriangleBoxModel(float Width, float Height, float Depth)
     // TOP
     IB.addIndex(20); IB.addIndex(23); IB.addIndex(21);
     IB.addIndex(21); IB.addIndex(23); IB.addIndex(22);
-
+     
     IB.end();
 }
 
 void TriangleBoxModel::draw(const BaseCamera& Cam)
 {
-	BaseModel::draw(Cam);
+    BaseModel::draw(Cam);
 
-	VB.activate();
-	IB.activate();
+    VB.activate();
+    IB.activate();
 
-	glDrawElements(GL_TRIANGLES, IB.indexCount(), IB.indexFormat(), 0);
+    glDrawElements(GL_TRIANGLES, IB.indexCount(), IB.indexFormat(), 0);
 
-	IB.deactivate();
-	VB.deactivate();
+    IB.deactivate();
+    VB.deactivate();
 }
