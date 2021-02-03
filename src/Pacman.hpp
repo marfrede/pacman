@@ -32,9 +32,32 @@ public:
     void setWindow(GLFWwindow* window) {pWindow = window;}
     void update(float dtime);
     
+    
+    /**
+     STEERING
+     */
+    /**
+     * steer object
+     * @param forward  keyboard input
+     * @param leftRight keyboard input
+     * @param dtime deltatime
+     */
     void steer(float forward, float leftRight, float dtime);
+    /**
+     * rotate object
+     * @param dtime deltatime
+     * @param left direction
+     */
     void rotate(float dtime, bool left);
+    /**
+     * move object
+     * @param dtime deltatime
+     */
     void move(float dtime);
+    /**
+     * perform current action
+     * @param dtime deltatime
+     */
     bool doCurrentAction(float dtime);
     
     

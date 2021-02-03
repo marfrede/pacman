@@ -105,6 +105,7 @@ bool Pacman::doCurrentAction(float dtime) {
     }
 }
 
+
 void Pacman::rotate(float dtime, bool left) {
     
     std::cout << "rotate" << std::endl;
