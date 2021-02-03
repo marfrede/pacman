@@ -35,6 +35,7 @@
 #define TEXTURE_DIRECTORY "../assets/texture/"
 #endif
 
+using namespace std;
 
 Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin), pModel(NULL), ShadowGenerator(2048, 2048)
 {
@@ -93,32 +94,111 @@ void Application::createScene()
 	PhongShader* pPhongShader;
 
 	// SKY
-	pModel = new Model(ASSET_DIRECTORY "skybox.obj", false);
-	pPhongShader = new PhongShader();
-	pModel->shader(pPhongShader, true);
-	pModel->shadowCaster(false);
-	Models.push_back(pModel);
+	//pModel = new Model(ASSET_DIRECTORY "skybox.obj", false);
+	//pPhongShader = new PhongShader();
+	//pModel->shader(pPhongShader, true);
+	//pModel->shadowCaster(false);
+	//Models.push_back(pModel);
 
 	// CHEQUERED PLAYING FIELD
 	int planeWidth = 30, planeDepth = 33;
-	pModel = new LinePlaneModel((float) planeWidth, (float) planeDepth, (float) planeWidth, (float) planeDepth);
+	pModel = new LinePlaneModel((float)planeWidth, (float)planeDepth, (float)planeWidth, (float)planeDepth);
 	pConstShader = new ConstantShader();
 	pConstShader->color(Color(1, 0, 0));
 	pModel->shader(pConstShader, true);
 	Models.push_back(pModel);
 
 	// WALLS
+	// 1. set wall padding and height
+	float padding = 0.0f;
+	float wallHeight = 1;
+
+	// 2. set wall positions
+	// map origin position (x, z) to expansion (width, depth)
+	map<pair<float, float>, pair<float, float>> walls{
+
+		// inner walls
+		{{3,3}, {4,3}},
+		{{8,3}, {5,3}},
+		{{17,3}, {5,3}},
+		{{23,3}, {4,3}},
+		{{3,7}, {4,2}},
+		{{8,7}, {2,8}},
+		{{11,7}, {8,2}},
+		{{20,7}, {2,8}},
+		{{23,7}, {4,2}},
+		{{14,9}, {2,3}}, // {{14,8}, {2,4}},
+		{{10,10}, {3,2}}, // {{9,10}, {4,2}},
+		{{17,10}, {3,2}}, // {{17,10}, {4,2}},
+		{{11,13}, {3,2}},
+		{{16,13}, {3,2}},
+		{{11,16}, {8,2}},
+		{{11,15}, {2,1}}, // {{10,15}, {2,3}},
+		{{17,15}, {2,1}}, // {{16,15}, {2,3}},
+		{{8,16}, {2,5}},
+		{{20,16}, {2,5}},
+		{{11,19}, {8,2}},
+		{{14,21}, {2,3}}, // {{14,20}, {2,4}},
+		{{3,22}, {4,2}},
+		{{8,22}, {5,2}},
+		{{17,22}, {5,2}},
+		{{23,22}, {4,2}},
+		{{5,24}, {2,3}}, // {{5,23}, {2,4}},
+		{{23,24}, {2,3}}, // {{23,23}, {2,4}},
+		{{8,25}, {2,3}}, // {{8,25}, {2,4}},
+		{{11,25}, {8,2}},
+		{{20,25}, {2,3}}, // {{20,25}, {2,4}},
+		{{14,27}, {2,3}}, // {{14,26}, {2,4}},
+		{{3,28}, {10,2}},
+		{{17,28}, {10,2}},
+
+		// outer walls
+		{{1,1}, {28,1}},
+		{{1,2}, {1,8}}, // {{1,1}, {1,10}},
+		{{28,2}, {1,8}}, // {{28,1}, {1,10}},
+		{{1,10}, {6,1}},
+		{{23,10}, {6,1}},
+		{{6,11}, {1,3}}, // {{6,10}, {1,5}},
+		{{23,11}, {1,3}}, // {{23,10}, {1,5}},
+		{{1,14}, {6,1}},
+		{{23,14}, {6,1}},
+		{{1,16}, {6,1}},
+		{{23,16}, {6,1}},
+		{{6,17}, {1,3}}, // {{6,16}, {1,5}},
+		{{23,17}, {1,3}}, // {{23,16}, {1,5}},
+		{{1,20}, {6,1}},
+		{{23,20}, {6,1}},
+		{{1,21}, {1,10}}, // {{1,20}, {1,12}},
+		{{28,21}, {1,10}}, // {{28,20}, {1,12}},
+		{{1,31}, {28,1}},
+		// outer / inner walls
+		{{14,2}, {2,4}},
+		{{2,25}, {2,2}},
+		{{26,25}, {2,2}},
+	};
+
+	// 3. set shader equally for all walls
 	pPhongShader = new PhongShader();
+	pPhongShader->ambientColor(Color(0.2f, 0.2f, 0.2f)); // normal grey
 	//pPhongShader->ambientColor(Color(0.14902f, 0.15294f, 0.8f)); // pacman blue wall color
-	pPhongShader->ambientColor(Color(0.2f, 0.2f, 0.2f));
 	pPhongShader->diffuseColor(Color(1.0f, 1.0f, 1.0f));
 	pPhongShader->specularColor(Color(1.0f, 1.0f, 1.0f));
+	//pPhongShader->diffuseTexture(Texture::LoadShared(ASSET_DIRECTORY "smiley.png"));
 	pPhongShader->diffuseTexture(Texture::LoadShared(TEXTURE_DIRECTORY "PaintedPlaster014_4K_Color.jpg"));
-	// Models.push_back(new Wall(planeWidth, planeDepth, length, height, depth, posX, posY, pPhongShader));
-	Models.push_back(new Wall(planeWidth, planeDepth, 4, 4, 2, 3, 3, pPhongShader));
-	Models.push_back(new Wall(planeWidth, planeDepth, 5, 4, 2, 8, 3, pPhongShader));
-	Models.push_back(new Wall(planeWidth, planeDepth, 4, 4, 2, 3, 6, pPhongShader));
-	//Models.push_back(new Wall(planeWidth, planeDepth, 4, 4, 1, 8, 0, pPhongShader));
+
+	// 4. make walls
+	for (auto const& wall : walls)
+	{
+		Models.push_back(
+			new Wall(planeWidth, planeDepth,
+				wall.second.first, // width
+				wallHeight,
+				wall.second.second, // depth
+				wall.first.first, // posX
+				wall.first.second, // posY
+				pPhongShader, padding)
+		);
+	}
 
 }
 
