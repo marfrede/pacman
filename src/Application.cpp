@@ -114,6 +114,7 @@ void Application::createScene()
 	pPhongShader->diffuseColor(Color(1.0f, 1.0f, 1.0f));
 	pPhongShader->specularColor(Color(1.0f, 1.0f, 1.0f));
 	pPhongShader->diffuseTexture(Texture::LoadShared(TEXTURE_DIRECTORY "PaintedPlaster014_4K_Color.jpg"));
+	// Models.push_back(new Wall(planeWidth, planeDepth, length, height, depth, posX, posY, pPhongShader));
 	Models.push_back(new Wall(planeWidth, planeDepth, 4, 4, 2, 3, 3, pPhongShader));
 	Models.push_back(new Wall(planeWidth, planeDepth, 5, 4, 2, 8, 3, pPhongShader));
 	Models.push_back(new Wall(planeWidth, planeDepth, 4, 4, 2, 3, 6, pPhongShader));
