@@ -130,8 +130,6 @@ void Pacman::rotate(float dtime, bool left) {
         
     }
     
-    
-    
     Matrix mTotal, mRot;
     mRot.rotationY(-angle);
     

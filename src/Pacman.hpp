@@ -43,11 +43,12 @@ private:
     
     GLFWwindow* pWindow;
     
-    //Steering
+    //STEERING
     //Rotation
     float angleToTurn;
-    float moveUnits;
     float rotateSpeed = 200;
+    //Moving
+    float moveUnits;
     float movingSpeed = 3;
     
     
