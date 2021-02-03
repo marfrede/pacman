@@ -11,6 +11,7 @@
 TriangleBoxModel::TriangleBoxModel(float Width, float Height, float Depth)
 {
 	float W = Width / 2; float H = Height / 2; float D = Depth / 2;
+	float replication = 4;
 	VB.begin();
 
 	// BOTTOM
@@ -19,34 +20,32 @@ TriangleBoxModel::TriangleBoxModel(float Width, float Height, float Depth)
 	VB.addVertex(-W, -H, D);
 
 	VB.addNormal(0, -1, 0); //Oben rechts 1
-	VB.addTexcoord0(1, 0);
+	VB.addTexcoord0(Width / replication, 0);
 	VB.addVertex(W, -H, D);
 
 	VB.addNormal(0, -1, 0); //Unten rechts 2
-	VB.addTexcoord0(1, Depth / Width);
+	VB.addTexcoord0(Width / replication, Depth / replication);
 	VB.addVertex(W, -H, -D);
 
 	VB.addNormal(0, -1, 0);//Unten links 3
-	VB.addTexcoord0(0, Depth / Width);
+	VB.addTexcoord0(0, Depth / replication);
 	VB.addVertex(-W, -H, -D);
 
 	// FRONT
-	VB.addNormal(0, 0, 1); //Oben links 4
+	VB.addNormal(0, 0, 1); //Oben links replication
 	VB.addTexcoord0(0, 0);
 	VB.addVertex(-W, H, D);
 
 	VB.addNormal(0, 0, 1); //Oben rechts 5
-	if (Width > Depth) VB.addTexcoord0(1, 0);
-	else VB.addTexcoord0(Width / Depth, 0);
+	VB.addTexcoord0(Width / replication, 0);
 	VB.addVertex(W, H, D);
 
 	VB.addNormal(0, 0, 1); //Unten rechts 6
-	if (Width > Depth) VB.addTexcoord0(1, 1);
-	else VB.addTexcoord0(Width / Depth, 1);
+	VB.addTexcoord0(Width / replication, Height / replication);
 	VB.addVertex(W, -H, D);
 
 	VB.addNormal(0, 0, 1); //Unten links 7
-	VB.addTexcoord0(0, 1);
+	VB.addTexcoord0(0, Height / replication);
 	VB.addVertex(-W, -H, D);
 
 	// RIGHT
@@ -55,36 +54,32 @@ TriangleBoxModel::TriangleBoxModel(float Width, float Height, float Depth)
 	VB.addVertex(W, H, D);
 
 	VB.addNormal(1, 0, 0); //Oben rechts 9
-	if (Width > Depth) VB.addTexcoord0(Depth / Width, 0);
-	else VB.addTexcoord0(1, 0);
+	VB.addTexcoord0(Depth / replication, 0);
 	VB.addVertex(W, H, -D);
 
 	VB.addNormal(1, 0, 0); //Unten rechts 10
-	if (Width > Depth) VB.addTexcoord0(Depth / Width, 1);
-	else VB.addTexcoord0(1, 1);
+	VB.addTexcoord0(Depth / replication, Height / replication);
 	VB.addVertex(W, -H, -D);
 
 	VB.addNormal(1, 0, 0); //Unten links 11
-	VB.addTexcoord0(0, 1);
+	VB.addTexcoord0(0, Height / replication);
 	VB.addVertex(W, -H, D);
 
-	// BACK // vertical mirrow back
+	// BACK
 	VB.addNormal(0, 0, -1); //Oben links 12
 	VB.addTexcoord0(0, 0);
 	VB.addVertex(W, H, -D);
 
 	VB.addNormal(0, 0, -1); //Oben rechts 13
-	if (Width > Depth) VB.addTexcoord0(-1, 0);
-	else VB.addTexcoord0(-Width / Depth, 0);
+	VB.addTexcoord0(Width / replication, 0);
 	VB.addVertex(-W, H, -D);
 
-	VB.addNormal(0, 0, -1); //Unten rechts 14
-	if (Width > Depth) VB.addTexcoord0(-1, 1);
-	else VB.addTexcoord0(-Width/ Depth, 1);
+	VB.addNormal(0, 0, -1); //Unten rechts 1replication
+	VB.addTexcoord0(Width / replication, Height / replication);
 	VB.addVertex(-W, -H, -D);
 
 	VB.addNormal(0, 0, -1); //Unten links 15
-	VB.addTexcoord0(0, 1);
+	VB.addTexcoord0(0, Height / replication);
 	VB.addVertex(W, -H, -D);
 
 	// LEFT
@@ -93,17 +88,15 @@ TriangleBoxModel::TriangleBoxModel(float Width, float Height, float Depth)
 	VB.addVertex(-W, H, -D);
 
 	VB.addNormal(-1, 0, 0); //Oben rechts 17
-	if (Width > Depth) VB.addTexcoord0(Depth / Width, 0);
-	else VB.addTexcoord0(1, 0);
+	VB.addTexcoord0(Depth / replication, 0);
 	VB.addVertex(-W, H, D);
 
 	VB.addNormal(-1, 0, 0); //Unten rechts 18
-	if (Width > Depth) VB.addTexcoord0(Depth / Width, 1);
-	else VB.addTexcoord0(1, 1);
+	VB.addTexcoord0(Depth / replication, Height / replication);
 	VB.addVertex(-W, -H, D);
 
 	VB.addNormal(-1, 0, 0); //Unten links 19
-	VB.addTexcoord0(0, 1);
+	VB.addTexcoord0(0, Height / replication);
 	VB.addVertex(-W, -H, -D);
 
 	// TOP
@@ -112,15 +105,15 @@ TriangleBoxModel::TriangleBoxModel(float Width, float Height, float Depth)
 	VB.addVertex(-W, H, -D);
 
 	VB.addNormal(0, 1, 0); //Oben rechts 21
-	VB.addTexcoord0(1, 0);
+	VB.addTexcoord0(Width / replication, 0);
 	VB.addVertex(W, H, -D);
 
 	VB.addNormal(0, 1, 0); //Unten rechts 22
-	VB.addTexcoord0(1, Depth / Width);
+	VB.addTexcoord0(Width / replication, Depth / replication);
 	VB.addVertex(W, H, D);
 
 	VB.addNormal(0, 1, 0); //Unten links 23
-	VB.addTexcoord0(0, Depth / Width);
+	VB.addTexcoord0(0, Depth / replication);
 	VB.addVertex(-W, H, D);
 
 	VB.end();
