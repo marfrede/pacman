@@ -23,6 +23,7 @@
 #include "lineboxmodel.h"
 #include "triangleboxmodel.h"
 #include "wall.h"
+#include "Pacman.hpp"
 #include "model.h"
 #include "ShaderLightmapper.h"
 
@@ -57,6 +58,7 @@ void Application::start()
 void Application::update(float dtime)
 {
 	Cam.update();
+    pPacman->update(dtime);
 }
 
 void Application::draw()
@@ -106,6 +108,15 @@ void Application::createScene()
 	pConstShader->color(Color(1, 0, 0));
 	pModel->shader(pConstShader, true);
 	Models.push_back(pModel);
+    
+    // FIELD
+    pModel = new TrianglePlaneModel(30, 33, 10, 10);
+    pPhongShader = new PhongShader();
+    pPhongShader->ambientColor(Color(0.2f,0.2f,0.2f));
+    pPhongShader->diffuseColor(Color(1.0f,1.0f,1.0f));
+    pPhongShader->diffuseTexture(Texture::LoadShared(TEXTURE_DIRECTORY "dirtyBricks_C_01.dds"));
+    pModel->shader(pPhongShader, true);
+    Models.push_back( pModel );
 
 	// WALLS
 	pPhongShader = new PhongShader();
@@ -116,7 +127,18 @@ void Application::createScene()
 	pPhongShader->diffuseTexture(Texture::LoadShared(TEXTURE_DIRECTORY "PaintedPlaster014_4K_Color.jpg"));
 	Models.push_back(new Wall(planeWidth, planeDepth, 4, 4, 2, 3, 3, pPhongShader));
 	Models.push_back(new Wall(planeWidth, planeDepth, 5, 4, 2, 8, 3, pPhongShader));
+    Models.push_back(new Wall(planeWidth, planeDepth, 4, 4, 2, 1, 1, pPhongShader));
 	//Models.push_back(new Wall(planeWidth, planeDepth, 4, 4, 1, 8, 0, pPhongShader));
+    
+    //PACMAN
+    pPhongShader = new PhongShader();
+    //pPhongShader->ambientColor(Color(0.14902f, 0.15294f, 0.8f)); // pacman blue wall color
+    pPhongShader->ambientColor(Color(0.2f, 0.2f, 0.2f));
+    pPhongShader->diffuseColor(Color(1.0f, 1.0f, 1.0f));
+    pPhongShader->specularColor(Color(1.0f, 1.0f, 1.0f));
+    pPacman = new Pacman(planeWidth, planeDepth, 0, 0, pPhongShader);
+    pPacman->setWindow(pWindow);
+    Models.push_back(pPacman);
 
 }
 

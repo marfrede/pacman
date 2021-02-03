@@ -17,6 +17,7 @@
 #include "vertexbuffer.h"
 #include "indexbuffer.h"
 #include "basemodel.h"
+#include "Pacman.hpp"
 #include "ShadowMapGenerator.h"
 
 class Application
@@ -36,6 +37,7 @@ protected:
     ModelList Models;
     GLFWwindow* pWindow;
 	BaseModel* pModel;
+    Pacman* pPacman;
 	ShadowMapGenerator ShadowGenerator;
 };
 
