@@ -1,7 +1,7 @@
 #include "Wall.h"
 
-Wall::Wall(int planeWidth, int planeDepth, int width, int height, int depth, int posX, int posZ, PhongShader* pPhongShader)
-	: TriangleBoxModel(width - 0.5f, height, depth - 0.5f) // 0.5f padding
+Wall::Wall(int planeWidth, int planeDepth, int width, int height, int depth, int posX, int posZ, PhongShader* pPhongShader, float padding)
+	: TriangleBoxModel(width - padding, height, depth - padding)
 {
 	this->shader(pPhongShader, true);
 	Matrix t;
