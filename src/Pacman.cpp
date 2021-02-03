@@ -26,13 +26,7 @@ void Pacman::update(float dtime) {
     
     float forwardBackward = 0;
     float leftRight = 0;
-    // move backwards
-    /*
-    if (glfwGetKey(this->pWindow, GLFW_KEY_DOWN) == GLFW_PRESS || glfwGetKey(this->pWindow, GLFW_KEY_S) == GLFW_PRESS) {
-        forwardBackward = -1.0f;
-    }
-    */
-    // move forwards (even if both up/down pressed)
+
     if (glfwGetKey(this->pWindow, GLFW_KEY_UP) == GLFW_PRESS || glfwGetKey(this->pWindow, GLFW_KEY_W) == GLFW_PRESS) {
         forwardBackward = 1.0f;
     }
@@ -50,11 +44,6 @@ void Pacman::update(float dtime) {
 }
 
 void Pacman::steer(float forward, float leftRight, float dtime) {
-    /*
-    float speed = 5;
-    ForwardBackward *= speed;
-    LeftRight *= speed;
-     */
     
     if(!doCurrentAction(dtime)) {
         
@@ -71,10 +60,6 @@ void Pacman::steer(float forward, float leftRight, float dtime) {
         doCurrentAction(dtime);
         
     }
-    
-    
-    
-  
 }
 
 bool Pacman::doCurrentAction(float dtime) {
@@ -107,8 +92,6 @@ bool Pacman::doCurrentAction(float dtime) {
 
 
 void Pacman::rotate(float dtime, bool left) {
-    
-    std::cout << "rotate" << std::endl;
     
     float rotateAngle = rotateSpeed * dtime;
     float angle = rotateAngle * (2*M_PI)/360;
@@ -143,10 +126,10 @@ void Pacman::rotate(float dtime, bool left) {
         angleToTurn -= rotateAngle;
     }
     
-    
 }
 
 void Pacman::move(float dtime) {
+    
     float movingUnits = movingSpeed * dtime;
     
     Matrix mTotal, mMov;
@@ -156,4 +139,5 @@ void Pacman::move(float dtime) {
     this->transform(mTotal);
     
     moveUnits -= movingUnits;
+    
 }
