@@ -20,6 +20,15 @@ public:
     
     Pacman(int planeWidth, int planeDepth, int posX, int posZ, PhongShader* pPhongShader);
     
+    /**
+     STEERING
+     */
+    /**
+     * steer object
+     * @param dtime deltatime
+     */
+    void steer(float dtime);
+    
 private:
     
     

@@ -14,8 +14,6 @@
 #include <stdio.h>
 #include <list>
 
-#endif /* GameCharacter_hpp */
-
 class GameCharacter : public TriangleBoxModel
 {
 public:
@@ -46,7 +44,7 @@ public:
      * steer object
      * @param dtime deltatime
      */
-    void steer(float dtime);
+    virtual void steer(float dtime) {/* insert code here */};
     /**
      * rotate object
      * @param dtime deltatime
@@ -89,5 +87,7 @@ protected:
     
     
 };
+
+#endif /* GameCharacter_hpp */
 
 
