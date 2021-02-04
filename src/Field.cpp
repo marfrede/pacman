@@ -12,6 +12,11 @@ Field::Field(int planeWidth, int planeDepth)
 	this->createWalls();
 }
 
+FieldType Field::getFieldType(int x, int z) {
+
+	return this->getFieldTypesMap()[z * this->planeWidth + x];
+}
+
 void Field::createField() {
 
 	// CHEQUERED LINE PLAYING FIELD
@@ -31,12 +36,10 @@ void Field::createField() {
 void Field::createWalls() {
 	// 1. set wall padding and height
 	float padding = 0.0f;
-	float wallHeight = 1;
+	float wallHeight = 0.3f;
 
 	// 2. set wall positions
-	// map origin position (x, z) to expansion (width, depth)
-	std::map<std::pair<float, float>, std::pair<float, float>> walls{
-
+	this->wallPositions = {
 		// inner walls
 		{{3,3}, {4,3}},
 		{{8,3}, {5,3}},
@@ -107,7 +110,7 @@ void Field::createWalls() {
 	pPhongShader->diffuseTexture(Texture::LoadShared(TEXTURE_DIRECTORY "PaintedPlaster014_4K_Color.jpg"));
 
 	// 4. make walls
-	for (auto const& wall : walls)
+	for (auto const& wall : this->wallPositions)
 	{
 		Walls.push_back(
 			new Wall(this->planeWidth, this->planeDepth,
@@ -118,6 +121,69 @@ void Field::createWalls() {
 				wall.first.second, // posY
 				pPhongShader, padding)
 		);
+	}
+}
+
+FieldType* Field::getFieldTypesMap() {
+	if (this->fieldTypesMap == NULL) { // create map
+		this->fieldTypesMap = new FieldType[this->planeWidth * this->planeDepth];
+
+		// add walls
+		// read walls from wallPositions
+		for (auto const& wall : wallPositions)
+		{
+			int width = wall.second.first;
+			int depth = wall.second.second;
+			int posX = wall.first.first;
+			int posZ = wall.first.second;
+			for (int x = posX; x < posX + width; x++) {
+				for (int z = posZ; z < posZ + depth; z++) {
+					this->fieldTypesMap[z * this->planeWidth + x] = FieldType::Wall;
+				}
+			}
+		}
+
+		// set points where no walls - and free where no points
+		for (int z = 0; z < this->planeDepth; z++) {
+			for (int x = 0; x < this->planeWidth; x++) {
+				if (this->fieldTypesMap[z * this->planeWidth + x] != FieldType::Wall) {
+					this->fieldTypesMap[z * this->planeWidth + x] = FieldType::Point;
+					// no points outside the outer walls
+					if (x == 0 || x == 29 || z == 0 || z == 32) {
+						this->fieldTypesMap[z * this->planeWidth + x] = FieldType::Free;
+					}
+					// no points in centrum
+					if (x != 7 && x != 22 && z >= 10 && z <= 20) {
+						this->fieldTypesMap[z * this->planeWidth + x] = FieldType::Free;
+					}
+					// no points at this specific position (why Namco?)
+					if ((x == 14 || x == 15) && z == 24) {
+						this->fieldTypesMap[z * this->planeWidth + x] = FieldType::Free;
+					}
+				}
+			}
+		}
+	}
+	//this->printFieldTypesMap();
+	return this->fieldTypesMap;
+}
+
+void Field::printFieldTypesMap() {
+	for (int z = 0; z < this->planeDepth; z++) {
+		std::string leading0 = (z >= 10 ? "" : "0");
+		std::cout << leading0 << z << " > ";
+		for (int x = 0; x < this->planeWidth; x++) {
+			if (this->fieldTypesMap[z * this->planeWidth + x] == FieldType::Wall) {
+				std::cout << "x";
+			}
+			else if (this->fieldTypesMap[z * this->planeWidth + x] == FieldType::Point) {
+				std::cout << "*";
+			}
+			else {
+				std::cout << "-";
+			}
+		}
+		std::cout << " <" << std::endl;
 	}
 }
 
@@ -132,6 +198,7 @@ void Field::draw(const Camera camera) {
 
 void Field::end()
 {
+	delete[] this->fieldTypesMap;
 	for (ModelList::iterator it = Walls.begin(); it != Walls.end(); ++it) {
 		delete* it;
 	}
