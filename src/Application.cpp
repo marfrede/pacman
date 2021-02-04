@@ -24,6 +24,7 @@
 #include "triangleboxmodel.h"
 #include "wall.h"
 #include "Pacman.hpp"
+#include "Ghost.hpp"
 #include "model.h"
 #include "ShaderLightmapper.h"
 
@@ -60,6 +61,10 @@ void Application::update(float dtime)
 {
 	Cam.update();
     pPacman->update(dtime);
+    for (GhostList::iterator it = Ghosts.begin(); it != Ghosts.end(); ++it)
+    {
+        (*it)->update(dtime);
+    }
 }
 
 void Application::draw()
@@ -76,6 +81,10 @@ void Application::draw()
 		(*it)->draw(Cam);
 	}
     for (WallList::iterator it = Walls.begin(); it != Walls.end(); ++it)
+    {
+        (*it)->draw(Cam);
+    }
+    for (GhostList::iterator it = Ghosts.begin(); it != Ghosts.end(); ++it)
     {
         (*it)->draw(Cam);
     }
@@ -96,6 +105,11 @@ void Application::end()
         delete* it;
 
     Walls.clear();
+    
+    for (GhostList::iterator it = Ghosts.begin(); it != Ghosts.end(); ++it)
+        delete* it;
+
+    Ghosts.clear();
 }
 
 void Application::createScene()
@@ -219,6 +233,33 @@ void Application::createScene()
 				pPhongShader, padding)
 		);
 	}
+    
+    //GHOSTS
+    pPhongShader = new PhongShader();
+    //pPhongShader->ambientColor(Color(0.14902f, 0.15294f, 0.8f)); // pacman blue wall color
+    pPhongShader->ambientColor(Color(0.2f, 0.2f, 0.2f));
+    pPhongShader->diffuseColor(Color(1.0f, 1.0f, 1.0f));
+    pPhongShader->specularColor(Color(1.0f, 1.0f, 1.0f));
+    Ghost* g = new Ghost(planeWidth, planeDepth, 5, 10, pPhongShader);
+    g->setWindow(pWindow);
+    g->setWalls(Walls);
+    Ghosts.push_back(g);
+    g = new Ghost(planeWidth, planeDepth, 0, 0, pPhongShader);
+    g->setWindow(pWindow);
+    g->setWalls(Walls);
+    Ghosts.push_back(g);
+    g = new Ghost(planeWidth, planeDepth, 1, 5, pPhongShader);
+    g->setWindow(pWindow);
+    g->setWalls(Walls);
+    Ghosts.push_back(g);
+    g = new Ghost(planeWidth, planeDepth, 2, 7, pPhongShader);
+    g->setWindow(pWindow);
+    g->setWalls(Walls);
+    Ghosts.push_back(g);
+    g = new Ghost(planeWidth, planeDepth, 3, 8, pPhongShader);
+    g->setWindow(pWindow);
+    g->setWalls(Walls);
+    Ghosts.push_back(g);
     
     //PACMAN
     pPhongShader = new PhongShader();

@@ -24,11 +24,14 @@ GameCharacter::GameCharacter(int planeWidth, int planeDepth, int posX, int posZ,
 
 void GameCharacter::update(float dtime) {
     
+    std::cout << "Update!" << std::endl;
     this->steer(dtime);
     
 }
-
+/*
 void GameCharacter::steer(float dtime) {
+    
+    std::cout << "GameCharacter steer!" << std::endl;
     
     float forward = 0;
     float leftRight = 0;
@@ -61,7 +64,7 @@ void GameCharacter::steer(float dtime) {
         
     }
 }
-
+*/
 bool GameCharacter::doCurrentAction(float dtime) {
     
     //Check rotation
@@ -131,6 +134,10 @@ void GameCharacter::rotate(float dtime, bool left) {
 void GameCharacter::move(float dtime) {
     
     float movingUnits = movingSpeed * dtime;
+    
+    if((moveUnits - movingUnits) < 0.0f) {
+        movingUnits = moveUnits;
+    }
     
     Matrix mTotal, mMov;
     mMov.translation(movingUnits, 0, 0);

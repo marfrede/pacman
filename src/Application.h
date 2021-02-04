@@ -19,6 +19,7 @@
 #include "basemodel.h"
 #include "Wall.h"
 #include "Pacman.hpp"
+#include "Ghost.hpp"
 #include "ShadowMapGenerator.h"
 
 class Application
@@ -26,6 +27,7 @@ class Application
 public:
     typedef std::list<BaseModel*> ModelList;
     typedef std::list<BaseModel*> WallList;
+    typedef std::list<Ghost*> GhostList;
     Application(GLFWwindow* pWin);
     void start();
     void update(float dtime);
@@ -37,7 +39,8 @@ protected:
 	void createShadowTestScene();
     Camera Cam;
     ModelList Models;
-    ModelList Walls;
+    WallList Walls;
+    GhostList Ghosts;
     GLFWwindow* pWindow;
 	BaseModel* pModel;
     Pacman* pPacman;
