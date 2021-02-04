@@ -12,6 +12,7 @@
 #include "Camera.h"
 #include "BaseModel.h"
 #include <stdio.h>
+constexpr auto M_PI = 3.141592653589793238462643;
 
 class EgoCam : public Camera
 {
