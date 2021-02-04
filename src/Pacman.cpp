@@ -14,7 +14,7 @@ Pacman::Pacman(int planeWidth, int planeDepth, int posX, int posZ, PhongShader* 
 }
 
 void Pacman::steer(float dtime) {
-    std::cout << "Pacman steer!" << std::endl;
+    // std::cout << "Pacman steer!" << std::endl;
     
     float forward = 0;
     float leftRight = 0;

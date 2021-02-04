@@ -14,7 +14,7 @@ Ghost::Ghost(int planeWidth, int planeDepth, int posX, int posZ, PhongShader* pP
 
 void Ghost::steer(float dtime) {
     
-    std::cout << "Ghost steer!" << std::endl;
+    // std::cout << "Ghost steer!" << std::endl;
     
     if(!doCurrentAction(dtime)) {
         
