@@ -20,12 +20,14 @@
 #include "basemodel.h"
 #include "Wall.h"
 #include "Pacman.hpp"
+#include "Ghost.hpp"
 #include "ShadowMapGenerator.h"
 
 class Application
 {
 public:
     typedef std::list<BaseModel*> ModelList;
+    typedef std::list<Ghost*> GhostList;
     Application(GLFWwindow* pWin);
     void start();
     void update(float dtime);
@@ -38,6 +40,7 @@ protected:
     Camera Cam;
     Field* pField;
     ModelList Models;
+    GhostList Ghosts;
     GLFWwindow* pWindow;
 	BaseModel* pModel;
     Pacman* pPacman;
