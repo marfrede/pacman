@@ -19,7 +19,7 @@ public:
 	* @param posZ (min:0, max:planeDepth) z position on the planeModel
 	* @param pPhongShader to use for the walls
 	*/
-	Wall(int planeWidth, int planeDepth, int width, int height, int depth, int posX, int posZ, PhongShader* pPhongShader, float padding);
+	Wall(int planeWidth, int planeDepth, int width, float height, int depth, int posX, int posZ, PhongShader* pPhongShader, float padding);
 };
 
 #endif

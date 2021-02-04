@@ -173,23 +173,23 @@ void Application::createScene()
     pPhongShader->specularColor(Color(1.0f, 1.0f, 1.0f));
     Ghost* g = new Ghost(fieldWidth, fieldDepth, 5, 10, pPhongShader);
     g->setWindow(pWindow);
-    g->setWalls(pField->getWalls());
+    g->setWalls(this->pField->getWalls());
     Ghosts.push_back(g);
     g = new Ghost(fieldWidth, fieldDepth, 0, 0, pPhongShader);
     g->setWindow(pWindow);
-    g->setWalls(pField->getWalls());
+    g->setWalls(this->pField->getWalls());
     Ghosts.push_back(g);
     g = new Ghost(fieldWidth, fieldDepth, 1, 5, pPhongShader);
     g->setWindow(pWindow);
-    g->setWalls(pField->getWalls());
+    g->setWalls(this->pField->getWalls());
     Ghosts.push_back(g);
     g = new Ghost(fieldWidth, fieldDepth, 2, 7, pPhongShader);
     g->setWindow(pWindow);
-    g->setWalls(pField->getWalls());
+    g->setWalls(this->pField->getWalls());
     Ghosts.push_back(g);
     g = new Ghost(fieldWidth, fieldDepth, 3, 8, pPhongShader);
     g->setWindow(pWindow);
-    g->setWalls(pField->getWalls());
+    g->setWalls(this->pField->getWalls());
     Ghosts.push_back(g);
     
     //PACMAN
