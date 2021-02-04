@@ -35,7 +35,7 @@ public:
     void setWindow(GLFWwindow* window) {pWindow = window;}
     void setWalls(WallList walls) {Walls = walls;}
     
-    void update(float dtime);
+    virtual void update(float dtime);
     
     
     /**

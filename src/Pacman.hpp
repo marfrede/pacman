@@ -12,13 +12,16 @@
 #include "TriangleBoxModel.h"
 #include "PhongShader.h"
 #include "GameCharacter.hpp"
+#include "EgoCam.hpp"
 #include <stdio.h>
 
 class Pacman : public GameCharacter
 {
 public:    
-    
+     
     Pacman(int planeWidth, int planeDepth, int posX, int posZ, PhongShader* pPhongShader);
+    
+    void update(float dtime);
     
     /**
      STEERING
@@ -28,6 +31,10 @@ public:
      * @param dtime deltatime
      */
     void steer(float dtime);
+    
+    //void setEgoCam(EgoCam cam){paccam=&cam;}
+    //EgoCam* paccam;
+    //void movePaccam();
     
 private:
     

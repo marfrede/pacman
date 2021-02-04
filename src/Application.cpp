@@ -39,7 +39,7 @@
 
 using namespace std;
 
-Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin), pModel(NULL), ShadowGenerator(2048, 2048)
+Application::Application(GLFWwindow* pWin) : pWindow(pWin), Paccam(pWin, NULL), Cam(pWin), pModel(NULL), ShadowGenerator(2048, 2048)
 {
 	createScene();
 	//createNormalTestScene();
@@ -59,8 +59,19 @@ void Application::start()
 
 void Application::update(float dtime)
 {
-	Cam.update();
+    
     pPacman->update(dtime);
+    
+    std::cout << pPacman->transform().translation() << std::endl;
+    //pPacman->transform().
+    //Cam.setPosition(pPacman->transform().translation());
+    //Cam.setTarget(pPacman->transform().translation() + pPacman->transform().right());
+    if(gameMode) {
+        Paccam.update();
+    } else {
+        Cam.update();
+    }
+    
     for (GhostList::iterator it = Ghosts.begin(); it != Ghosts.end(); ++it)
     {
         (*it)->update(dtime);
@@ -76,15 +87,53 @@ void Application::draw()
 
 	ShaderLightMapper::instance().activate();
 	// 2. setup shaders and draw models
-	this->pField->draw(Cam);
-	for (ModelList::iterator it = Models.begin(); it != Models.end(); ++it)
-	{
-		(*it)->draw(Cam);
-	}
-    for (GhostList::iterator it = Ghosts.begin(); it != Ghosts.end(); ++it)
-    {
-        (*it)->draw(Cam);
+    
+    if(gameMode) {
+        for (ModelList::iterator it = Models.begin(); it != Models.end(); ++it)
+        {
+            (*it)->draw(Paccam);
+        }
+        for (WallList::iterator it = Walls.begin(); it != Walls.end(); ++it)
+        {
+            (*it)->draw(Paccam);
+        }
+        for (GhostList::iterator it = Ghosts.begin(); it != Ghosts.end(); ++it)
+        {
+            (*it)->draw(Paccam);
+        }
+        this->pField->draw(Paccam);
+	    for (ModelList::iterator it = Models.begin(); it != Models.end(); ++it)
+	    {
+		    (*it)->draw(Paccam);
+	    }
+        for (GhostList::iterator it = Ghosts.begin(); it != Ghosts.end(); ++it)
+        {
+            (*it)->draw(Paccam);
+        }
+    } else {
+        for (ModelList::iterator it = Models.begin(); it != Models.end(); ++it)
+        {
+            (*it)->draw(Cam);
+        }
+        for (WallList::iterator it = Walls.begin(); it != Walls.end(); ++it)
+        {
+            (*it)->draw(Cam);
+        }
+        for (GhostList::iterator it = Ghosts.begin(); it != Ghosts.end(); ++it)
+        {
+            (*it)->draw(Cam);
+        }
+        this->pField->draw(Cam);
+	    for (ModelList::iterator it = Models.begin(); it != Models.end(); ++it)
+	    {
+		    (*it)->draw(Cam);
+	    }
+        for (GhostList::iterator it = Ghosts.begin(); it != Ghosts.end(); ++it)
+        {
+            (*it)->draw(Cam);
+        }
     }
+
 	ShaderLightMapper::instance().deactivate();
 
 	// 3. check once per frame for opengl errors
@@ -157,9 +206,10 @@ void Application::createScene()
     pPhongShader->ambientColor(Color(0.2f, 0.2f, 0.2f));
     pPhongShader->diffuseColor(Color(1.0f, 1.0f, 1.0f));
     pPhongShader->specularColor(Color(1.0f, 1.0f, 1.0f));
-    pPacman = new Pacman(fieldWidth, fieldDepth, 0, 0, pPhongShader);
+    pPacman = new Pacman(planeWidth, planeDepth, 0, 0, pPhongShader);
     pPacman->setWindow(pWindow);
     pPacman->setWalls(pField->getWalls());
+    Paccam.setObj(pPacman);
     Models.push_back(pPacman);
 }
 
