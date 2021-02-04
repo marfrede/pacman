@@ -34,10 +34,13 @@ public:
     void draw();
     void end();
 protected:
+    bool gameMode = false;
+    
 	void createScene();
 	void createNormalTestScene();
 	void createShadowTestScene();
     Camera Cam;
+    EgoCam Paccam;
     Field* pField;
     ModelList Models;
     GhostList Ghosts;

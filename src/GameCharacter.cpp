@@ -24,7 +24,6 @@ GameCharacter::GameCharacter(int planeWidth, int planeDepth, int posX, int posZ,
 
 void GameCharacter::update(float dtime) {
     
-    // std::cout << "Update!" << std::endl;
     this->steer(dtime);
     
 }
