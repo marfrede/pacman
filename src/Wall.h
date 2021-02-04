@@ -1,4 +1,7 @@
 
+#ifndef Wall_h
+#define Wall_h
+
 #include "TriangleBoxModel.h"
 #include "PhongShader.h"
 
@@ -18,3 +21,5 @@ public:
 	*/
 	Wall(int planeWidth, int planeDepth, int width, int height, int depth, int posX, int posZ, PhongShader* pPhongShader, float padding);
 };
+
+#endif

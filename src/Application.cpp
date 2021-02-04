@@ -23,6 +23,7 @@
 #include "lineboxmodel.h"
 #include "triangleboxmodel.h"
 #include "wall.h"
+#include "Pacman.hpp"
 #include "model.h"
 #include "ShaderLightmapper.h"
 
@@ -58,6 +59,7 @@ void Application::start()
 void Application::update(float dtime)
 {
 	Cam.update();
+    pPacman->update(dtime);
 }
 
 void Application::draw()
@@ -73,6 +75,10 @@ void Application::draw()
 	{
 		(*it)->draw(Cam);
 	}
+    for (WallList::iterator it = Walls.begin(); it != Walls.end(); ++it)
+    {
+        (*it)->draw(Cam);
+    }
 	ShaderLightMapper::instance().deactivate();
 
 	// 3. check once per frame for opengl errors
@@ -85,6 +91,11 @@ void Application::end()
 		delete* it;
 
 	Models.clear();
+    
+    for (WallList::iterator it = Walls.begin(); it != Walls.end(); ++it)
+        delete* it;
+
+    Walls.clear();
 }
 
 void Application::createScene()
@@ -102,11 +113,20 @@ void Application::createScene()
 
 	// CHEQUERED PLAYING FIELD
 	int planeWidth = 30, planeDepth = 33;
-	pModel = new LinePlaneModel((float)planeWidth, (float)planeDepth, (float)planeWidth, (float)planeDepth);
+	pModel = new LinePlaneModel((float) planeWidth, (float) planeDepth, (float) planeWidth, (float) planeDepth);
 	pConstShader = new ConstantShader();
 	pConstShader->color(Color(1, 0, 0));
 	pModel->shader(pConstShader, true);
 	Models.push_back(pModel);
+    
+    // FIELD
+    pModel = new TrianglePlaneModel(30, 33, 10, 10);
+    pPhongShader = new PhongShader();
+    pPhongShader->ambientColor(Color(0.2f,0.2f,0.2f));
+    pPhongShader->diffuseColor(Color(1.0f,1.0f,1.0f));
+    pPhongShader->diffuseTexture(Texture::LoadShared(TEXTURE_DIRECTORY "dirtyBricks_C_01.dds"));
+    pModel->shader(pPhongShader, true);
+    Models.push_back( pModel );
 
 	// WALLS
 	// 1. set wall padding and height
@@ -199,7 +219,17 @@ void Application::createScene()
 				pPhongShader, padding)
 		);
 	}
-
+    
+    //PACMAN
+    pPhongShader = new PhongShader();
+    //pPhongShader->ambientColor(Color(0.14902f, 0.15294f, 0.8f)); // pacman blue wall color
+    pPhongShader->ambientColor(Color(0.2f, 0.2f, 0.2f));
+    pPhongShader->diffuseColor(Color(1.0f, 1.0f, 1.0f));
+    pPhongShader->specularColor(Color(1.0f, 1.0f, 1.0f));
+    pPacman = new Pacman(planeWidth, planeDepth, 0, 0, pPhongShader);
+    pPacman->setWindow(pWindow);
+    pPacman->setWalls(Walls);
+    Models.push_back(pPacman);
 }
 
 void Application::createNormalTestScene()
