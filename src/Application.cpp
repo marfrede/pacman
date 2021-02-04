@@ -62,10 +62,6 @@ void Application::update(float dtime)
     
     pPacman->update(dtime);
     
-    std::cout << pPacman->transform().translation() << std::endl;
-    //pPacman->transform().
-    //Cam.setPosition(pPacman->transform().translation());
-    //Cam.setTarget(pPacman->transform().translation() + pPacman->transform().right());
     if(gameMode) {
         Paccam.update();
     } else {
@@ -154,6 +150,12 @@ void Application::createScene()
 	Matrix m, n;
 	PhongShader* pPhongShader;
 	int fieldWidth = 30, fieldDepth = 33;
+    
+    
+    Color c = Color(1.0f, 0.7f, 1.0f);
+    Vector a = Vector(1, 0, 0.1f);
+    float innerradius = 45;
+    float outerradius = 60;
 
 	// SKY
 	//pModel = new Model(ASSET_DIRECTORY "skybox.obj", false);
@@ -171,25 +173,101 @@ void Application::createScene()
     pPhongShader->ambientColor(Color(0.2f, 0.2f, 0.2f));
     pPhongShader->diffuseColor(Color(1.0f, 1.0f, 1.0f));
     pPhongShader->specularColor(Color(1.0f, 1.0f, 1.0f));
-    Ghost* g = new Ghost(fieldWidth, fieldDepth, 5, 10, pPhongShader);
+    
+    Ghost* g = new Ghost(fieldWidth, fieldDepth, 5, 2, pPhongShader);
     g->setWindow(pWindow);
     g->setWalls(this->pField->getWalls());
+    // point lights
+    PointLight* pl = new PointLight();
+    pl->color(Color(1.0f, 0.0f, 0.0f));
+    pl->attenuation(a);
+    ShaderLightMapper::instance().addLight(pl);
+    g->setPointLight(pl);
+    // spot lights
+    SpotLight* sl = new SpotLight();
+    sl->color(Color(1.0f, 0.0f, 0.0f));
+    sl->direction(Vector(1,-4,0));
+    sl->innerRadius(innerradius);
+    sl->outerRadius(outerradius);
+    ShaderLightMapper::instance().addLight(sl);
+    g->setSpotLight(sl);
+    
     Ghosts.push_back(g);
+    
     g = new Ghost(fieldWidth, fieldDepth, 0, 0, pPhongShader);
     g->setWindow(pWindow);
     g->setWalls(this->pField->getWalls());
+    // point lights
+    pl = new PointLight();
+    pl->color(Color(0,0,1.0f));
+    pl->attenuation(a);
+    ShaderLightMapper::instance().addLight(pl);
+    g->setPointLight(pl);
+    // spot lights
+    sl = new SpotLight();
+    sl->color(Color(0,0,1.0f));
+    sl->direction(Vector(1,-4,0));
+    sl->innerRadius(innerradius);
+    sl->outerRadius(outerradius);
+    ShaderLightMapper::instance().addLight(sl);
+    g->setSpotLight(sl);
     Ghosts.push_back(g);
+    
     g = new Ghost(fieldWidth, fieldDepth, 1, 5, pPhongShader);
     g->setWindow(pWindow);
     g->setWalls(this->pField->getWalls());
+    // point lights
+    pl = new PointLight();
+    pl->color(Color(0,1.0f,0));
+    pl->attenuation(a);
+    ShaderLightMapper::instance().addLight(pl);
+    g->setPointLight(pl);
+    // spot lights
+    sl = new SpotLight();
+    sl->color(Color(0,1.0f,0));
+    sl->direction(Vector(1,-4,0));
+    sl->innerRadius(innerradius);
+    sl->outerRadius(outerradius);
+    ShaderLightMapper::instance().addLight(sl);
+    g->setSpotLight(sl);
     Ghosts.push_back(g);
+    
     g = new Ghost(fieldWidth, fieldDepth, 2, 7, pPhongShader);
     g->setWindow(pWindow);
     g->setWalls(this->pField->getWalls());
+    // point lights
+    pl = new PointLight();
+    pl->color(Color(1.0f, 1.0f, 0));
+    pl->attenuation(a);
+    ShaderLightMapper::instance().addLight(pl);
+    g->setPointLight(pl);
+    // spot lights
+    sl = new SpotLight();
+    sl->color(Color(1.0f, 1.0f, 0));
+    sl->direction(Vector(1,-4,0));
+    sl->innerRadius(innerradius);
+    sl->outerRadius(outerradius);
+    ShaderLightMapper::instance().addLight(sl);
+    g->setSpotLight(sl);
     Ghosts.push_back(g);
+    
     g = new Ghost(fieldWidth, fieldDepth, 3, 8, pPhongShader);
     g->setWindow(pWindow);
     g->setWalls(this->pField->getWalls());
+    // point light
+    pl = new PointLight();
+    pl->color(Color(0.6f, 0.2f, 0.8f));
+    pl->attenuation(a);
+    ShaderLightMapper::instance().addLight(pl);
+    g->setPointLight(pl);
+    // spot light
+    sl = new SpotLight();
+    sl->color(Color(0.6f, 0.2f, 0.8f));
+    sl->direction(Vector(1,-4,0));
+    sl->innerRadius(innerradius);
+    sl->outerRadius(outerradius);
+    ShaderLightMapper::instance().addLight(sl);
+    g->setSpotLight(sl);
     Ghosts.push_back(g);
     
     //PACMAN
@@ -202,7 +280,9 @@ void Application::createScene()
     pPacman->setWindow(pWindow);
     pPacman->setWalls(pField->getWalls());
     Paccam.setObj(pPacman);
+
     Models.push_back(pPacman);
+    
 }
 
 void Application::createNormalTestScene()

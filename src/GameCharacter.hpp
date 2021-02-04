@@ -8,7 +8,8 @@
 
 #ifndef GameCharacter_hpp
 #define GameCharacter_hpp
-constexpr auto M_PI = 3.141592653589793238462643;
+
+//#define M_PI 3.141592653589793238462643;
 
 #include "TriangleBoxModel.h"
 #include "PhongShader.h"
@@ -34,9 +35,10 @@ public:
     
     void setWindow(GLFWwindow* window) {pWindow = window;}
     void setWalls(WallList walls) {Walls = walls;}
+    void setPointLight(PointLight* pL) {pointLight = pL;}
+    void setSpotLight(SpotLight* sL) {spotLight = sL;}
     
     virtual void update(float dtime);
-    
     
     /**
      STEERING
@@ -71,6 +73,9 @@ public:
     bool checkLeft();
     bool checkRight();
     
+    //Lighting
+    void moveLights();
+    
 protected:
     
     //Spielfeld
@@ -86,7 +91,9 @@ protected:
     float moveUnits;
     float movingSpeed = 3;
     
-    
+    //Lighting
+    PointLight* pointLight;
+    SpotLight* spotLight;
 };
 
 #endif /* GameCharacter_hpp */
