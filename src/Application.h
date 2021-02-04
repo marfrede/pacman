@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <list>
 #include "camera.h"
+#include "field.h"
 #include "phongshader.h"
 #include "constantshader.h"
 #include "vertexbuffer.h"
@@ -25,7 +26,6 @@ class Application
 {
 public:
     typedef std::list<BaseModel*> ModelList;
-    typedef std::list<BaseModel*> WallList;
     Application(GLFWwindow* pWin);
     void start();
     void update(float dtime);
@@ -36,8 +36,8 @@ protected:
 	void createNormalTestScene();
 	void createShadowTestScene();
     Camera Cam;
+    Field* pField;
     ModelList Models;
-    ModelList Walls;
     GLFWwindow* pWindow;
 	BaseModel* pModel;
     Pacman* pPacman;
