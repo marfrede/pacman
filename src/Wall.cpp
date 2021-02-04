@@ -1,6 +1,6 @@
 #include "Wall.h"
 
-Wall::Wall(int planeWidth, int planeDepth, int width, int height, int depth, int posX, int posZ, PhongShader* pPhongShader, float padding)
+Wall::Wall(int planeWidth, int planeDepth, int width, float height, int depth, int posX, int posZ, PhongShader* pPhongShader, float padding)
 	: TriangleBoxModel(width - padding, height, depth - padding)
 {
 	this->shader(pPhongShader, true);
