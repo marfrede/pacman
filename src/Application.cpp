@@ -130,25 +130,25 @@ void Application::createScene()
     pPhongShader->ambientColor(Color(0.2f, 0.2f, 0.2f));
     pPhongShader->diffuseColor(Color(1.0f, 1.0f, 1.0f));
     pPhongShader->specularColor(Color(1.0f, 1.0f, 1.0f));
-    Ghost* g = new Ghost(planeWidth, planeDepth, 5, 10, pPhongShader);
+    Ghost* g = new Ghost(fieldWidth, fieldDepth, 5, 10, pPhongShader);
     g->setWindow(pWindow);
-    g->setWalls(Walls);
+    g->setWalls(this->pField->getWalls());
     Ghosts.push_back(g);
-    g = new Ghost(planeWidth, planeDepth, 0, 0, pPhongShader);
+    g = new Ghost(fieldWidth, fieldDepth, 0, 0, pPhongShader);
     g->setWindow(pWindow);
-    g->setWalls(Walls);
+    g->setWalls(this->pField->getWalls());
     Ghosts.push_back(g);
-    g = new Ghost(planeWidth, planeDepth, 1, 5, pPhongShader);
+    g = new Ghost(fieldWidth, fieldDepth, 1, 5, pPhongShader);
     g->setWindow(pWindow);
-    g->setWalls(Walls);
+    g->setWalls(this->pField->getWalls());
     Ghosts.push_back(g);
-    g = new Ghost(planeWidth, planeDepth, 2, 7, pPhongShader);
+    g = new Ghost(fieldWidth, fieldDepth, 2, 7, pPhongShader);
     g->setWindow(pWindow);
-    g->setWalls(Walls);
+    g->setWalls(this->pField->getWalls());
     Ghosts.push_back(g);
-    g = new Ghost(planeWidth, planeDepth, 3, 8, pPhongShader);
+    g = new Ghost(fieldWidth, fieldDepth, 3, 8, pPhongShader);
     g->setWindow(pWindow);
-    g->setWalls(Walls);
+    g->setWalls(this->pField->getWalls());
     Ghosts.push_back(g);
     
     //PACMAN
