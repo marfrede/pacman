@@ -17,6 +17,7 @@
 #include "vertexbuffer.h"
 #include "indexbuffer.h"
 #include "basemodel.h"
+#include "Wall.h"
 #include "Pacman.hpp"
 #include "ShadowMapGenerator.h"
 
@@ -24,6 +25,7 @@ class Application
 {
 public:
     typedef std::list<BaseModel*> ModelList;
+    typedef std::list<BaseModel*> WallList;
     Application(GLFWwindow* pWin);
     void start();
     void update(float dtime);
@@ -35,6 +37,7 @@ protected:
 	void createShadowTestScene();
     Camera Cam;
     ModelList Models;
+    ModelList Walls;
     GLFWwindow* pWindow;
 	BaseModel* pModel;
     Pacman* pPacman;

@@ -11,68 +11,16 @@
 
 #include "TriangleBoxModel.h"
 #include "PhongShader.h"
+#include "GameCharacter.hpp"
 #include <stdio.h>
 
-class Pacman : public TriangleBoxModel
+class Pacman : public GameCharacter
 {
-public:
-    /**
-    * create a TriangleBoxModel at given position
-    * @param planeWidth playing field width
-    * @param planeDepth playing field depth
-    * @param width in x-direction of the wall
-    * @param height in y-direction of the wall
-    * @param depth in z-direction of the wall
-    * @param posX (min:0, max:planeWidth) x position on the planeModel
-    * @param posZ (min:0, max:planeDepth) z position on the planeModel
-    * @param pPhongShader to use for the walls
-    */
+public:    
+    
     Pacman(int planeWidth, int planeDepth, int posX, int posZ, PhongShader* pPhongShader);
     
-    void setWindow(GLFWwindow* window) {pWindow = window;}
-    void update(float dtime);
-    
-    
-    /**
-     STEERING
-     */
-    /**
-     * steer object
-     * @param forward  keyboard input
-     * @param leftRight keyboard input
-     * @param dtime deltatime
-     */
-    void steer(float forward, float leftRight, float dtime);
-    /**
-     * rotate object
-     * @param dtime deltatime
-     * @param left direction
-     */
-    void rotate(float dtime, bool left);
-    /**
-     * move object
-     * @param dtime deltatime
-     */
-    void move(float dtime);
-    /**
-     * perform current action
-     * @param dtime deltatime
-     */
-    bool doCurrentAction(float dtime);
-    
-    
-    
 private:
-    
-    GLFWwindow* pWindow;
-    
-    //STEERING
-    //Rotation
-    float angleToTurn;
-    float rotateSpeed = 200;
-    //Moving
-    float moveUnits;
-    float movingSpeed = 3;
     
     
 };

@@ -74,6 +74,10 @@ void Application::draw()
 	{
 		(*it)->draw(Cam);
 	}
+    for (WallList::iterator it = Walls.begin(); it != Walls.end(); ++it)
+    {
+        (*it)->draw(Cam);
+    }
 	ShaderLightMapper::instance().deactivate();
 
 	// 3. check once per frame for opengl errors
@@ -86,6 +90,11 @@ void Application::end()
 		delete* it;
 
 	Models.clear();
+    
+    for (WallList::iterator it = Walls.begin(); it != Walls.end(); ++it)
+        delete* it;
+
+    Walls.clear();
 }
 
 void Application::createScene()
@@ -125,9 +134,9 @@ void Application::createScene()
 	pPhongShader->diffuseColor(Color(1.0f, 1.0f, 1.0f));
 	pPhongShader->specularColor(Color(1.0f, 1.0f, 1.0f));
 	pPhongShader->diffuseTexture(Texture::LoadShared(TEXTURE_DIRECTORY "PaintedPlaster014_4K_Color.jpg"));
-	Models.push_back(new Wall(planeWidth, planeDepth, 4, 4, 2, 3, 3, pPhongShader));
-	Models.push_back(new Wall(planeWidth, planeDepth, 5, 4, 2, 8, 3, pPhongShader));
-    Models.push_back(new Wall(planeWidth, planeDepth, 4, 4, 2, 1, 1, pPhongShader));
+	Walls.push_back(new Wall(planeWidth, planeDepth, 4, 4, 2, 3, 3, pPhongShader));
+	Walls.push_back(new Wall(planeWidth, planeDepth, 5, 4, 2, 8, 3, pPhongShader));
+    Walls.push_back(new Wall(planeWidth, planeDepth, 4, 4, 2, 1, 1, pPhongShader));
 	//Models.push_back(new Wall(planeWidth, planeDepth, 4, 4, 1, 8, 0, pPhongShader));
     
     //PACMAN
@@ -138,6 +147,7 @@ void Application::createScene()
     pPhongShader->specularColor(Color(1.0f, 1.0f, 1.0f));
     pPacman = new Pacman(planeWidth, planeDepth, 0, 0, pPhongShader);
     pPacman->setWindow(pWindow);
+    pPacman->setWalls(Walls);
     Models.push_back(pPacman);
 
 }
