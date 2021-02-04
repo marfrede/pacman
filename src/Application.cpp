@@ -120,13 +120,13 @@ void Application::createScene()
 	Models.push_back(pModel);
     
     // FIELD
-    pModel = new TrianglePlaneModel(30, 33, 10, 10);
+   /* pModel = new TrianglePlaneModel(30, 33, 10, 10);
     pPhongShader = new PhongShader();
     pPhongShader->ambientColor(Color(0.2f,0.2f,0.2f));
     pPhongShader->diffuseColor(Color(1.0f,1.0f,1.0f));
     pPhongShader->diffuseTexture(Texture::LoadShared(TEXTURE_DIRECTORY "dirtyBricks_C_01.dds"));
     pModel->shader(pPhongShader, true);
-    Models.push_back( pModel );
+    Models.push_back( pModel );*/
 
 	// WALLS
 	// 1. set wall padding and height
