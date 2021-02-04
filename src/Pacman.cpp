@@ -10,6 +10,17 @@
 #include "math.h"
 
 Pacman::Pacman(int planeWidth, int planeDepth, int posX, int posZ, PhongShader* pPhongShader) : GameCharacter(planeWidth, planeDepth, posX, posZ, pPhongShader) {
+}
+
+void Pacman::update(float dtime) {
+    
+    this->steer(dtime);
+    
+    /*
+    if(paccam) {
+        this->movePaccam();
+    }
+     */
     
 }
 
@@ -47,3 +58,13 @@ void Pacman::steer(float dtime) {
         
     }
 }
+
+/*
+void Pacman::movePaccam() {
+    paccam->setPosition(this->transform().translation());
+    paccam->setTarget(this->transform().translation() + this->transform().forward());
+    //Vector Pos = position(); //m_Position + m_Panning + m_Zoom + m_Rotation;
+    //Vector Target = target(); //m_Target + m_Panning;
+    //m_ViewMatrix.lookAt(Target, m_Up, Pos);
+}
+*/
