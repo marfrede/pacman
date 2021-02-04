@@ -3,3 +3,5 @@
 /*.zip
 /*.rar
 /assets/*Exec.bmp
+/assets/.DS_Store
+.DS_Store
