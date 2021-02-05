@@ -12,7 +12,10 @@
 #include "Camera.h"
 #include "BaseModel.h"
 #include <stdio.h>
-//#define M_PI 3.141592653589793238462643;
+
+#ifdef WIN32
+#define M_PI 3.141592653589793238462643;
+#endif
 
 class EgoCam : public Camera
 {
