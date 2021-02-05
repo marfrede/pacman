@@ -9,12 +9,14 @@
 #ifndef GameCharacter_hpp
 #define GameCharacter_hpp
 
-//#define M_PI 3.141592653589793238462643;
-
 #include "TriangleBoxModel.h"
 #include "PhongShader.h"
 #include <stdio.h>
 #include <list>
+
+#ifndef M_PI
+#define M_PI 3.1415926535897932
+#endif
 
 class GameCharacter : public TriangleBoxModel
 {
