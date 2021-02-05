@@ -26,6 +26,8 @@ void GameCharacter::update(float dtime) {
     
     this->steer(dtime);
     
+    this->moveLights();
+    
 }
 /*
 void GameCharacter::steer(float dtime) {
@@ -154,4 +156,15 @@ bool GameCharacter::checkFront() {
      //   (*it)->boundingBox().
     }
     return false;
+}
+
+void GameCharacter::moveLights() { 
+    
+    if(pointLight) {
+        this->pointLight->position(this->transform().translation());
+    }
+    if(spotLight) {
+        this->spotLight->position(this->transform().translation());
+    }
+    
 }
