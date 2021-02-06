@@ -1,10 +1,5 @@
 #include "Point.h"
 
-Point::Point(int planeWidth, int planeDepth, int posX, int posZ, float radius) : TriangleSphereModel(radius) {
-	this->initShader();
-	this->init(planeWidth, planeDepth, posX, posZ);
-}
-
 Point::Point(int planeWidth, int planeDepth, int posX, int posZ, float radius, PhongShader* pPhongShader) : TriangleSphereModel(radius) {
 	this->shader(pPhongShader, true);
 	this->init(planeWidth, planeDepth, posX, posZ);
@@ -15,9 +10,14 @@ void Point::init(int planeWidth, int planeDepth, int posX, int posZ) {
 	this->planeDepth = planeDepth;
 	this->goingUp = true;
 	float height = LO_HEIGHT + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (HI_HEIGHT - LO_HEIGHT)));
+	this->pPointLight = new PointLight();
+	this->pPointLight->color(Color(255.0f / 255.0f, 184.0f / 255.0f, 174.0f / 255.0f));
+	this->pPointLight->attenuation(Vector(1.0f, 1.0f, 1.0f));
+	ShaderLightMapper::instance().addLight(this->pPointLight);
 	this->setPosition(posX, height, posZ);
 }
 
+/* sets position on field */
 void Point::setPosition(float x, float y, float z) {
 	this->pos = Vector(x, y, z);
 	Matrix t;
@@ -27,14 +27,7 @@ void Point::setPosition(float x, float y, float z) {
 		0.5f + (this->pos.Z) - ((float)this->planeDepth) / 2.0f
 	);
 	this->transform(t);
-}
-
-void Point::initShader() {
-	pPhongShader = new PhongShader();
-	pPhongShader->ambientColor(Color(0.2f, 0.2f, 0.2f));
-	pPhongShader->diffuseColor(Color(1.0f, 1.0f, 1.0f));
-	pPhongShader->specularColor(Color(1.0f, 1.0f, 1.0f));
-	this->shader(pPhongShader, true);
+	this->pPointLight->position(this->transform().translation());
 }
 
 void Point::update(float dtime) {
@@ -52,5 +45,5 @@ void Point::update(float dtime) {
 }
 
 Point::~Point() {
-	delete this->pPhongShader;
+	delete this->pPointLight;
 }
