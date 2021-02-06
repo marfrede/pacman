@@ -29,9 +29,10 @@ public:
     * @param posX (min:0, max:planeWidth) x position on the planeModel
     * @param y (min:-∞, max:∞) models y position
     * @param posZ (min:0, max:planeDepth) z position on the planeModel
-    * @param pPhongShader to use for the character
+    * @param pShader to use for the character
     */
-    GameCharacter(int posX, float y, int posZ, PhongShader* pPhongShader);
+    GameCharacter(int posX, float y, int posZ, BaseShader* baseShader);
+    ~GameCharacter();
     
     void setWindow(GLFWwindow* window) {pWindow = window;}
     void setWalls(WallList walls) {Walls = walls;}
@@ -90,7 +91,6 @@ protected:
     //Moving
     float moveUnits;
     float movingSpeed = 3;
-    
     //Lighting
     PointLight* pointLight;
     SpotLight* spotLight;

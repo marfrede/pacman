@@ -9,9 +9,8 @@
 #include "GameCharacter.hpp"
 #include "math.h"
 
-GameCharacter::GameCharacter(int posX, float y, int posZ, PhongShader* pPhongShader) : TriangleBoxModel(1, 1, 1)
-{
-	this->shader(pPhongShader, true);
+GameCharacter::GameCharacter(int posX, float y, int posZ, BaseShader* baseShader) : TriangleBoxModel(1, 1, 1) {
+	this->shader(pShader, true);
 	Matrix t;
 	t.translation(
 		0.5f + (float)posX - ((float)PLANE_WIDTH) / 2.0f,
@@ -19,15 +18,15 @@ GameCharacter::GameCharacter(int posX, float y, int posZ, PhongShader* pPhongSha
 		0.5f + (float)posZ - ((float)PLANE_DEPTH) / 2.0f
 	);
 	this->transform(t);
-	angleToTurn = 0;
+	angleToTurn = 0.0f;
+}
+
+GameCharacter::~GameCharacter() {
 }
 
 void GameCharacter::update(float dtime) {
-
 	this->steer(dtime);
-
 	this->moveLights();
-
 }
 /*
 void GameCharacter::steer(float dtime) {
