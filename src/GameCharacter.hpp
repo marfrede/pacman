@@ -24,16 +24,14 @@ public:
     typedef std::list<BaseModel*> WallList;
     /**
     * create a TriangleBoxModel at given position
-    * @param planeWidth playing field width
-    * @param planeDepth playing field depth
     * @param width in x-direction of the wall
     * @param height in y-direction of the wall
     * @param depth in z-direction of the wall
     * @param posX (min:0, max:planeWidth) x position on the planeModel
     * @param posZ (min:0, max:planeDepth) z position on the planeModel
-    * @param pPhongShader to use for the walls
+    * @param pPhongShader to use for the character
     */
-    GameCharacter(int planeWidth, int planeDepth, float posX, float posY, float posZ, PhongShader* pPhongShader);
+    GameCharacter(float posX, float posY, float posZ, PhongShader* pPhongShader);
     
     void setWindow(GLFWwindow* window) {pWindow = window;}
     void setWalls(WallList walls) {Walls = walls;}

@@ -1,13 +1,11 @@
 #include "Point.h"
 
-Point::Point(int planeWidth, int planeDepth, int posX, int posZ, float radius, BaseShader* pShader) : TriangleSphereModel(radius) {
+Point::Point(int posX, int posZ, float radius, BaseShader* pShader) : TriangleSphereModel(radius) {
 	this->shader(pShader, true);
-	this->init(planeWidth, planeDepth, posX, posZ);
+	this->init(posX, posZ);
 }
 
-void Point::init(int planeWidth, int planeDepth, int posX, int posZ) {
-	this->planeWidth = planeWidth;
-	this->planeDepth = planeDepth;
+void Point::init(int posX, int posZ) {
 	this->goingUp = true;
 	float height = LO_HEIGHT + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (HI_HEIGHT - LO_HEIGHT)));
 	this->pPointLight = new PointLight();
@@ -22,9 +20,9 @@ void Point::setPosition(float x, float y, float z) {
 	this->pos = Vector(x, y, z);
 	Matrix t;
 	t.translation(
-		0.5f + (this->pos.X) - ((float)this->planeWidth) / 2.0f,
+		0.5f + (this->pos.X) - ((float)PLANE_WIDTH) / 2.0f,
 		this->pos.Y,
-		0.5f + (this->pos.Z) - ((float)this->planeDepth) / 2.0f
+		0.5f + (this->pos.Z) - ((float)PLANE_DEPTH) / 2.0f
 	);
 	this->transform(t);
 	this->pPointLight->position(this->transform().translation());

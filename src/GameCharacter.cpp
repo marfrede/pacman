@@ -9,7 +9,7 @@
 #include "GameCharacter.hpp"
 #include "math.h"
 
-GameCharacter::GameCharacter(int planeWidth, int planeDepth, float posX, float posY, float posZ, PhongShader* pPhongShader) : TriangleBoxModel(1, 1, 1)
+GameCharacter::GameCharacter(float posX, float posY, float posZ, PhongShader* pPhongShader) : TriangleBoxModel(1, 1, 1)
 {
 	this->shader(pPhongShader, true);
 	Matrix t;

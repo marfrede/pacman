@@ -16,7 +16,7 @@ class Ghost : public GameCharacter
 {
 public:
     
-    Ghost(int planeWidth, int planeDepth, float posX, float posZ, PhongShader* pPhongShader);
+    Ghost(float posX, float posZ, PhongShader* pPhongShader);
     
     /**
      STEERING

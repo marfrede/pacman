@@ -16,6 +16,7 @@
 #include "Wall.h"
 #include "Point.h"
 #include "FieldType.h"
+#include "FieldSizeConstants.h"
 
 #define SHOW_PLANE true
 #define SHOW_WALLS false
@@ -27,7 +28,7 @@
 class Field
 {
 public:
-	Field(int planeWidth, int planeDepth);
+	Field();
 	typedef std::list<BaseModel*> ModelList;
 	typedef std::list<Point*> PointList;
 	ModelList getWalls() { return this->Walls; }
@@ -38,8 +39,6 @@ public:
 	void update(float dtime);
 	void end();
 private:
-	int planeWidth;
-	int planeDepth;
 	ConstantShader* pShaderPlane;
 	PhongShader* pShaderWall;
 	ConstantShader* pShaderPoint;

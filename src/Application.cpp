@@ -149,9 +149,7 @@ void Application::end()
 void Application::createScene()
 {
 	Matrix m, n;
-	PhongShader* pPhongShader;
-	int fieldWidth = 30, fieldDepth = 33;
-    
+	PhongShader* pPhongShader;    
     
     Color c = Color(1.0f, 0.7f, 1.0f);
     Vector a = Vector(1, 0, 0.1f);
@@ -166,7 +164,7 @@ void Application::createScene()
 	//Models.push_back(pModel);
 
 	// FIELD
-	pField = new Field(fieldWidth, fieldDepth);
+	pField = new Field();
     
     //GHOSTS
     pPhongShader = new PhongShader();
@@ -175,7 +173,7 @@ void Application::createScene()
     pPhongShader->diffuseColor(Color(1.0f, 1.0f, 1.0f));
     pPhongShader->specularColor(Color(1.0f, 1.0f, 1.0f));
     
-    Ghost* g = new Ghost(fieldWidth, fieldDepth, 5.5, 2.0f, pPhongShader);
+    Ghost* g = new Ghost(5.5, 2.0f, pPhongShader);
     g->setWindow(pWindow);
     g->setWalls(this->pField->getWalls());
     // point lights
@@ -195,7 +193,7 @@ void Application::createScene()
     
     Ghosts.push_back(g);
     
-    g = new Ghost(fieldWidth, fieldDepth, 1.5f, 0.0f, pPhongShader);
+    g = new Ghost(1.5f, 0.0f, pPhongShader);
     g->setWindow(pWindow);
     g->setWalls(this->pField->getWalls());
     // point lights
@@ -214,7 +212,7 @@ void Application::createScene()
     g->setSpotLight(sl);
     Ghosts.push_back(g);
     
-    g = new Ghost(fieldWidth, fieldDepth, 1.5f, 5.0f, pPhongShader);
+    g = new Ghost(1.5f, 5.0f, pPhongShader);
     g->setWindow(pWindow);
     g->setWalls(this->pField->getWalls());
     // point lights
@@ -233,7 +231,7 @@ void Application::createScene()
     g->setSpotLight(sl);
     Ghosts.push_back(g);
     
-    g = new Ghost(fieldWidth, fieldDepth, 2.5, 7.0f, pPhongShader);
+    g = new Ghost(2.5, 7.0f, pPhongShader);
     g->setWindow(pWindow);
     g->setWalls(this->pField->getWalls());
     // point lights
@@ -252,7 +250,7 @@ void Application::createScene()
     g->setSpotLight(sl);
     Ghosts.push_back(g);
     
-    g = new Ghost(fieldWidth, fieldDepth, 3.5f, 8.0f, pPhongShader);
+    g = new Ghost(3.5f, 8.0f, pPhongShader);
     g->setWindow(pWindow);
     g->setWalls(this->pField->getWalls());
     // point light
@@ -277,7 +275,7 @@ void Application::createScene()
     pPhongShader->ambientColor(Color(0.2f, 0.2f, 0.2f));
     pPhongShader->diffuseColor(Color(1.0f, 1.0f, 1.0f));
     pPhongShader->specularColor(Color(1.0f, 1.0f, 1.0f));
-    pPacman = new Pacman(fieldWidth, fieldDepth, 0.5f, 0.0f, pPhongShader);
+    pPacman = new Pacman(0.5f, 0.0f, pPhongShader);
     pPacman->setWindow(pWindow);
     pPacman->setWalls(pField->getWalls());
     Paccam.setObj(pPacman);

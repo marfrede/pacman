@@ -1,9 +1,7 @@
 #include "Field.h"
 
-Field::Field(int planeWidth, int planeDepth)
+Field::Field()
 {
-	this->planeWidth = planeWidth;
-	this->planeDepth = planeDepth;
 	this->initWallPositions();
 	this->initFieldTypesMap();
 
@@ -11,9 +9,9 @@ Field::Field(int planeWidth, int planeDepth)
 	pShaderWall = new PhongShader();
 	pShaderPoint = new ConstantShader();
 
-	if(SHOW_PLANE) this->createField();
-	if(SHOW_WALLS) this->createWalls();
-	if(SHOW_POINTS) this->createPoints();
+	if (SHOW_PLANE) this->createField();
+	if (SHOW_WALLS) this->createWalls();
+	if (SHOW_POINTS) this->createPoints();
 }
 
 void Field::createField() {
@@ -46,13 +44,15 @@ void Field::createWalls() {
 	for (auto const& wall : this->wallPositions)
 	{
 		Walls.push_back(
-			new Wall(this->planeWidth, this->planeDepth,
+			new Wall(
 				wall.second.first, // width
 				WALL_HEIGHT,
 				wall.second.second, // depth
 				wall.first.first, // posX
 				wall.first.second, // posY
-				pShaderWall, WALL_PADDING)
+				pShaderWall,
+				WALL_PADDING
+			)
 		);
 	}
 }
@@ -60,18 +60,18 @@ void Field::createWalls() {
 void Field::createPoints() {
 
 	this->pShaderPoint->color(Color(255.0f / 255.0f, 184.0f / 255.0f, 174.0f / 255.0f));
-	for (int z = 0; z < this->planeDepth; z++) {
-		for (int x = 0; x < this->planeWidth; x++) {
-			if (this->fieldTypesMap[z * this->planeWidth + x] == FieldType::Point) {
+	for (int z = 0; z < PLANE_DEPTH; z++) {
+		for (int x = 0; x < PLANE_WIDTH; x++) {
+			if (this->fieldTypesMap[z * PLANE_WIDTH + x] == FieldType::Point) {
 				Points.push_back(
-					new Point(this->planeWidth, this->planeDepth, x, z, 0.12f, this->pShaderPoint)
+					new Point(x, z, 0.12f, this->pShaderPoint)
 				);
 			}
 		}
 	}
 	// test one point
 	/*Points.push_back(
-		new Point(this->planeWidth, this->planeDepth, 10, 10, 0.12f, this->pPhongShaderPoint)
+		new Point(PLANE_WIDTH, PLANE_DEPTH, 10, 10, 0.12f, this->pPhongShaderPoint)
 	);*/
 }
 
@@ -179,11 +179,11 @@ void Field::initWallPositions() {
 
 FieldType Field::getFieldType(int x, int z) {
 
-	return this->fieldTypesMap[z * this->planeWidth + x];
+	return this->fieldTypesMap[z * PLANE_WIDTH + x];
 }
 
 void Field::initFieldTypesMap() {
-	this->fieldTypesMap = new FieldType[this->planeWidth * this->planeDepth];
+	this->fieldTypesMap = new FieldType[PLANE_WIDTH * PLANE_DEPTH];
 
 	// add walls
 	// read walls from wallPositions
@@ -195,27 +195,27 @@ void Field::initFieldTypesMap() {
 		int posZ = wall.first.second;
 		for (int x = posX; x < posX + width; x++) {
 			for (int z = posZ; z < posZ + depth; z++) {
-				this->fieldTypesMap[z * this->planeWidth + x] = FieldType::Wall;
+				this->fieldTypesMap[z * PLANE_WIDTH + x] = FieldType::Wall;
 			}
 		}
 	}
 
 	// set points where no walls - and free where no points
-	for (int z = 0; z < this->planeDepth; z++) {
-		for (int x = 0; x < this->planeWidth; x++) {
-			if (this->fieldTypesMap[z * this->planeWidth + x] != FieldType::Wall) {
-				this->fieldTypesMap[z * this->planeWidth + x] = FieldType::Point;
+	for (int z = 0; z < PLANE_DEPTH; z++) {
+		for (int x = 0; x < PLANE_WIDTH; x++) {
+			if (this->fieldTypesMap[z * PLANE_WIDTH + x] != FieldType::Wall) {
+				this->fieldTypesMap[z * PLANE_WIDTH + x] = FieldType::Point;
 				// no points outside the outer walls
 				if (x == 0 || x == 29 || z == 0 || z == 32) {
-					this->fieldTypesMap[z * this->planeWidth + x] = FieldType::Free;
+					this->fieldTypesMap[z * PLANE_WIDTH + x] = FieldType::Free;
 				}
 				// no points in centrum
 				if (x != 7 && x != 22 && z >= 10 && z <= 20) {
-					this->fieldTypesMap[z * this->planeWidth + x] = FieldType::Free;
+					this->fieldTypesMap[z * PLANE_WIDTH + x] = FieldType::Free;
 				}
 				// no points at this specific position (why Namco?)
 				if ((x == 14 || x == 15) && z == 24) {
-					this->fieldTypesMap[z * this->planeWidth + x] = FieldType::Free;
+					this->fieldTypesMap[z * PLANE_WIDTH + x] = FieldType::Free;
 				}
 			}
 		}
@@ -225,14 +225,14 @@ void Field::initFieldTypesMap() {
 }
 
 void Field::printFieldTypesMap() {
-	for (int z = 0; z < this->planeDepth; z++) {
+	for (int z = 0; z < PLANE_DEPTH; z++) {
 		std::string leading0 = (z >= 10 ? "" : "0");
 		std::cout << leading0 << z << " > ";
-		for (int x = 0; x < this->planeWidth; x++) {
-			if (this->fieldTypesMap[z * this->planeWidth + x] == FieldType::Wall) {
+		for (int x = 0; x < PLANE_WIDTH; x++) {
+			if (this->fieldTypesMap[z * PLANE_WIDTH + x] == FieldType::Wall) {
 				std::cout << "x";
 			}
-			else if (this->fieldTypesMap[z * this->planeWidth + x] == FieldType::Point) {
+			else if (this->fieldTypesMap[z * PLANE_WIDTH + x] == FieldType::Point) {
 				std::cout << "*";
 			}
 			else {
