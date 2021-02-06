@@ -15,8 +15,14 @@
 class Ghost : public GameCharacter
 {
 public:
-    
-    Ghost(float posX, float posZ, PhongShader* pPhongShader);
+
+    /**
+    * create a Ghost at given position
+    * @param posX (min:0, max:planeWidth) x position on the field
+    * @param posZ (min:0, max:planeDepth) z position on the field
+    * @param pPhongShader to use for the ghost
+    */
+    Ghost(int posX, int posZ, PhongShader* pPhongShader);
     
     /**
      STEERING

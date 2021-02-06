@@ -9,11 +9,15 @@
 #include "GameCharacter.hpp"
 #include "math.h"
 
-GameCharacter::GameCharacter(float posX, float posY, float posZ, PhongShader* pPhongShader) : TriangleBoxModel(1, 1, 1)
+GameCharacter::GameCharacter(int posX, float y, int posZ, PhongShader* pPhongShader) : TriangleBoxModel(1, 1, 1)
 {
 	this->shader(pPhongShader, true);
 	Matrix t;
-	t.translation(posX, posY, posZ);
+	t.translation(
+		0.5f + (float)posX - ((float)PLANE_WIDTH) / 2.0f,
+		y,
+		0.5f + (float)posZ - ((float)PLANE_DEPTH) / 2.0f
+	);
 	this->transform(t);
 	angleToTurn = 0;
 }

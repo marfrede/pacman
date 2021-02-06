@@ -173,7 +173,7 @@ void Application::createScene()
     pPhongShader->diffuseColor(Color(1.0f, 1.0f, 1.0f));
     pPhongShader->specularColor(Color(1.0f, 1.0f, 1.0f));
     
-    Ghost* g = new Ghost(5.5, 2.0f, pPhongShader);
+    Ghost* g = new Ghost(0,0, pPhongShader);
     g->setWindow(pWindow);
     g->setWalls(this->pField->getWalls());
     // point lights
@@ -193,7 +193,7 @@ void Application::createScene()
     
     Ghosts.push_back(g);
     
-    g = new Ghost(1.5f, 0.0f, pPhongShader);
+    g = new Ghost(1, 0, pPhongShader);
     g->setWindow(pWindow);
     g->setWalls(this->pField->getWalls());
     // point lights
@@ -212,7 +212,7 @@ void Application::createScene()
     g->setSpotLight(sl);
     Ghosts.push_back(g);
     
-    g = new Ghost(1.5f, 5.0f, pPhongShader);
+    g = new Ghost(2, 0, pPhongShader);
     g->setWindow(pWindow);
     g->setWalls(this->pField->getWalls());
     // point lights
@@ -231,7 +231,7 @@ void Application::createScene()
     g->setSpotLight(sl);
     Ghosts.push_back(g);
     
-    g = new Ghost(2.5, 7.0f, pPhongShader);
+    g = new Ghost(3, 0, pPhongShader);
     g->setWindow(pWindow);
     g->setWalls(this->pField->getWalls());
     // point lights
@@ -250,7 +250,7 @@ void Application::createScene()
     g->setSpotLight(sl);
     Ghosts.push_back(g);
     
-    g = new Ghost(3.5f, 8.0f, pPhongShader);
+    g = new Ghost(4, 0, pPhongShader);
     g->setWindow(pWindow);
     g->setWalls(this->pField->getWalls());
     // point light
@@ -271,11 +271,10 @@ void Application::createScene()
     
     //PACMAN
     pPhongShader = new PhongShader();
-    //pPhongShader->ambientColor(Color(0.14902f, 0.15294f, 0.8f)); // pacman blue wall color
     pPhongShader->ambientColor(Color(0.2f, 0.2f, 0.2f));
     pPhongShader->diffuseColor(Color(1.0f, 1.0f, 1.0f));
     pPhongShader->specularColor(Color(1.0f, 1.0f, 1.0f));
-    pPacman = new Pacman(0.5f, 0.0f, pPhongShader);
+    pPacman = new Pacman((int) (PLANE_WIDTH / 2.0f), (int) (PLANE_DEPTH / 2.0f), pPhongShader);
     pPacman->setWindow(pWindow);
     pPacman->setWalls(pField->getWalls());
     Paccam.setObj(pPacman);

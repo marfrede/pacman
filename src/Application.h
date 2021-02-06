@@ -22,6 +22,7 @@
 #include "Pacman.hpp"
 #include "Ghost.hpp"
 #include "ShadowMapGenerator.h"
+#include "FieldSizeConstants.h"
 
 class Application
 {
