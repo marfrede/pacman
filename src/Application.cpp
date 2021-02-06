@@ -59,7 +59,8 @@ void Application::start()
 
 void Application::update(float dtime)
 {
-    
+    pField->update(dtime);
+
     pPacman->update(dtime);
     
     if(gameMode) {

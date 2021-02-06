@@ -4,17 +4,16 @@ Field::Field(int planeWidth, int planeDepth)
 {
 	this->planeWidth = planeWidth;
 	this->planeDepth = planeDepth;
+	this->initWallPositions();
+	this->initFieldTypesMap();
 
-	pConstShader = new ConstantShader();
-	pPhongShader = new PhongShader();
+	pConstShaderPlane = new ConstantShader();
+	pPhongShaderWall = new PhongShader();
+	pPhongShaderPoint = new PhongShader();
 
 	this->createField();
 	this->createWalls();
-}
-
-FieldType Field::getFieldType(int x, int z) {
-
-	return this->getFieldTypesMap()[z * this->planeWidth + x];
+	this->createPoints();
 }
 
 void Field::createField() {
@@ -22,8 +21,8 @@ void Field::createField() {
 	// CHEQUERED LINE PLAYING FIELD
 	int planeWidth = 30, planeDepth = 33;
 	pPlane = new LinePlaneModel((float)planeWidth, (float)planeDepth, (float)planeWidth, (float)planeDepth);
-	pConstShader->color(Color(1, 0, 0));
-	pPlane->shader(pConstShader, true);
+	pConstShaderPlane->color(Color(1, 0, 0));
+	pPlane->shader(pConstShaderPlane, true);
 
 	// TEXTURED TRIANGLE PLAYING FIELD
  //   pPlane = new TrianglePlaneModel(30, 33, 10, 10);
@@ -36,9 +35,92 @@ void Field::createField() {
 void Field::createWalls() {
 	// 1. set wall padding and height
 	float padding = 0.0f;
-	float wallHeight = 0.3f;
+	float wallHeight = 2.5f;
 
-	// 2. set wall positions
+	// 2. set shader equally for all walls
+	pPhongShaderWall = new PhongShader();
+	pPhongShaderWall->ambientColor(Color(0.2f, 0.2f, 0.2f)); // normal grey
+	//pPhongShaderWall->ambientColor(Color(0.14902f, 0.15294f, 0.8f)); // pacman blue wall color
+	pPhongShaderWall->diffuseColor(Color(1.0f, 1.0f, 1.0f));
+	pPhongShaderWall->specularColor(Color(1.0f, 1.0f, 1.0f));
+	//pPhongShaderWall->diffuseTexture(Texture::LoadShared(ASSET_DIRECTORY "smiley.png"));
+	pPhongShaderWall->diffuseTexture(Texture::LoadShared(TEXTURE_DIRECTORY "PaintedPlaster014_4K_Color.jpg"));
+
+	// 3. make walls
+	for (auto const& wall : this->wallPositions)
+	{
+		Walls.push_back(
+			new Wall(this->planeWidth, this->planeDepth,
+				wall.second.first, // width
+				wallHeight,
+				wall.second.second, // depth
+				wall.first.first, // posX
+				wall.first.second, // posY
+				pPhongShaderWall, padding)
+		);
+	}
+}
+
+void Field::createPoints() {
+
+	this->pPhongShaderPoint = new PhongShader();
+	this->pPhongShaderPoint->ambientColor(Color(255.0f / 255.0f, 184.0f / 255.0f, 174.0f / 255.0f));
+	//this->pPhongShaderPoint->diffuseColor(Color(1.0f, 1.0f, 1.0f));
+	//this->pPhongShaderPoint->specularColor(Color(1.0f, 1.0f, 1.0f));
+	for (int z = 0; z < this->planeDepth; z++) {
+		for (int x = 0; x < this->planeWidth; x++) {
+			if (this->fieldTypesMap[z * this->planeWidth + x] == FieldType::Point) {
+				Points.push_back(
+					new Point(this->planeWidth, this->planeDepth, x, z, 0.12f, this->pPhongShaderPoint)
+				);
+			}
+		}
+	}
+	/*Points.push_back(
+		new Point(this->planeWidth, this->planeDepth, 10, 10, 0.12f, this->pPhongShaderPoint)
+	);*/
+}
+
+void Field::draw(const Camera camera) {
+
+	this->pPlane->draw(camera);
+	for (ModelList::iterator wall = this->Walls.begin(); wall != this->Walls.end(); ++wall)
+	{
+		(*wall)->draw(camera);
+	}
+	for (PointList::iterator point = this->Points.begin(); point != this->Points.end(); ++point)
+	{
+		(*point)->draw(camera);
+	}
+}
+
+void Field::update(float dtime) {
+
+	for (PointList::iterator point = this->Points.begin(); point != this->Points.end(); ++point)
+	{
+		(*point)->update(dtime);
+	}
+}
+
+void Field::end()
+{
+	delete[] this->fieldTypesMap;
+	for (PointList::iterator it = Points.begin(); it != Points.end(); ++it) {
+		delete* it;
+	}
+	this->Points.clear();
+	for (ModelList::iterator it = Walls.begin(); it != Walls.end(); ++it) {
+		delete* it;
+	}
+	this->Walls.clear();
+	delete this->pPlane;
+	delete this->pConstShaderPlane;
+	delete this->pPhongShaderWall;
+	delete this->pPhongShaderPoint;
+}
+
+
+void Field::initWallPositions() {
 	this->wallPositions = {
 		// inner walls
 		{{3,3}, {4,3}},
@@ -99,73 +181,53 @@ void Field::createWalls() {
 		{{2,25}, {2,2}},
 		{{26,25}, {2,2}},
 	};
-
-	// 3. set shader equally for all walls
-	pPhongShader = new PhongShader();
-	pPhongShader->ambientColor(Color(0.2f, 0.2f, 0.2f)); // normal grey
-	//pPhongShader->ambientColor(Color(0.14902f, 0.15294f, 0.8f)); // pacman blue wall color
-	pPhongShader->diffuseColor(Color(1.0f, 1.0f, 1.0f));
-	pPhongShader->specularColor(Color(1.0f, 1.0f, 1.0f));
-	//pPhongShader->diffuseTexture(Texture::LoadShared(ASSET_DIRECTORY "smiley.png"));
-	pPhongShader->diffuseTexture(Texture::LoadShared(TEXTURE_DIRECTORY "PaintedPlaster014_4K_Color.jpg"));
-
-	// 4. make walls
-	for (auto const& wall : this->wallPositions)
-	{
-		Walls.push_back(
-			new Wall(this->planeWidth, this->planeDepth,
-				wall.second.first, // width
-				wallHeight,
-				wall.second.second, // depth
-				wall.first.first, // posX
-				wall.first.second, // posY
-				pPhongShader, padding)
-		);
-	}
 }
 
-FieldType* Field::getFieldTypesMap() {
-	if (this->fieldTypesMap == NULL) { // create map
-		this->fieldTypesMap = new FieldType[this->planeWidth * this->planeDepth];
+FieldType Field::getFieldType(int x, int z) {
 
-		// add walls
-		// read walls from wallPositions
-		for (auto const& wall : wallPositions)
-		{
-			int width = wall.second.first;
-			int depth = wall.second.second;
-			int posX = wall.first.first;
-			int posZ = wall.first.second;
-			for (int x = posX; x < posX + width; x++) {
-				for (int z = posZ; z < posZ + depth; z++) {
-					this->fieldTypesMap[z * this->planeWidth + x] = FieldType::Wall;
-				}
+	return this->fieldTypesMap[z * this->planeWidth + x];
+}
+
+void Field::initFieldTypesMap() {
+	this->fieldTypesMap = new FieldType[this->planeWidth * this->planeDepth];
+
+	// add walls
+	// read walls from wallPositions
+	for (auto const& wall : wallPositions)
+	{
+		int width = wall.second.first;
+		int depth = wall.second.second;
+		int posX = wall.first.first;
+		int posZ = wall.first.second;
+		for (int x = posX; x < posX + width; x++) {
+			for (int z = posZ; z < posZ + depth; z++) {
+				this->fieldTypesMap[z * this->planeWidth + x] = FieldType::Wall;
 			}
 		}
+	}
 
-		// set points where no walls - and free where no points
-		for (int z = 0; z < this->planeDepth; z++) {
-			for (int x = 0; x < this->planeWidth; x++) {
-				if (this->fieldTypesMap[z * this->planeWidth + x] != FieldType::Wall) {
-					this->fieldTypesMap[z * this->planeWidth + x] = FieldType::Point;
-					// no points outside the outer walls
-					if (x == 0 || x == 29 || z == 0 || z == 32) {
-						this->fieldTypesMap[z * this->planeWidth + x] = FieldType::Free;
-					}
-					// no points in centrum
-					if (x != 7 && x != 22 && z >= 10 && z <= 20) {
-						this->fieldTypesMap[z * this->planeWidth + x] = FieldType::Free;
-					}
-					// no points at this specific position (why Namco?)
-					if ((x == 14 || x == 15) && z == 24) {
-						this->fieldTypesMap[z * this->planeWidth + x] = FieldType::Free;
-					}
+	// set points where no walls - and free where no points
+	for (int z = 0; z < this->planeDepth; z++) {
+		for (int x = 0; x < this->planeWidth; x++) {
+			if (this->fieldTypesMap[z * this->planeWidth + x] != FieldType::Wall) {
+				this->fieldTypesMap[z * this->planeWidth + x] = FieldType::Point;
+				// no points outside the outer walls
+				if (x == 0 || x == 29 || z == 0 || z == 32) {
+					this->fieldTypesMap[z * this->planeWidth + x] = FieldType::Free;
+				}
+				// no points in centrum
+				if (x != 7 && x != 22 && z >= 10 && z <= 20) {
+					this->fieldTypesMap[z * this->planeWidth + x] = FieldType::Free;
+				}
+				// no points at this specific position (why Namco?)
+				if ((x == 14 || x == 15) && z == 24) {
+					this->fieldTypesMap[z * this->planeWidth + x] = FieldType::Free;
 				}
 			}
 		}
 	}
 	//this->printFieldTypesMap();
-	return this->fieldTypesMap;
+	return;
 }
 
 void Field::printFieldTypesMap() {
@@ -185,25 +247,4 @@ void Field::printFieldTypesMap() {
 		}
 		std::cout << " <" << std::endl;
 	}
-}
-
-void Field::draw(const Camera camera) {
-
-	this->pPlane->draw(camera);
-	for (ModelList::iterator it = this->Walls.begin(); it != this->Walls.end(); ++it)
-	{
-		(*it)->draw(camera);
-	}
-}
-
-void Field::end()
-{
-	delete[] this->fieldTypesMap;
-	for (ModelList::iterator it = Walls.begin(); it != Walls.end(); ++it) {
-		delete* it;
-	}
-	this->Walls.clear();
-	delete this->pPlane;
-	delete this->pConstShader;
-	delete this->pPhongShader;
 }
