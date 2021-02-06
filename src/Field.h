@@ -33,9 +33,9 @@ public:
 private:
 	int planeWidth;
 	int planeDepth;
-	ConstantShader* pConstShaderPlane;
-	PhongShader* pPhongShaderWall;
-	PhongShader* pPhongShaderPoint;
+	ConstantShader* pShaderPlane;
+	PhongShader* pShaderWall;
+	ConstantShader* pShaderPoint;
 
 	BaseModel* pPlane;
 	ModelList Walls;

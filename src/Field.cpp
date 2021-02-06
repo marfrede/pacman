@@ -7,9 +7,9 @@ Field::Field(int planeWidth, int planeDepth)
 	this->initWallPositions();
 	this->initFieldTypesMap();
 
-	pConstShaderPlane = new ConstantShader();
-	pPhongShaderWall = new PhongShader();
-	pPhongShaderPoint = new PhongShader();
+	pShaderPlane = new ConstantShader();
+	pShaderWall = new PhongShader();
+	pShaderPoint = new ConstantShader();
 
 	this->createField();
 	this->createWalls();
@@ -18,11 +18,11 @@ Field::Field(int planeWidth, int planeDepth)
 
 void Field::createField() {
 
-	// CHEQUERED LINE PLAYING FIELD
+	// RED CHEQUERED LINE PLAYING FIELD
 	int planeWidth = 30, planeDepth = 33;
 	pPlane = new LinePlaneModel((float)planeWidth, (float)planeDepth, (float)planeWidth, (float)planeDepth);
-	pConstShaderPlane->color(Color(1, 0, 0));
-	pPlane->shader(pConstShaderPlane, true);
+	pShaderPlane->color(Color(1, 0, 0));
+	pPlane->shader(pShaderPlane, true);
 
 	// TEXTURED TRIANGLE PLAYING FIELD
  //   pPlane = new TrianglePlaneModel(30, 33, 10, 10);
@@ -38,13 +38,12 @@ void Field::createWalls() {
 	float wallHeight = 2.5f;
 
 	// 2. set shader equally for all walls
-	pPhongShaderWall = new PhongShader();
-	pPhongShaderWall->ambientColor(Color(0.2f, 0.2f, 0.2f)); // normal grey
+	pShaderWall->ambientColor(Color(0.2f, 0.2f, 0.2f)); // normal grey
 	//pPhongShaderWall->ambientColor(Color(0.14902f, 0.15294f, 0.8f)); // pacman blue wall color
-	pPhongShaderWall->diffuseColor(Color(1.0f, 1.0f, 1.0f));
-	pPhongShaderWall->specularColor(Color(1.0f, 1.0f, 1.0f));
+	pShaderWall->diffuseColor(Color(1.0f, 1.0f, 1.0f));
+	pShaderWall->specularColor(Color(1.0f, 1.0f, 1.0f));
 	//pPhongShaderWall->diffuseTexture(Texture::LoadShared(ASSET_DIRECTORY "smiley.png"));
-	pPhongShaderWall->diffuseTexture(Texture::LoadShared(TEXTURE_DIRECTORY "PaintedPlaster014_4K_Color.jpg"));
+	pShaderWall->diffuseTexture(Texture::LoadShared(TEXTURE_DIRECTORY "PaintedPlaster014_4K_Color.jpg"));
 
 	// 3. make walls
 	for (auto const& wall : this->wallPositions)
@@ -56,26 +55,24 @@ void Field::createWalls() {
 				wall.second.second, // depth
 				wall.first.first, // posX
 				wall.first.second, // posY
-				pPhongShaderWall, padding)
+				pShaderWall, padding)
 		);
 	}
 }
 
 void Field::createPoints() {
 
-	this->pPhongShaderPoint = new PhongShader();
-	this->pPhongShaderPoint->ambientColor(Color(255.0f / 255.0f, 184.0f / 255.0f, 174.0f / 255.0f));
-	//this->pPhongShaderPoint->diffuseColor(Color(1.0f, 1.0f, 1.0f));
-	//this->pPhongShaderPoint->specularColor(Color(1.0f, 1.0f, 1.0f));
+	this->pShaderPoint->color(Color(255.0f / 255.0f, 184.0f / 255.0f, 174.0f / 255.0f));
 	for (int z = 0; z < this->planeDepth; z++) {
 		for (int x = 0; x < this->planeWidth; x++) {
 			if (this->fieldTypesMap[z * this->planeWidth + x] == FieldType::Point) {
 				Points.push_back(
-					new Point(this->planeWidth, this->planeDepth, x, z, 0.12f, this->pPhongShaderPoint)
+					new Point(this->planeWidth, this->planeDepth, x, z, 0.12f, this->pShaderPoint)
 				);
 			}
 		}
 	}
+	// test one point
 	/*Points.push_back(
 		new Point(this->planeWidth, this->planeDepth, 10, 10, 0.12f, this->pPhongShaderPoint)
 	);*/
@@ -114,9 +111,9 @@ void Field::end()
 	}
 	this->Walls.clear();
 	delete this->pPlane;
-	delete this->pConstShaderPlane;
-	delete this->pPhongShaderWall;
-	delete this->pPhongShaderPoint;
+	delete this->pShaderPlane;
+	delete this->pShaderWall;
+	delete this->pShaderPoint;
 }
 
 

@@ -1,9 +1,9 @@
 #include "Wall.h"
 
-Wall::Wall(int planeWidth, int planeDepth, int width, float height, int depth, int posX, int posZ, PhongShader* pPhongShader, float padding)
+Wall::Wall(int planeWidth, int planeDepth, int width, float height, int depth, int posX, int posZ, BaseShader* pShader, float padding)
 	: TriangleBoxModel(width - padding, height, depth - padding)
 {
-	this->shader(pPhongShader, true);
+	this->shader(pShader, true);
 	Matrix t;
 	t.translation(
 		((float)width) / 2.0f + ((float)posX) - ((float)planeWidth) / 2.0f,

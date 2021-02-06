@@ -1,7 +1,7 @@
 #include "Point.h"
 
-Point::Point(int planeWidth, int planeDepth, int posX, int posZ, float radius, PhongShader* pPhongShader) : TriangleSphereModel(radius) {
-	this->shader(pPhongShader, true);
+Point::Point(int planeWidth, int planeDepth, int posX, int posZ, float radius, BaseShader* pShader) : TriangleSphereModel(radius) {
+	this->shader(pShader, true);
 	this->init(planeWidth, planeDepth, posX, posZ);
 }
 
