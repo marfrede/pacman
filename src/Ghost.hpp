@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include "GameCharacter.hpp"
+#include "constantshader.h"
 
 class Ghost : public GameCharacter
 {
@@ -22,7 +23,8 @@ public:
     * @param posZ (min:0, max:planeDepth) z position on the field
     * @param pPhongShader to use for the ghost
     */
-    Ghost(int posX, int posZ, PhongShader* pPhongShader);
+    Ghost(int posX, int posZ, Color c);
+    ~Ghost();
     
     /**
      STEERING
@@ -35,7 +37,6 @@ public:
     
 protected:
 private:
-
 };
 
 #endif /* Ghost_hpp */

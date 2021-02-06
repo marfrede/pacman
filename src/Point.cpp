@@ -1,7 +1,7 @@
 #include "Point.h"
 
 Point::Point(int posX, int posZ, float radius, BaseShader* pShader) : TriangleSphereModel(radius) {
-	this->shader(pShader, true);
+	this->shader(pShader, false); // field deletes shader
 	this->init(posX, posZ);
 }
 

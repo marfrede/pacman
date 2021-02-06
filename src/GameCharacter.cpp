@@ -9,8 +9,7 @@
 #include "GameCharacter.hpp"
 #include "math.h"
 
-GameCharacter::GameCharacter(int posX, float y, int posZ, BaseShader* baseShader) : TriangleBoxModel(1, 1, 1) {
-	this->shader(pShader, true);
+GameCharacter::GameCharacter(int posX, float y, int posZ) : TriangleBoxModel(1, 1, 1) {
 	Matrix t;
 	t.translation(
 		0.5f + (float)posX - ((float)PLANE_WIDTH) / 2.0f,

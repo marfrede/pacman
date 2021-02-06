@@ -9,7 +9,13 @@
 #include "Pacman.hpp"
 #include "math.h"
 
-Pacman::Pacman(int posX, int posZ, PhongShader* pPhongShader) : GameCharacter(posX, 0.5f, posZ, pPhongShader) {
+Pacman::Pacman(int posX, int posZ) : GameCharacter(posX, 0.5f, posZ) {
+    Color yellow(249.0f / 250.0f, 250.0f / 250.0f, 6.0f / 250.0f);
+    PhongShader* pPhongShader = new PhongShader();
+    pPhongShader->ambientColor(yellow);
+    pPhongShader->diffuseColor(yellow);
+    pPhongShader->specularColor(yellow);
+    this->shader(pPhongShader, true);
 }
 
 void Pacman::update(float dtime) {

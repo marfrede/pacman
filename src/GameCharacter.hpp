@@ -31,9 +31,8 @@ public:
     * @param posZ (min:0, max:planeDepth) z position on the planeModel
     * @param pShader to use for the character
     */
-    GameCharacter(int posX, float y, int posZ, BaseShader* baseShader);
+    GameCharacter(int posX, float y, int posZ);
     ~GameCharacter();
-    
     void setWindow(GLFWwindow* window) {pWindow = window;}
     void setWalls(WallList walls) {Walls = walls;}
     void setPointLight(PointLight* pL) {pointLight = pL;}

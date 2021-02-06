@@ -5,13 +5,19 @@ Field::Field()
 	this->initWallPositions();
 	this->initFieldTypesMap();
 
-	pShaderPlane = new ConstantShader();
-	pShaderWall = new PhongShader();
-	pShaderPoint = new ConstantShader();
+	this->pShaderPlane = new ConstantShader();
+	this->pShaderWall = new PhongShader();
+	this->pShaderPoint = new ConstantShader();
 
 	if (SHOW_PLANE) this->createField();
 	if (SHOW_WALLS) this->createWalls();
 	if (SHOW_POINTS) this->createPoints();
+}
+
+Field::~Field() {
+	delete this->pShaderPlane;
+	delete this->pShaderWall;
+	delete this->pShaderPoint;
 }
 
 void Field::createField() {
@@ -20,7 +26,7 @@ void Field::createField() {
 	int planeWidth = 30, planeDepth = 33;
 	pPlane = new LinePlaneModel((float)planeWidth, (float)planeDepth, (float)planeWidth, (float)planeDepth);
 	pShaderPlane->color(Color(1, 0, 0));
-	pPlane->shader(pShaderPlane, true);
+	pPlane->shader(pShaderPlane, false);
 
 	// TEXTURED TRIANGLE PLAYING FIELD
  //   pPlane = new TrianglePlaneModel(30, 33, 10, 10);
@@ -50,7 +56,7 @@ void Field::createWalls() {
 				wall.second.second, // depth
 				wall.first.first, // posX
 				wall.first.second, // posY
-				pShaderWall,
+				this->pShaderWall,
 				WALL_PADDING
 			)
 		);

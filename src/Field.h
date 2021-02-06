@@ -19,7 +19,7 @@
 #include "FieldSizeConstants.h"
 
 #define SHOW_PLANE true
-#define SHOW_WALLS false
+#define SHOW_WALLS true
 #define SHOW_POINTS false
 
 #define WALL_HEIGHT 0.3f
@@ -29,6 +29,7 @@ class Field
 {
 public:
 	Field();
+	~Field();
 	typedef std::list<BaseModel*> ModelList;
 	typedef std::list<Point*> PointList;
 	ModelList getWalls() { return this->Walls; }

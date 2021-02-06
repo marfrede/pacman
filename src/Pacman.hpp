@@ -25,7 +25,7 @@ public:
     * @param posZ (min:0, max:planeDepth) z position on the field
     * @param pPhongShader to use for the pacman
 	*/
-	Pacman(int posX, int posZ, PhongShader* pPhongShader);
+	Pacman(int posX, int posZ);
 
 	void update(float dtime);
 
