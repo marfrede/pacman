@@ -20,9 +20,9 @@ void Point::setPosition(float x, float y, float z) {
 	this->pos = Vector(x, y, z);
 	Matrix t;
 	t.translation(
-		0.5f + (this->pos.X) - ((float)PLANE_WIDTH) / 2.0f,
+		0.5f + this->pos.X - ((float)PLANE_WIDTH) / 2.0f,
 		this->pos.Y,
-		0.5f + (this->pos.Z) - ((float)PLANE_DEPTH) / 2.0f
+		0.5f + this->pos.Z - ((float)PLANE_DEPTH) / 2.0f
 	);
 	this->transform(t);
 	this->pPointLight->position(this->transform().translation());

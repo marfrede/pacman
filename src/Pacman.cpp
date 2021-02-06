@@ -9,7 +9,7 @@
 #include "Pacman.hpp"
 #include "math.h"
 
-Pacman::Pacman(float posX, float posZ, PhongShader* pPhongShader) : GameCharacter(posX, 0.5f, posZ, pPhongShader) {
+Pacman::Pacman(int posX, int posZ, PhongShader* pPhongShader) : GameCharacter(posX, 0.5f, posZ, pPhongShader) {
 }
 
 void Pacman::update(float dtime) {

@@ -11,6 +11,7 @@
 
 #include "TriangleBoxModel.h"
 #include "PhongShader.h"
+#include "FieldSizeConstants.h"
 #include <stdio.h>
 #include <list>
 
@@ -22,16 +23,15 @@ class GameCharacter : public TriangleBoxModel
 {
 public:
     typedef std::list<BaseModel*> WallList;
+
     /**
-    * create a TriangleBoxModel at given position
-    * @param width in x-direction of the wall
-    * @param height in y-direction of the wall
-    * @param depth in z-direction of the wall
+    * create a GameCharacter at given position
     * @param posX (min:0, max:planeWidth) x position on the planeModel
+    * @param y (min:-∞, max:∞) models y position
     * @param posZ (min:0, max:planeDepth) z position on the planeModel
     * @param pPhongShader to use for the character
     */
-    GameCharacter(float posX, float posY, float posZ, PhongShader* pPhongShader);
+    GameCharacter(int posX, float y, int posZ, PhongShader* pPhongShader);
     
     void setWindow(GLFWwindow* window) {pWindow = window;}
     void setWalls(WallList walls) {Walls = walls;}
