@@ -8,7 +8,7 @@
 
 #include "Ghost.hpp"
 
-Ghost::Ghost(int planeWidth, int planeDepth, int posX, int posZ, PhongShader* pPhongShader) : GameCharacter(planeWidth, planeDepth, posX, posZ, pPhongShader) {
+Ghost::Ghost(int planeWidth, int planeDepth, float posX, float posZ, PhongShader* pPhongShader) : GameCharacter(planeWidth, planeDepth, posX, 0.8f, posZ, pPhongShader) {
     
 }
 

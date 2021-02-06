@@ -33,7 +33,7 @@ public:
     * @param posZ (min:0, max:planeDepth) z position on the planeModel
     * @param pPhongShader to use for the walls
     */
-    GameCharacter(int planeWidth, int planeDepth, int posX, int posZ, PhongShader* pPhongShader);
+    GameCharacter(int planeWidth, int planeDepth, float posX, float posY, float posZ, PhongShader* pPhongShader);
     
     void setWindow(GLFWwindow* window) {pWindow = window;}
     void setWalls(WallList walls) {Walls = walls;}

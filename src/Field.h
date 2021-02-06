@@ -17,6 +17,13 @@
 #include "Point.h"
 #include "FieldType.h"
 
+#define SHOW_PLANE true
+#define SHOW_WALLS false
+#define SHOW_POINTS false
+
+#define WALL_HEIGHT 0.3f
+#define WALL_PADDING 0.0f
+
 class Field
 {
 public:

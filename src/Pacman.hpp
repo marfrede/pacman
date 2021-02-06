@@ -19,7 +19,7 @@ class Pacman : public GameCharacter
 {
 public:    
      
-    Pacman(int planeWidth, int planeDepth, int posX, int posZ, PhongShader* pPhongShader);
+    Pacman(int planeWidth, int planeDepth, float posX, float posZ, PhongShader* pPhongShader);
     
     void update(float dtime);
     

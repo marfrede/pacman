@@ -11,9 +11,9 @@ Field::Field(int planeWidth, int planeDepth)
 	pShaderWall = new PhongShader();
 	pShaderPoint = new ConstantShader();
 
-	this->createField();
-	this->createWalls();
-	this->createPoints();
+	if(SHOW_PLANE) this->createField();
+	if(SHOW_WALLS) this->createWalls();
+	if(SHOW_POINTS) this->createPoints();
 }
 
 void Field::createField() {
@@ -33,29 +33,26 @@ void Field::createField() {
 }
 
 void Field::createWalls() {
-	// 1. set wall padding and height
-	float padding = 0.0f;
-	float wallHeight = 2.5f;
 
-	// 2. set shader equally for all walls
-	pShaderWall->ambientColor(Color(0.2f, 0.2f, 0.2f)); // normal grey
+	// 1. set shader equally for all walls
+	this->pShaderWall->ambientColor(Color(0.2f, 0.2f, 0.2f)); // normal grey
 	//pPhongShaderWall->ambientColor(Color(0.14902f, 0.15294f, 0.8f)); // pacman blue wall color
-	pShaderWall->diffuseColor(Color(1.0f, 1.0f, 1.0f));
-	pShaderWall->specularColor(Color(1.0f, 1.0f, 1.0f));
+	this->pShaderWall->diffuseColor(Color(1.0f, 1.0f, 1.0f));
+	this->pShaderWall->specularColor(Color(1.0f, 1.0f, 1.0f));
 	//pPhongShaderWall->diffuseTexture(Texture::LoadShared(ASSET_DIRECTORY "smiley.png"));
-	pShaderWall->diffuseTexture(Texture::LoadShared(TEXTURE_DIRECTORY "PaintedPlaster014_4K_Color.jpg"));
+	this->pShaderWall->diffuseTexture(Texture::LoadShared(TEXTURE_DIRECTORY "PaintedPlaster014_4K_Color.jpg"));
 
-	// 3. make walls
+	// 2. make walls
 	for (auto const& wall : this->wallPositions)
 	{
 		Walls.push_back(
 			new Wall(this->planeWidth, this->planeDepth,
 				wall.second.first, // width
-				wallHeight,
+				WALL_HEIGHT,
 				wall.second.second, // depth
 				wall.first.first, // posX
 				wall.first.second, // posY
-				pShaderWall, padding)
+				pShaderWall, WALL_PADDING)
 		);
 	}
 }
