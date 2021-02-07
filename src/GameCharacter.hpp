@@ -24,7 +24,9 @@
 
 class GameCharacter : public TriangleBoxModel
 {
+    
 public:
+
 	typedef std::list<BaseModel*> WallList;
 
 	/**
@@ -75,10 +77,8 @@ public:
 	*/
 	bool checkFront();
 
-	/**
-	 LIGHTING
-	 */
-	void moveLights();
+	//Sub Movement
+    virtual void moveSubs();
 
 	// FIELD POSITION INFOS
 	 /** get the field the character stands on as first = posX, second = posZ (0, 0 would be top left corner) */

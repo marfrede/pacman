@@ -173,8 +173,7 @@ void Application::createScene()
 	//pModel->shader(pPhongShader, true);
 	//pModel->shadowCaster(false);
 	//Models.push_back(pModel);
-
-	// FIELD
+    
 	pField = new Field();
 
 	//GHOST RED
@@ -286,6 +285,18 @@ void Application::createScene()
 	pPacman = new Pacman((int)(PLANE_WIDTH / 2.0f), (int)(PLANE_DEPTH / 2.0f));
 	pPacman->setWindow(pWindow);
 	pPacman->setField(this->pField);
+
+    pModel = new Model(ASSET_DIRECTORY "arrow.dae", false);
+    pPhongShader = new PhongShader();
+    pPhongShader->ambientColor(Color(1.0f, 0, 0));
+    pPhongShader->diffuseColor(Color(1.0f, 0,0));
+    pPhongShader->specularColor(Color(1.0f, 0,0));
+    pModel->shader(pPhongShader, true);
+    //Matrix mTotal = m.translation(0, 1, 0);
+    //pModel->transform();
+    pPacman->setArrow(pModel);
+    Models.push_back(pModel);
+
 	Paccam.setObj(pPacman);
 	Models.push_back(pPacman);
 

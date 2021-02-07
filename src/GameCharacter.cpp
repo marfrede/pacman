@@ -24,8 +24,11 @@ GameCharacter::~GameCharacter() {
 }
 
 void GameCharacter::update(float dtime) {
-	this->steer(dtime);
-	this->moveLights();
+    
+    this->steer(dtime);
+    
+    this->moveSubs();
+    
 }
 /*
 void GameCharacter::steer(float dtime) {
@@ -153,17 +156,6 @@ void GameCharacter::move(float dtime) {
 
 }
 
-void GameCharacter::moveLights() {
-
-	if (pointLight) {
-		this->pointLight->position(this->transform().translation());
-	}
-	if (spotLight) {
-		this->spotLight->position(this->transform().translation());
-	}
-
-}
-
 bool GameCharacter::checkFront() {
 	return this->getFieldTypeInFront() != FieldType::Wall;
 }
@@ -207,6 +199,18 @@ FieldType GameCharacter::getFieldTypeInFront() {
 	);
 }
 
+void GameCharacter::moveSubs() {
+    
+    std::cout << "GC moveSubs" << std::endl;
+    if(pointLight) {
+        this->pointLight->position(this->transform().translation());
+    }
+    if(spotLight) {
+        this->spotLight->position(this->transform().translation());
+    }
+	
+}
+    
 Orientation GameCharacter::getOrientation() {
 	Vector orientation = this->transform().forward();
 	if (orientation.Z > 0.5f) {

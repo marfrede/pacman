@@ -18,18 +18,6 @@ Pacman::Pacman(int posX, int posZ) : GameCharacter(posX, 0.5f, posZ) {
     this->shader(pPhongShader, true);
 }
 
-void Pacman::update(float dtime) {
-    
-    this->steer(dtime);
-    
-    /*
-    if(paccam) {
-        this->movePaccam();
-    }
-     */
-    
-}
-
 void Pacman::steer(float dtime) {
     // std::cout << "Pacman steer!" << std::endl;
     
@@ -65,12 +53,23 @@ void Pacman::steer(float dtime) {
     }
 }
 
-/*
-void Pacman::movePaccam() {
-    paccam->setPosition(this->transform().translation());
-    paccam->setTarget(this->transform().translation() + this->transform().forward());
-    //Vector Pos = position(); //m_Position + m_Panning + m_Zoom + m_Rotation;
-    //Vector Target = target(); //m_Target + m_Panning;
-    //m_ViewMatrix.lookAt(Target, m_Up, Pos);
+void Pacman::moveSubs() {
+    
+    std::cout << "Pacman moveSubs" << std::endl;
+    GameCharacter::moveSubs();
+    
+    std::cout << this->arrow << std::endl;
+    if(arrow) {
+        Matrix mTotal, mMov, mScale, mRot;
+        mMov.translation(0.5, 0.25, 0);
+        mScale.scale(0.05f, 0.05f, 0.05f);
+        mRot.rotationY(90);
+        
+        mTotal = this->transform() * mMov * mScale * mRot;
+
+        this->arrow->transform(mTotal);
+    }
+    
 }
-*/
+
+

@@ -27,7 +27,10 @@ public:
 	*/
 	Pacman(int posX, int posZ);
 
-	void update(float dtime);
+    void setArrow(BaseModel* arrow) {this->arrow = arrow;}
+
+	//void update(float dtime);
+    void moveSubs();
 
 	/**
 	 STEERING
@@ -44,6 +47,7 @@ public:
 
 private:
 
+    BaseModel* arrow;
 
 };
 
