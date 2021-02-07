@@ -74,7 +74,7 @@ public:
     bool checkRight();
     
     //Lighting
-    void moveLights();
+    virtual void moveSubs();
     
 protected:
     
@@ -92,8 +92,8 @@ protected:
     float movingSpeed = 3;
     
     //Lighting
-    PointLight* pointLight;
-    SpotLight* spotLight;
+    PointLight* pointLight = NULL;
+    SpotLight* spotLight = NULL;
 };
 
 #endif /* GameCharacter_hpp */

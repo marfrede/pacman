@@ -21,7 +21,10 @@ public:
      
     Pacman(int planeWidth, int planeDepth, int posX, int posZ, PhongShader* pPhongShader);
     
-    void update(float dtime);
+    //void update(float dtime);
+    void moveSubs();
+    
+    void setArrow(BaseModel* arrow) {this->arrow = arrow;}
     
     /**
      STEERING
@@ -32,12 +35,9 @@ public:
      */
     void steer(float dtime);
     
-    //void setEgoCam(EgoCam cam){paccam=&cam;}
-    //EgoCam* paccam;
-    //void movePaccam();
-    
 private:
     
+    BaseModel* arrow;
     
 };
 

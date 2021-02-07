@@ -34,7 +34,7 @@ public:
     void draw();
     void end();
 protected:
-    bool gameMode = false;
+    bool gameMode = true;
 	void createScene();
 	void createNormalTestScene();
 	void createShadowTestScene();

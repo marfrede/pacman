@@ -280,8 +280,18 @@ void Application::createScene()
     pPacman->setWindow(pWindow);
     pPacman->setWalls(pField->getWalls());
     Paccam.setObj(pPacman);
-
+    pModel = new Model(ASSET_DIRECTORY "arrow.dae", false);
+    pPhongShader = new PhongShader();
+    pPhongShader->ambientColor(Color(1.0f, 0, 0));
+    pPhongShader->diffuseColor(Color(1.0f, 0,0));
+    pPhongShader->specularColor(Color(1.0f, 0,0));
+    pModel->shader(pPhongShader, true);
+    //Matrix mTotal = m.translation(0, 1, 0);
+    //pModel->transform();
+    pPacman->setArrow(pModel);
+    Models.push_back(pModel);
     Models.push_back(pPacman);
+    
     
 }
 

@@ -26,7 +26,7 @@ void GameCharacter::update(float dtime) {
     
     this->steer(dtime);
     
-    this->moveLights();
+    this->moveSubs();
     
 }
 /*
@@ -158,8 +158,9 @@ bool GameCharacter::checkFront() {
     return false;
 }
 
-void GameCharacter::moveLights() { 
+void GameCharacter::moveSubs() {
     
+    std::cout << "GC moveSubs" << std::endl;
     if(pointLight) {
         this->pointLight->position(this->transform().translation());
     }
