@@ -153,14 +153,6 @@ void GameCharacter::move(float dtime) {
 
 }
 
-bool GameCharacter::checkFront() {
-	for (WallList::iterator it = Walls.begin(); it != Walls.end(); ++it)
-	{
-		//   (*it)->boundingBox().
-	}
-	return false;
-}
-
 void GameCharacter::moveLights() {
 
 	if (pointLight) {
@@ -170,4 +162,63 @@ void GameCharacter::moveLights() {
 		this->spotLight->position(this->transform().translation());
 	}
 
+}
+
+bool GameCharacter::checkFront() {
+	return this->getFieldTypeInFront() != FieldType::Wall;
+}
+
+std::pair<int, int> GameCharacter::getFieldPosition() {
+	Vector pos = this->transform().translation();
+	return std::pair<int, int>(
+		(int)(pos.X + (float)PLANE_WIDTH / 2.0f),
+		(int)(pos.Z + (float)PLANE_DEPTH / 2.0f)
+		);
+}
+
+FieldType GameCharacter::getFieldType() {
+	std::pair<int, int> posOnField = this->getFieldPosition();
+	return this->pField->getFieldType(
+		posOnField.first,
+		posOnField.second
+	);
+}
+
+FieldType GameCharacter::getFieldTypeInFront() {
+	std::pair<int, int> posOnField = this->getFieldPosition();
+	switch (this->getOrientation())
+	{
+	case Orientation::North:
+		posOnField.second--;
+		break;
+	case Orientation::East:
+		posOnField.first++;
+		break;
+	case Orientation::West:
+		posOnField.first--;
+		break;
+	default:
+		posOnField.second++;
+		break;
+	}
+	return this->pField->getFieldType(
+		posOnField.first,
+		posOnField.second
+	);
+}
+
+Orientation GameCharacter::getOrientation() {
+	Vector orientation = this->transform().forward();
+	if (orientation.Z > 0.5f) {
+		return Orientation::East;
+	}
+	else if (orientation.Z < -0.5f) {
+		return Orientation::West;
+	}
+	else if (orientation.X > 0.5f) {
+		return Orientation::North;
+	}
+	else {
+		return Orientation::South;
+	}
 }

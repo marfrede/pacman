@@ -63,6 +63,15 @@ void Application::update(float dtime)
 
 	pPacman->update(dtime);
 
+	// pacman, print your infos:
+	std::cout
+		<< pPacman->getFieldPosition().first << ", "
+		<< pPacman->getFieldPosition().second << "\t"
+		<< this->fieldTypeToString(pPacman->getFieldType()) << "\t"
+		<< this->fieldTypeToString(pPacman->getFieldTypeInFront()) << "\t"
+		<< this->orientationToString(pPacman->getOrientation()) << "\t"
+		<< (pPacman->checkFront() ? "can go" : "can not go") << std::endl;
+
 	if (gameMode) {
 		Paccam.update();
 	}
@@ -172,7 +181,7 @@ void Application::createScene()
 	c = Color(242.0f / 255.0f, 5.0f / 255.0f, 3.0f / 255.0f);
 	Ghost* g = new Ghost(13, 16, c);
 	g->setWindow(pWindow);
-	g->setWalls(this->pField->getWalls());
+	g->setField(this->pField);
 	// point lights
 	PointLight* pl = new PointLight();
 	pl->color(c);
@@ -193,7 +202,7 @@ void Application::createScene()
 	c = Color(252.0f / 255.0f, 154.0f / 255.0f, 0.0f / 255.0f);
 	g = new Ghost(14, 16, c);
 	g->setWindow(pWindow);
-	g->setWalls(this->pField->getWalls());
+	g->setField(this->pField);
 	// point lights
 	pl = new PointLight();
 	pl->color(c);
@@ -214,7 +223,7 @@ void Application::createScene()
 	c = Color(105.0f / 255.0f, 252.0f / 255.0f, 255.0f / 255.0f);
 	g = new Ghost(15, 16, c);
 	g->setWindow(pWindow);
-	g->setWalls(this->pField->getWalls());
+	g->setField(this->pField);
 	// point lights
 	pl = new PointLight();
 	pl->color(c);
@@ -235,7 +244,7 @@ void Application::createScene()
 	c = Color(252.0f / 255.0f, 154.0f / 255.0f, 153.0f / 255.0f);
 	g = new Ghost(16, 16, c);
 	g->setWindow(pWindow);
-	g->setWalls(this->pField->getWalls());
+	g->setField(this->pField);
 	// point lights
 	pl = new PointLight();
 	pl->color(c);
@@ -256,7 +265,7 @@ void Application::createScene()
 	c = Color(255.0f / 255.0f, 255.0f / 255.0f, 255.0f / 255.0f);
 	g = new Ghost(17, 16, c);
 	g->setWindow(pWindow);
-	g->setWalls(this->pField->getWalls());
+	g->setField(this->pField);
 	// point light
 	pl = new PointLight();
 	pl->color(c);
@@ -276,7 +285,7 @@ void Application::createScene()
 	//PACMAN
 	pPacman = new Pacman((int)(PLANE_WIDTH / 2.0f), (int)(PLANE_DEPTH / 2.0f));
 	pPacman->setWindow(pWindow);
-	pPacman->setWalls(pField->getWalls());
+	pPacman->setField(this->pField);
 	Paccam.setObj(pPacman);
 	Models.push_back(pPacman);
 

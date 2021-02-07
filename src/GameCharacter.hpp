@@ -12,6 +12,9 @@
 #include "TriangleBoxModel.h"
 #include "PhongShader.h"
 #include "FieldSizeConstants.h"
+#include "FieldType.h"
+#include "Orientation.h"
+#include "Field.h"
 #include <stdio.h>
 #include <list>
 
@@ -22,77 +25,89 @@
 class GameCharacter : public TriangleBoxModel
 {
 public:
-    typedef std::list<BaseModel*> WallList;
+	typedef std::list<BaseModel*> WallList;
 
-    /**
-    * create a GameCharacter at given position
-    * @param posX (min:0, max:planeWidth) x position on the planeModel
-    * @param y (min:-∞, max:∞) models y position
-    * @param posZ (min:0, max:planeDepth) z position on the planeModel
-    * @param pShader to use for the character
-    */
-    GameCharacter(int posX, float y, int posZ);
-    ~GameCharacter();
-    void setWindow(GLFWwindow* window) {pWindow = window;}
-    void setWalls(WallList walls) {Walls = walls;}
-    void setPointLight(PointLight* pL) {pointLight = pL;}
-    void setSpotLight(SpotLight* sL) {spotLight = sL;}
-    
-    virtual void update(float dtime);
-    
-    /**
-     STEERING
-     */
-    /**
-     * steer object
-     * @param dtime deltatime
-     */
-    virtual void steer(float dtime) {/* insert code here */};
-    /**
-     * rotate object
-     * @param dtime deltatime
-     * @param left direction
-     */
-    void rotate(float dtime, bool left);
-    /**
-     * move object
-     * @param dtime deltatime
-     */
-    void move(float dtime);
-    /**
-     * perform current action
-     * @param dtime deltatime
-     */
-    bool doCurrentAction(float dtime);
-    
-    
-    /**
-     WALL CHECK
-     */
-    bool checkFront();
-    bool checkLeft();
-    bool checkRight();
-    
-    //Lighting
-    void moveLights();
-    
+	/**
+	* create a GameCharacter at given position
+	* @param posX (min:0, max:planeWidth) x position on the planeModel
+	* @param y (min:-∞, max:∞) models y position
+	* @param posZ (min:0, max:planeDepth) z position on the planeModel
+	* @param pShader to use for the character
+	*/
+	GameCharacter(int posX, float y, int posZ);
+	~GameCharacter();
+	void setWindow(GLFWwindow* window) { pWindow = window; }
+	void setField(Field* field) { pField = field; }
+	void setPointLight(PointLight* pL) { pointLight = pL; }
+	void setSpotLight(SpotLight* sL) { spotLight = sL; }
+
+	virtual void update(float dtime);
+
+	/**
+	 STEERING
+	 */
+	 /**
+	  * steer object
+	  * @param dtime deltatime
+	  */
+	virtual void steer(float dtime) {/* insert code here */ };
+	/**
+	 * rotate object
+	 * @param dtime deltatime
+	 * @param left direction
+	 */
+	void rotate(float dtime, bool left);
+	/**
+	 * move object
+	 * @param dtime deltatime
+	 */
+	void move(float dtime);
+	/**
+	 * perform current action
+	 * @param dtime deltatime
+	 */
+	bool doCurrentAction(float dtime);
+
+	// WALL CHECK
+	/**
+	* check the front field
+	* @returns true if the character can make a step forward (Point or Free ahead) | false if the character can not make a step forward (Wall ahead)
+	*/
+	bool checkFront();
+
+	/**
+	 LIGHTING
+	 */
+	void moveLights();
+
+	// FIELD POSITION INFOS
+	 /** get the field the character stands on as first = posX, second = posZ (0, 0 would be top left corner) */
+	std::pair<int, int> getFieldPosition();
+	/** get the field type the character stands on as enum {Wall, Point, Free} */
+	FieldType getFieldType();
+	/** get the field type the character is looking at as enum {Wall, Point, Free} */
+	FieldType getFieldTypeInFront();
+	/** get the orientation the character is looking in as enum {North (up), East (right), South (down), West (left)} */
+	Orientation getOrientation();
+
+
 protected:
-    
-    //Spielfeld
-    WallList Walls;
-    
-    GLFWwindow* pWindow;
-    
-    //STEERING
-    //Rotation
-    float angleToTurn;
-    float rotateSpeed = 200;
-    //Moving
-    float moveUnits;
-    float movingSpeed = 3;
-    //Lighting
-    PointLight* pointLight;
-    SpotLight* spotLight;
+
+	//Spielfeld
+	Field* pField;
+
+	GLFWwindow* pWindow;
+
+	//STEERING
+	//Rotation
+	float angleToTurn;
+	float rotateSpeed = 200;
+	//Moving
+	float moveUnits;
+	float movingSpeed = 3;
+	//Lighting
+	PointLight* pointLight;
+	SpotLight* spotLight;
 };
 
 #endif /* GameCharacter_hpp */
