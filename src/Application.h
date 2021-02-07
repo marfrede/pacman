@@ -48,6 +48,32 @@ protected:
 	BaseModel* pModel;
     Pacman* pPacman;
 	ShadowMapGenerator ShadowGenerator;
+
+	// temporary helper only for debugging
+	std::string orientationToString(Orientation o) {
+		switch (o)
+		{
+		case Orientation::North:
+			return "North";
+		case Orientation::East:
+			return "East";
+		case Orientation::West:
+			return "West";
+		default:
+			return "South";
+		}
+	}
+	std::string fieldTypeToString(FieldType ft) {
+		switch (ft)
+		{
+		case FieldType::Wall:
+			return "Wall";
+		case FieldType::Point:
+			return "Point";
+		default:
+			return "Free";
+		}
+	}
 };
 
 #endif /* Application_hpp */
