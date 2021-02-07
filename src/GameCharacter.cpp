@@ -156,17 +156,6 @@ void GameCharacter::move(float dtime) {
 
 }
 
-void GameCharacter::moveLights() {
-
-	if (pointLight) {
-		this->pointLight->position(this->transform().translation());
-	}
-	if (spotLight) {
-		this->spotLight->position(this->transform().translation());
-	}
-
-}
-
 bool GameCharacter::checkFront() {
 	return this->getFieldTypeInFront() != FieldType::Wall;
 }

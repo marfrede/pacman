@@ -29,7 +29,7 @@ public:
 
     void setArrow(BaseModel* arrow) {this->arrow = arrow;}
 
-	void update(float dtime);
+	//void update(float dtime);
     void moveSubs();
 
 	/**
