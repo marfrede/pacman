@@ -190,6 +190,8 @@ FieldType Field::getFieldType(int x, int z) {
 
 void Field::initFieldTypesMap() {
 	this->fieldTypesMap = new FieldType[PLANE_WIDTH * PLANE_DEPTH];
+    
+    std::fill_n(this->fieldTypesMap, PLANE_WIDTH*PLANE_DEPTH, FieldType::Free);
 
 	// add walls
 	// read walls from wallPositions
