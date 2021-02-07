@@ -8,8 +8,14 @@
 
 #include "Ghost.hpp"
 
-Ghost::Ghost(int planeWidth, int planeDepth, int posX, int posZ, PhongShader* pPhongShader) : GameCharacter(planeWidth, planeDepth, posX, posZ, pPhongShader) {
-    
+Ghost::Ghost(int posX, int posZ, Color c) : GameCharacter(posX, 0.8f, posZ) {
+    ConstantShader* pShader = new ConstantShader();
+    pShader->color(c);
+    this->shader(pShader, true);
+}
+
+Ghost::~Ghost() {
+    //delete this->pShader; (BaseModel does it)
 }
 
 void Ghost::steer(float dtime) {
