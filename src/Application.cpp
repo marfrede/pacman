@@ -165,7 +165,7 @@ void Application::createScene()
 	Color c = Color(1.0f, 0.7f, 1.0f);
 	Vector a = Vector(1, 0, 0.1f);
 	float innerradius = 45;
-	float outerradius = 60;
+	float outerradius = 90;
 
 	// SKY
 	//pModel = new Model(ASSET_DIRECTORY "skybox.obj", false);
@@ -189,8 +189,8 @@ void Application::createScene()
 	g->setPointLight(pl);
 	// spot lights
 	SpotLight* sl = new SpotLight();
-	sl->color(Color(1.0f, 0.0f, 0.0f));
-	sl->direction(Vector(1, -4, 0));
+	sl->color(Color(242.0f / 255.0f, 5.0f / 255.0f, 3.0f / 255.0f));
+	sl->direction(Vector(0, -1, 0));
 	sl->innerRadius(innerradius);
 	sl->outerRadius(outerradius);
 	ShaderLightMapper::instance().addLight(sl);
@@ -210,8 +210,8 @@ void Application::createScene()
 	g->setPointLight(pl);
 	// spot lights
 	sl = new SpotLight();
-	sl->color(Color(0, 0, 1.0f));
-	sl->direction(Vector(1, -4, 0));
+	sl->color(Color(252.0f / 255.0f, 154.0f / 255.0f, 0.0f / 255.0f));
+	sl->direction(Vector(0, -1, 0));
 	sl->innerRadius(innerradius);
 	sl->outerRadius(outerradius);
 	ShaderLightMapper::instance().addLight(sl);
@@ -231,8 +231,8 @@ void Application::createScene()
 	g->setPointLight(pl);
 	// spot lights
 	sl = new SpotLight();
-	sl->color(Color(0, 1.0f, 0));
-	sl->direction(Vector(1, -4, 0));
+	sl->color(Color(105.0f / 255.0f, 252.0f / 255.0f, 255.0f / 255.0f));
+	sl->direction(Vector(0, -1, 0));
 	sl->innerRadius(innerradius);
 	sl->outerRadius(outerradius);
 	ShaderLightMapper::instance().addLight(sl);
@@ -252,8 +252,8 @@ void Application::createScene()
 	g->setPointLight(pl);
 	// spot lights
 	sl = new SpotLight();
-	sl->color(Color(1.0f, 1.0f, 0));
-	sl->direction(Vector(1, -4, 0));
+	sl->color(Color(252.0f / 255.0f, 154.0f / 255.0f, 153.0f / 255.0f));
+	sl->direction(Vector(0, -1, 0));
 	sl->innerRadius(innerradius);
 	sl->outerRadius(outerradius);
 	ShaderLightMapper::instance().addLight(sl);
@@ -273,8 +273,8 @@ void Application::createScene()
 	g->setPointLight(pl);
 	// spot light
 	sl = new SpotLight();
-	sl->color(Color(0.6f, 0.2f, 0.8f));
-	sl->direction(Vector(1, -4, 0));
+	sl->color(Color(255.0f / 255.0f, 255.0f / 255.0f, 255.0f / 255.0f));
+	sl->direction(Vector(0, -1, 0));
 	sl->innerRadius(innerradius);
 	sl->outerRadius(outerradius);
 	ShaderLightMapper::instance().addLight(sl);
@@ -287,11 +287,9 @@ void Application::createScene()
 	pPacman->setField(this->pField);
 
     pModel = new Model(ASSET_DIRECTORY "arrow.dae", false);
-    pPhongShader = new PhongShader();
-    pPhongShader->ambientColor(Color(1.0f, 0, 0));
-    pPhongShader->diffuseColor(Color(1.0f, 0,0));
-    pPhongShader->specularColor(Color(1.0f, 0,0));
-    pModel->shader(pPhongShader, true);
+    ConstantShader* pShader = new ConstantShader();
+    pShader->color(Color(1.0f, 0, 0));
+    pModel->shader(pShader, true);
     //Matrix mTotal = m.translation(0, 1, 0);
     //pModel->transform();
     pPacman->setArrow(pModel);
