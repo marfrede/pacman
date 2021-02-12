@@ -76,6 +76,16 @@ public:
 	* @returns true if the character can make a step forward (Point or Free ahead) | false if the character can not make a step forward (Wall ahead)
 	*/
 	bool checkFront();
+    /**
+    * check the left field
+    * @returns true if the character can make a step to the left (Point or Free ahead) | false if the character can not make a step left (Wall ahead)
+    */
+    bool checkLeft();
+    /**
+    * check the left field
+    * @returns true if the character can make a step to the right (Point or Free ahead) | false if the character can not make a step right (Wall ahead)
+    */
+    bool checkRight();
 
 	//Sub Movement
     virtual void moveSubs();
@@ -87,6 +97,10 @@ public:
 	FieldType getFieldType();
 	/** get the field type the character is looking at as enum {Wall, Point, Free} */
 	FieldType getFieldTypeInFront();
+    /** get the field type left where the character is looking at as enum {Wall, Point, Free} */
+    FieldType getFieldTypeToLeft();
+    /** get the field type right where the character is looking at as enum {Wall, Point, Free} */
+    FieldType getFieldTypeToRight();
 	/** get the orientation the character is looking in as enum {North (up), East (right), South (down), West (left)} */
 	Orientation getOrientation();
 
