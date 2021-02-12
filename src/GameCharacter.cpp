@@ -157,7 +157,15 @@ void GameCharacter::move(float dtime) {
 }
 
 bool GameCharacter::checkFront() {
-	return this->getFieldTypeInFront() != FieldType::Wall;
+	return (this->getFieldTypeInFront() != FieldType::Wall);
+}
+
+bool GameCharacter::checkLeft() {
+    return (this->getFieldTypeToLeft() != FieldType::Wall);
+}
+
+bool GameCharacter::checkRight() {
+    return (this->getFieldTypeToRight() != FieldType::Wall);
 }
 
 std::pair<int, int> GameCharacter::getFieldPosition() {
@@ -199,9 +207,62 @@ FieldType GameCharacter::getFieldTypeInFront() {
 	);
 }
 
+FieldType GameCharacter::getFieldTypeToLeft() {
+    std::pair<int, int> posOnField = this->getFieldPosition();
+    switch (this->getOrientation())
+    {
+    case Orientation::North:
+        //posOnField.second--;
+        posOnField.first--;
+        break;
+    case Orientation::East:
+        //posOnField.first++;
+        posOnField.second--;
+        break;
+    case Orientation::West:
+        //posOnField.first--;
+        posOnField.second++;
+        break;
+    default:
+        //posOnField.second++;
+        posOnField.first++;
+        break;
+    }
+    return this->pField->getFieldType(
+        posOnField.first,
+        posOnField.second
+    );
+}
+
+FieldType GameCharacter::getFieldTypeToRight() {
+    std::pair<int, int> posOnField = this->getFieldPosition();
+    switch (this->getOrientation())
+    {
+    case Orientation::North:
+        //posOnField.second--;
+        posOnField.first++;
+        break;
+    case Orientation::East:
+        //posOnField.first++;
+        posOnField.second++;
+        break;
+    case Orientation::West:
+        //posOnField.first--;
+        posOnField.second--;
+        break;
+    default:
+        //posOnField.second++;
+        posOnField.first--;
+        break;
+    }
+    return this->pField->getFieldType(
+        posOnField.first,
+        posOnField.second
+    );
+}
+
 void GameCharacter::moveSubs() {
     
-    std::cout << "GC moveSubs" << std::endl;
     if(pointLight) {
         this->pointLight->position(this->transform().translation());
     }

@@ -178,7 +178,7 @@ void Application::createScene()
 
 	//GHOST RED
 	c = Color(242.0f / 255.0f, 5.0f / 255.0f, 3.0f / 255.0f);
-	Ghost* g = new Ghost(13, 16, c);
+	Ghost* g = new Ghost(13, 14, c);
 	g->setWindow(pWindow);
 	g->setField(this->pField);
 	// point lights
@@ -199,7 +199,7 @@ void Application::createScene()
 
 	//GHOST ORANGE
 	c = Color(252.0f / 255.0f, 154.0f / 255.0f, 0.0f / 255.0f);
-	g = new Ghost(14, 16, c);
+	g = new Ghost(12, 15, c);
 	g->setWindow(pWindow);
 	g->setField(this->pField);
 	// point lights
@@ -220,7 +220,7 @@ void Application::createScene()
 
 	// GHOST CYAN
 	c = Color(105.0f / 255.0f, 252.0f / 255.0f, 255.0f / 255.0f);
-	g = new Ghost(15, 16, c);
+	g = new Ghost(13, 15, c);
 	g->setWindow(pWindow);
 	g->setField(this->pField);
 	// point lights
@@ -241,7 +241,7 @@ void Application::createScene()
 
 	// GHOST PINK
 	c = Color(252.0f / 255.0f, 154.0f / 255.0f, 153.0f / 255.0f);
-	g = new Ghost(16, 16, c);
+	g = new Ghost(14, 15, c);
 	g->setWindow(pWindow);
 	g->setField(this->pField);
 	// point lights
@@ -262,7 +262,7 @@ void Application::createScene()
 
 	// GHOST WHITE
 	c = Color(255.0f / 255.0f, 255.0f / 255.0f, 255.0f / 255.0f);
-	g = new Ghost(17, 16, c);
+	g = new Ghost(15, 15, c);
 	g->setWindow(pWindow);
 	g->setField(this->pField);
 	// point light

@@ -42,7 +42,7 @@ void Pacman::steer(float dtime) {
             angleToTurn = 90;
         } else if(leftRight < 0) {
             angleToTurn = -90;
-        } else if(forward > 0) {
+        } else if(forward > 0 && checkFront()) {
             moveUnits = 1;
         } else {
             return;
