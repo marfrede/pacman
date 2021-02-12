@@ -55,10 +55,8 @@ void Pacman::steer(float dtime) {
 
 void Pacman::moveSubs() {
     
-    std::cout << "Pacman moveSubs" << std::endl;
     GameCharacter::moveSubs();
     
-    std::cout << this->arrow << std::endl;
     if(arrow) {
         Matrix mTotal, mMov, mScale, mRot;
         mMov.translation(0.5, 0.25, 0);
