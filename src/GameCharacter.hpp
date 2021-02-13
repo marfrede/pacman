@@ -15,6 +15,7 @@
 #include "FieldType.h"
 #include "Orientation.h"
 #include "Field.h"
+#include "Model.h"
 #include <stdio.h>
 #include <list>
 
@@ -22,7 +23,7 @@
 #define M_PI 3.1415926535897932
 #endif
 
-class GameCharacter : public TriangleBoxModel
+class GameCharacter : public Model
 {
     
 public:
@@ -36,7 +37,7 @@ public:
 	* @param posZ (min:0, max:planeDepth) z position on the planeModel
 	* @param pShader to use for the character
 	*/
-	GameCharacter(int posX, float y, int posZ);
+	GameCharacter(int posX, float y, int posZ, const char* ModelFile, bool FitSize);
 	~GameCharacter();
 	void setWindow(GLFWwindow* window) { pWindow = window; }
 	void setField(Field* field) { pField = field; }

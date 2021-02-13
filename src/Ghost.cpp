@@ -8,7 +8,7 @@
 
 #include "Ghost.hpp"
 
-Ghost::Ghost(int posX, int posZ, Color c) : GameCharacter(posX, 0.8f, posZ) {
+Ghost::Ghost(int posX, int posZ, Color c, const char* ModelFile, bool FitSize) : GameCharacter(posX, 0.8f, posZ, ModelFile, FitSize) {
     ConstantShader* pShader = new ConstantShader();
     pShader->color(c);
     this->shader(pShader, true);

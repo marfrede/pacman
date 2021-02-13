@@ -23,7 +23,7 @@ public:
     * @param posZ (min:0, max:planeDepth) z position on the field
     * @param pPhongShader to use for the ghost
     */
-    Ghost(int posX, int posZ, Color c);
+    Ghost(int posX, int posZ, Color c, const char* ModelFile, bool FitSize);
     ~Ghost();
     
     /**

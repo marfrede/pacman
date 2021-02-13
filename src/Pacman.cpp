@@ -9,7 +9,7 @@
 #include "Pacman.hpp"
 #include "math.h"
 
-Pacman::Pacman(int posX, int posZ) : GameCharacter(posX, 0.5f, posZ) {
+Pacman::Pacman(int posX, int posZ, const char* ModelFile, bool FitSize) : GameCharacter(posX, 0.5f, posZ, ModelFile, FitSize) {
     Color yellow(249.0f / 250.0f, 250.0f / 250.0f, 6.0f / 250.0f);
     PhongShader* pPhongShader = new PhongShader();
     pPhongShader->ambientColor(yellow);
@@ -59,7 +59,7 @@ void Pacman::moveSubs() {
     
     if(arrow) {
         Matrix mTotal, mMov, mScale, mRot;
-        mMov.translation(0.5, 0.25, 0);
+        mMov.translation(0, 0.25, 0.5);
         mScale.scale(0.05f, 0.05f, 0.05f);
         mRot.rotationY(90);
         

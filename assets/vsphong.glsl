@@ -21,6 +21,7 @@ void main()
     Position = (ModelMat * VertexPos).xyz;
     Normal = (ModelMat * vec4(VertexNormal.xyz,0)).xyz;
     // cgprakt6
+    
     Tangent = (ModelMat * vec4(VertexTangent.xyz,0)).xyz;
     Bitangent = (ModelMat * vec4(VertexBitangent.xyz,0)).xyz;
     Texcoord = VertexTexcoord;

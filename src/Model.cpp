@@ -142,6 +142,7 @@ void Model::loadMeshes(const aiScene* pScene, bool FitSize)
 
 void Model::loadMaterials(const aiScene* pScene)
 {
+    std::cout << "loadMat" << std::endl;
 	this->MaterialCount = pScene->mNumMaterials;
 	this->pMaterials = new Material[pScene->mNumMaterials]();
 	for (int i = 0; i < pScene->mNumMeshes; i++) {
@@ -182,7 +183,7 @@ void Model::loadMaterials(const aiScene* pScene)
 			string str = texturename.C_Str();
 
 			// the diffuse texture files with the name <name>.<ext> (AI_MATKEY_TEXTURE_DIFFUSE) are loaded HERE
-			//cout << "diffuse file:" << (Path + str).c_str() << endl;
+			cout << "diffuse file:" << (Path + str).c_str() << endl;
 			const Texture* texture = Texture::LoadShared((Path + str).c_str());
 			this->pMaterials[mIndex].DiffTex = texture; 
 
