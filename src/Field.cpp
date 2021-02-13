@@ -45,6 +45,9 @@ void Field::createWalls() {
 	this->pShaderWall->specularColor(Color(1.0f, 1.0f, 1.0f));
 	//pPhongShaderWall->diffuseTexture(Texture::LoadShared(ASSET_DIRECTORY "smiley.png"));
 	this->pShaderWall->diffuseTexture(Texture::LoadShared(TEXTURE_DIRECTORY "PaintedPlaster014_4K_Color.jpg"));
+    this->pShaderWall->normalTexture(Texture::LoadShared(TEXTURE_DIRECTORY "PaintedPlaster014_4K_Normal.jpg"));
+    std::cout << this->pShaderWall->normalTexture() << std::endl;
+    //pPhong->normalTexture(pMat->NormalMap);
 
 	// 2. make walls
 	for (auto const& wall : this->wallPositions)

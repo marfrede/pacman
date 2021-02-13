@@ -174,11 +174,13 @@ void Application::createScene()
 	//pModel->shadowCaster(false);
 	//Models.push_back(pModel);
     
+    std::cout << "Field" << std::endl;
 	pField = new Field();
+    std::cout << "Field End" << std::endl;
 
 	//GHOST RED
 	c = Color(242.0f / 255.0f, 5.0f / 255.0f, 3.0f / 255.0f);
-	Ghost* g = new Ghost(13, 14, c);
+	Ghost* g = new Ghost(13, 14, c, ASSET_DIRECTORY "single-ghost-complete.dae", false);
 	g->setWindow(pWindow);
 	g->setField(this->pField);
 	// point lights
@@ -199,7 +201,7 @@ void Application::createScene()
 
 	//GHOST ORANGE
 	c = Color(252.0f / 255.0f, 154.0f / 255.0f, 0.0f / 255.0f);
-	g = new Ghost(12, 15, c);
+	g = new Ghost(12, 15, c, ASSET_DIRECTORY "single-ghost-complete.dae", false);
 	g->setWindow(pWindow);
 	g->setField(this->pField);
 	// point lights
@@ -220,7 +222,7 @@ void Application::createScene()
 
 	// GHOST CYAN
 	c = Color(105.0f / 255.0f, 252.0f / 255.0f, 255.0f / 255.0f);
-	g = new Ghost(13, 15, c);
+	g = new Ghost(13, 15, c, ASSET_DIRECTORY "single-ghost-complete.dae", false);
 	g->setWindow(pWindow);
 	g->setField(this->pField);
 	// point lights
@@ -241,7 +243,7 @@ void Application::createScene()
 
 	// GHOST PINK
 	c = Color(252.0f / 255.0f, 154.0f / 255.0f, 153.0f / 255.0f);
-	g = new Ghost(14, 15, c);
+	g = new Ghost(14, 15, c, ASSET_DIRECTORY "single-ghost-complete.dae", false);
 	g->setWindow(pWindow);
 	g->setField(this->pField);
 	// point lights
@@ -262,7 +264,7 @@ void Application::createScene()
 
 	// GHOST WHITE
 	c = Color(255.0f / 255.0f, 255.0f / 255.0f, 255.0f / 255.0f);
-	g = new Ghost(15, 15, c);
+	g = new Ghost(15, 15, c, ASSET_DIRECTORY "single-ghost-complete.dae", false);
 	g->setWindow(pWindow);
 	g->setField(this->pField);
 	// point light
@@ -281,8 +283,9 @@ void Application::createScene()
 	g->setSpotLight(sl);
 	Ghosts.push_back(g);
 
+    std::cout << "Pacman" << std::endl;
 	//PACMAN
-	pPacman = new Pacman((int)(PLANE_WIDTH / 2.0f), (int)(PLANE_DEPTH / 2.0f));
+	pPacman = new Pacman((int)(PLANE_WIDTH / 2.0f), (int)(PLANE_DEPTH / 2.0f), ASSET_DIRECTORY "single-ghost-complete.dae", false);
 	pPacman->setWindow(pWindow);
 	pPacman->setField(this->pField);
 

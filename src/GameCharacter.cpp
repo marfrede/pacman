@@ -9,7 +9,7 @@
 #include "GameCharacter.hpp"
 #include "math.h"
 
-GameCharacter::GameCharacter(int posX, float y, int posZ) : TriangleBoxModel(1, 1, 1) {
+GameCharacter::GameCharacter(int posX, float y, int posZ, const char* ModelFile, bool FitSize) : Model(ModelFile, FitSize) {
 	Matrix t;
 	t.translation(
 		0.5f + (float)posX - ((float)PLANE_WIDTH) / 2.0f,
@@ -147,7 +147,7 @@ void GameCharacter::move(float dtime) {
 	}
 
 	Matrix mTotal, mMov;
-	mMov.translation(movingUnits, 0, 0);
+	mMov.translation(0, 0, movingUnits);
 
 	mTotal = this->transform() * mMov;
 	this->transform(mTotal);
@@ -212,19 +212,15 @@ FieldType GameCharacter::getFieldTypeToLeft() {
     switch (this->getOrientation())
     {
     case Orientation::North:
-        //posOnField.second--;
         posOnField.first--;
         break;
     case Orientation::East:
-        //posOnField.first++;
         posOnField.second--;
         break;
     case Orientation::West:
-        //posOnField.first--;
         posOnField.second++;
         break;
     default:
-        //posOnField.second++;
         posOnField.first++;
         break;
     }
@@ -239,19 +235,15 @@ FieldType GameCharacter::getFieldTypeToRight() {
     switch (this->getOrientation())
     {
     case Orientation::North:
-        //posOnField.second--;
         posOnField.first++;
         break;
     case Orientation::East:
-        //posOnField.first++;
         posOnField.second++;
         break;
     case Orientation::West:
-        //posOnField.first--;
         posOnField.second--;
         break;
     default:
-        //posOnField.second++;
         posOnField.first--;
         break;
     }
@@ -275,15 +267,15 @@ void GameCharacter::moveSubs() {
 Orientation GameCharacter::getOrientation() {
 	Vector orientation = this->transform().forward();
 	if (orientation.Z > 0.5f) {
-		return Orientation::East;
+		return Orientation::South;
 	}
 	else if (orientation.Z < -0.5f) {
-		return Orientation::West;
-	}
-	else if (orientation.X > 0.5f) {
 		return Orientation::North;
 	}
+	else if (orientation.X > 0.5f) {
+		return Orientation::East;
+	}
 	else {
-		return Orientation::South;
+		return Orientation::West;
 	}
 }
