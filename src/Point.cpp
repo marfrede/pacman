@@ -8,10 +8,12 @@ Point::Point(int posX, int posZ, float radius, BaseShader* pShader) : TriangleSp
 void Point::init(int posX, int posZ) {
 	this->goingUp = true;
 	float height = LO_HEIGHT + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (HI_HEIGHT - LO_HEIGHT)));
-	this->pPointLight = new PointLight();
-	this->pPointLight->color(Color(255.0f / 255.0f, 184.0f / 255.0f, 174.0f / 255.0f));
-	this->pPointLight->attenuation(Vector(1.0f, 1.0f, 1.0f));
-	ShaderLightMapper::instance().addLight(this->pPointLight);
+	if (LIGHTING) {
+		this->pPointLight = new PointLight();
+		this->pPointLight->color(Color(255.0f / 255.0f, 184.0f / 255.0f, 174.0f / 255.0f));
+		this->pPointLight->attenuation(Vector(1.0f, 1.0f, 1.0f));
+		ShaderLightMapper::instance().addLight(this->pPointLight);
+	}
 	this->setPosition(posX, height, posZ);
 }
 
@@ -25,11 +27,16 @@ void Point::setPosition(float x, float y, float z) {
 		0.5f + this->pos.Z - ((float)PLANE_DEPTH) / 2.0f
 	);
 	this->transform(t);
-	this->pPointLight->position(this->transform().translation());
+	if (LIGHTING) {
+		this->pPointLight->position(this->transform().translation());
+	}
 }
 
 void Point::update(float dtime) {
 	float newY = this->pos.Y;
+	if (dtime / 5.0f > HI_HEIGHT) {
+		dtime = (HI_HEIGHT - LO_HEIGHT) / 2.0f;
+	}
 	if (goingUp && this->pos.Y < HI_HEIGHT) {
 		newY = this->pos.Y += dtime / 5.0f;
 	}
@@ -43,5 +50,7 @@ void Point::update(float dtime) {
 }
 
 Point::~Point() {
-	delete this->pPointLight;
+	if (LIGHTING) {
+		delete this->pPointLight;
+	}
 }

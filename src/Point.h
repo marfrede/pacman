@@ -10,6 +10,8 @@
 #define LO_HEIGHT 0.35f
 #define HI_HEIGHT 0.65f
 
+#define LIGHTING false
+
 class Point : public TriangleSphereModel
 {
 public:
@@ -21,7 +23,7 @@ private:
 	bool goingUp;
 	void init(int posX, int posZ);
 	void setPosition(float x, float y, float z);
-	PointLight* pPointLight;
+	PointLight* pPointLight = NULL;
 };
 
 #endif /* Point_hpp */
