@@ -20,7 +20,7 @@
 
 #define SHOW_PLANE true
 #define SHOW_WALLS true
-#define SHOW_POINTS false
+#define SHOW_POINTS true
 
 #define WALL_HEIGHT 0.3f
 #define WALL_PADDING 0.0f
@@ -36,6 +36,10 @@ public:
 
 	/* get fieldtype (wall / point / free) in any field @param x | posX (0 - 29) @param z | posZ (0 - 32) */
 	FieldType getFieldType(int x, int z);
+
+	// changes on field
+	void removePoint(int posX, int posZ);
+
 	void draw(const Camera camera);
 	void update(float dtime);
 	void end();
