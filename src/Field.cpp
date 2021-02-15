@@ -87,14 +87,15 @@ void Field::createPoints() {
 	);*/
 }
 
-void Field::removePoint(int x, int z) {
-
+bool Field::removePoint(int x, int z) {
 	bool isPoint = this->fieldTypesMap[z * PLANE_WIDTH + x] == FieldType::Point;
 	if (!isPoint) {
-		return;
+		return false;
 	}
 	this->fieldTypesMap[z * PLANE_WIDTH + x] = FieldType::Free;
-
+	delete this->Points.at(std::pair<int, int>(x, z));
+	this->Points.erase(std::pair<int, int>(x, z));
+	return false;
 }
 
 void Field::draw(const Camera camera) {

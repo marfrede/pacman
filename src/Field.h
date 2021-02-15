@@ -37,8 +37,11 @@ public:
 	/* get fieldtype (wall / point / free) in any field @param x | posX (0 - 29) @param z | posZ (0 - 32) */
 	FieldType getFieldType(int x, int z);
 
-	// changes on field
-	void removePoint(int posX, int posZ);
+	/**
+	* removes the point on the given position
+	* @return true | when pacman has eaten the point, false | when there was no point at all on this field
+	*/
+	bool removePoint(int posX, int posZ);
 
 	void draw(const Camera camera);
 	void update(float dtime);
