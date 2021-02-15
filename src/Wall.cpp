@@ -3,7 +3,7 @@
 Wall::Wall(int width, float height, int depth, int posX, int posZ, BaseShader* pShader, float padding)
 	: TriangleBoxModel(width - padding, height, depth - padding)
 {
-    std::cout << "NEW WALL" << std::endl;
+    //std::cout << "NEW WALL" << std::endl;
 	this->shader(pShader, false); // field deletes shader
 	Matrix t;
 	t.translation(
