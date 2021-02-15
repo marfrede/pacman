@@ -31,7 +31,7 @@ public:
 	Field();
 	~Field();
 	typedef std::list<BaseModel*> ModelList;
-	typedef std::list<Point*> PointList;
+	typedef std::map<std::pair<int, int>, Point*> PointList;
 	ModelList getWalls() { return this->Walls; }
 
 	/* get fieldtype (wall / point / free) in any field @param x | posX (0 - 29) @param z | posZ (0 - 32) */

@@ -73,8 +73,10 @@ void Field::createPoints() {
 	for (int z = 0; z < PLANE_DEPTH; z++) {
 		for (int x = 0; x < PLANE_WIDTH; x++) {
 			if (this->fieldTypesMap[z * PLANE_WIDTH + x] == FieldType::Point) {
-				Points.push_back(
-					new Point(x, z, 0.12f, this->pShaderPoint)
+				Points.insert(
+					std::pair<std::pair<int, int>, Point*>(
+						std::pair<int, int>(x, z),
+						new Point(x, z, 0.12f, this->pShaderPoint))
 				);
 			}
 		}
@@ -92,35 +94,31 @@ void Field::removePoint(int x, int z) {
 		return;
 	}
 	this->fieldTypesMap[z * PLANE_WIDTH + x] = FieldType::Free;
-	this->createPoints();
+
 }
 
 void Field::draw(const Camera camera) {
-
 	this->pPlane->draw(camera);
 	for (ModelList::iterator wall = this->Walls.begin(); wall != this->Walls.end(); ++wall)
 	{
 		(*wall)->draw(camera);
 	}
-	for (PointList::iterator point = this->Points.begin(); point != this->Points.end(); ++point)
-	{
-		(*point)->draw(camera);
+	for (auto const& point : this->Points) {
+		point.second->draw(camera);
 	}
 }
 
 void Field::update(float dtime) {
-
-	for (PointList::iterator point = this->Points.begin(); point != this->Points.end(); ++point)
-	{
-		(*point)->update(dtime);
+	for (auto const& point : this->Points) {
+		point.second->update(dtime);
 	}
 }
 
 void Field::end()
 {
 	delete[] this->fieldTypesMap;
-	for (PointList::iterator it = Points.begin(); it != Points.end(); ++it) {
-		delete* it;
+	for (auto const& point : this->Points) {
+		delete point.second;
 	}
 	this->Points.clear();
 	for (ModelList::iterator it = Walls.begin(); it != Walls.end(); ++it) {
