@@ -67,9 +67,9 @@ void Application::update(float dtime)
 	std::cout
 		<< pPacman->getFieldPosition().first << ", "
 		<< pPacman->getFieldPosition().second << "\t"
-		<< this->fieldTypeToString(pPacman->getFieldType()) << "\t"
-		<< this->fieldTypeToString(pPacman->getFieldTypeInFront()) << "\t"
-		<< this->orientationToString(pPacman->getOrientation()) << "\t"
+		<< fieldTypeToString(pPacman->getFieldType()) << "\t"
+		<< fieldTypeToString(pPacman->getFieldTypeInFront()) << "\t"
+		<< orientationToString(pPacman->getOrientation()) << "\t"
 		<< (pPacman->checkFront() ? "can go" : "can not go") << std::endl;
 
 	if (gameMode) {
