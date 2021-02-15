@@ -45,9 +45,9 @@ void Field::createWalls() {
 	this->pShaderWall->specularColor(Color(1.0f, 1.0f, 1.0f));
 	//pPhongShaderWall->diffuseTexture(Texture::LoadShared(ASSET_DIRECTORY "smiley.png"));
 	this->pShaderWall->diffuseTexture(Texture::LoadShared(TEXTURE_DIRECTORY "PaintedPlaster014_4K_Color.jpg"));
-    this->pShaderWall->normalTexture(Texture::LoadShared(TEXTURE_DIRECTORY "PaintedPlaster014_4K_Normal.jpg"));
-    std::cout << this->pShaderWall->normalTexture() << std::endl;
-    //pPhong->normalTexture(pMat->NormalMap);
+	this->pShaderWall->normalTexture(Texture::LoadShared(TEXTURE_DIRECTORY "PaintedPlaster014_4K_Normal.jpg"));
+	std::cout << this->pShaderWall->normalTexture() << std::endl;
+	//pPhong->normalTexture(pMat->NormalMap);
 
 	// 2. make walls
 	for (auto const& wall : this->wallPositions)
@@ -67,8 +67,9 @@ void Field::createWalls() {
 }
 
 void Field::createPoints() {
-
-	this->pShaderPoint->color(Color(255.0f / 255.0f, 184.0f / 255.0f, 174.0f / 255.0f));
+	Points.clear();
+	Color pointCol(255.0f / 255.0f, 184.0f / 255.0f, 174.0f / 255.0f);
+	this->pShaderPoint->color(pointCol);
 	for (int z = 0; z < PLANE_DEPTH; z++) {
 		for (int x = 0; x < PLANE_WIDTH; x++) {
 			if (this->fieldTypesMap[z * PLANE_WIDTH + x] == FieldType::Point) {
@@ -82,6 +83,16 @@ void Field::createPoints() {
 	/*Points.push_back(
 		new Point(PLANE_WIDTH, PLANE_DEPTH, 10, 10, 0.12f, this->pPhongShaderPoint)
 	);*/
+}
+
+void Field::removePoint(int x, int z) {
+
+	bool isPoint = this->fieldTypesMap[z * PLANE_WIDTH + x] == FieldType::Point;
+	if (!isPoint) {
+		return;
+	}
+	this->fieldTypesMap[z * PLANE_WIDTH + x] = FieldType::Free;
+	this->createPoints();
 }
 
 void Field::draw(const Camera camera) {
@@ -193,8 +204,8 @@ FieldType Field::getFieldType(int x, int z) {
 
 void Field::initFieldTypesMap() {
 	this->fieldTypesMap = new FieldType[PLANE_WIDTH * PLANE_DEPTH];
-    
-    std::fill_n(this->fieldTypesMap, PLANE_WIDTH*PLANE_DEPTH, FieldType::Free);
+
+	std::fill_n(this->fieldTypesMap, PLANE_WIDTH * PLANE_DEPTH, FieldType::Free);
 
 	// add walls
 	// read walls from wallPositions
