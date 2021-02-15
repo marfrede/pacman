@@ -63,15 +63,6 @@ void Application::update(float dtime)
 
 	pPacman->update(dtime);
 
-	// pacman, print your infos:
-	std::cout
-		<< pPacman->getFieldPosition().first << ", "
-		<< pPacman->getFieldPosition().second << "\t"
-		<< fieldTypeToString(pPacman->getFieldType()) << "\t"
-		<< fieldTypeToString(pPacman->getFieldTypeInFront()) << "\t"
-		<< orientationToString(pPacman->getOrientation()) << "\t"
-		<< (pPacman->checkFront() ? "can go" : "can not go") << std::endl;
-
 	if (gameMode) {
 		Paccam.update();
 	}

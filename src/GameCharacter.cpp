@@ -26,9 +26,7 @@ GameCharacter::~GameCharacter() {
 void GameCharacter::update(float dtime) {
     
     this->steer(dtime);
-    
     this->moveSubs();
-    
 }
 /*
 void GameCharacter::steer(float dtime) {
