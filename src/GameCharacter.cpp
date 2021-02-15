@@ -259,6 +259,9 @@ void GameCharacter::moveSubs() {
     if(spotLight) {
         this->spotLight->position(this->transform().translation());
     }
+    if(ext) {
+        this->ext->transform(this->transform());
+    }
 	
 }
     

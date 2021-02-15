@@ -172,6 +172,11 @@ void Application::createScene()
 	//GHOST RED
 	c = Color(242.0f / 255.0f, 5.0f / 255.0f, 3.0f / 255.0f);
 	Ghost* g = new Ghost(13, 14, c, ASSET_DIRECTORY "single-ghost-complete.dae", false);
+    Model* ext = new Model(ASSET_DIRECTORY "single-ghost-ext.dae");
+    ConstantShader* cShader = new ConstantShader();
+    cShader->color(Color(1,1,1));
+    ext->shader(cShader);
+    g->setExt(ext);
 	g->setWindow(pWindow);
 	g->setField(this->pField);
 	// point lights
@@ -188,11 +193,17 @@ void Application::createScene()
 	sl->outerRadius(outerradius);
 	ShaderLightMapper::instance().addLight(sl);
 	g->setSpotLight(sl);
+    Models.push_back(ext);
 	Ghosts.push_back(g);
 
 	//GHOST ORANGE
 	c = Color(252.0f / 255.0f, 154.0f / 255.0f, 0.0f / 255.0f);
 	g = new Ghost(12, 15, c, ASSET_DIRECTORY "single-ghost-complete.dae", false);
+    ext = new Model(ASSET_DIRECTORY "single-ghost-ext.dae");
+    cShader = new ConstantShader();
+    cShader->color(Color(1,1,1));
+    ext->shader(cShader);
+    g->setExt(ext);
 	g->setWindow(pWindow);
 	g->setField(this->pField);
 	// point lights
@@ -209,11 +220,17 @@ void Application::createScene()
 	sl->outerRadius(outerradius);
 	ShaderLightMapper::instance().addLight(sl);
 	g->setSpotLight(sl);
+    Models.push_back(ext);
 	Ghosts.push_back(g);
 
 	// GHOST CYAN
 	c = Color(105.0f / 255.0f, 252.0f / 255.0f, 255.0f / 255.0f);
 	g = new Ghost(13, 15, c, ASSET_DIRECTORY "single-ghost-complete.dae", false);
+    ext = new Model(ASSET_DIRECTORY "single-ghost-ext.dae");
+    cShader = new ConstantShader();
+    cShader->color(Color(1,1,1));
+    ext->shader(cShader);
+    g->setExt(ext);
 	g->setWindow(pWindow);
 	g->setField(this->pField);
 	// point lights
@@ -230,11 +247,17 @@ void Application::createScene()
 	sl->outerRadius(outerradius);
 	ShaderLightMapper::instance().addLight(sl);
 	g->setSpotLight(sl);
+    Models.push_back(ext);
 	Ghosts.push_back(g);
 
 	// GHOST PINK
 	c = Color(252.0f / 255.0f, 154.0f / 255.0f, 153.0f / 255.0f);
 	g = new Ghost(14, 15, c, ASSET_DIRECTORY "single-ghost-complete.dae", false);
+    ext = new Model(ASSET_DIRECTORY "single-ghost-ext.dae");
+    cShader = new ConstantShader();
+    cShader->color(Color(1,1,1));
+    ext->shader(cShader);
+    g->setExt(ext);
 	g->setWindow(pWindow);
 	g->setField(this->pField);
 	// point lights
@@ -251,11 +274,17 @@ void Application::createScene()
 	sl->outerRadius(outerradius);
 	ShaderLightMapper::instance().addLight(sl);
 	g->setSpotLight(sl);
+    Models.push_back(ext);
 	Ghosts.push_back(g);
 
 	// GHOST WHITE
 	c = Color(255.0f / 255.0f, 255.0f / 255.0f, 255.0f / 255.0f);
-	g = new Ghost(15, 15, c, ASSET_DIRECTORY "single-ghost-complete.dae", false);
+	g = new Ghost(15, 15, c, ASSET_DIRECTORY "single-ghost-body.dae", false);
+    ext = new Model(ASSET_DIRECTORY "single-ghost-ext.dae");
+    cShader = new ConstantShader();
+    cShader->color(Color(0,0,0));
+    ext->shader(cShader);
+    g->setExt(ext);
 	g->setWindow(pWindow);
 	g->setField(this->pField);
 	// point light
@@ -272,11 +301,14 @@ void Application::createScene()
 	sl->outerRadius(outerradius);
 	ShaderLightMapper::instance().addLight(sl);
 	g->setSpotLight(sl);
+    Models.push_back(ext);
 	Ghosts.push_back(g);
 
     std::cout << "Pacman" << std::endl;
 	//PACMAN
 	pPacman = new Pacman((int)(PLANE_WIDTH / 2.0f), (int)(PLANE_DEPTH / 2.0f), ASSET_DIRECTORY "single-ghost-complete.dae", false);
+    
+    
 	pPacman->setWindow(pWindow);
 	pPacman->setField(this->pField);
 
@@ -286,11 +318,21 @@ void Application::createScene()
     pModel->shader(pShader, true);
     //Matrix mTotal = m.translation(0, 1, 0);
     //pModel->transform();
+    
+    ext = new Model(ASSET_DIRECTORY "single-ghost-ext.dae");
+    cShader = new ConstantShader();
+    cShader->color(Color(1,1,1));
+    ext->shader(cShader);
+    pPacman->setExt(ext);
+    Models.push_back(ext);
+    
     pPacman->setArrow(pModel);
     Models.push_back(pModel);
 
 	Paccam.setObj(pPacman);
 	Models.push_back(pPacman);
+    
+    
 
 }
 

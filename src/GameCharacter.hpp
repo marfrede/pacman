@@ -43,6 +43,7 @@ public:
 	void setField(Field* field) { pField = field; }
 	void setPointLight(PointLight* pL) { pointLight = pL; }
 	void setSpotLight(SpotLight* sL) { spotLight = sL; }
+    void setExt(Model* ext) {this->ext = ext;}
 
 	virtual void update(float dtime);
 
@@ -110,6 +111,9 @@ protected:
 
 	//Spielfeld
 	Field* pField;
+    
+    //Extremitäten
+    Model* ext = NULL;
 
 	GLFWwindow* pWindow;
 
