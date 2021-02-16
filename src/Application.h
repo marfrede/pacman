@@ -44,7 +44,6 @@ protected:
     Camera Cam;
     EgoCam Paccam;
     
-    Field* pField;
     ModelList Models;
     GLFWwindow* pWindow;
     BaseModel* pModel;

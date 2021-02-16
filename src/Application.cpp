@@ -55,8 +55,6 @@ void Application::start()
 
 void Application::update(float dtime)
 {
-	pField->update(dtime);
-    
     //Menüauswahl
     //Bei Start
 
@@ -84,7 +82,6 @@ void Application::draw()
 
 	if (gamemode == GameMode::FirstPerson) {
         
-        this->pField->draw(Paccam);
         this->pGame->draw(Paccam);
         
 		for (ModelList::iterator it = Models.begin(); it != Models.end(); ++it)
@@ -94,7 +91,6 @@ void Application::draw()
 	}
 	else {
         
-        this->pField->draw(Cam);
         this->pGame->draw(Cam);
         
 		for (ModelList::iterator it = Models.begin(); it != Models.end(); ++it)
@@ -117,8 +113,6 @@ void Application::end()
 		delete* it;
 	}
 	this->Models.clear();
-
-	this->pField->end();
 }
 
 void Application::createScene()
@@ -133,10 +127,6 @@ void Application::createScene()
 	//Models.push_back(pModel);
     
     pGame = new Game();
-    pField = new Field();
-    pGame->start(pField, pWindow);
-	
-    
-    
+    pGame->start(pWindow);
 
 }

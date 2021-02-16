@@ -24,18 +24,19 @@ public:
     
     BaseModel* getPacman();
     
-    void start(Field* pField, GLFWwindow* pWindow); //Platziert Pacman und Geister auf dem Feld
-    void createGameModels(Field* pField, GLFWwindow* pWindow);
-    void createGhost(Field* pField, GLFWwindow* pWindow, Color primary, Color secondary, float posX, float posZ);
-    void createPacman(Field* pField, GLFWwindow* pWindow, Color primary, Color secondary, float posX, float posZ);
+    void start(GLFWwindow* pWindow); //Platziert Pacman und Geister auf dem Feld
+    void createGameModels(GLFWwindow* pWindow);
+    void createGhost(GLFWwindow* pWindow, Color primary, Color secondary, float posX, float posZ);
+    void createPacman(GLFWwindow* pWindow, Color primary, Color secondary, float posX, float posZ);
     
     void update(float dtime); //Updated Pacman und Geister
     void draw(const Camera camera);
     
-    bool gameOver(Field* pField); //Prüfe Abbruchbedingungen - prüfe Feld pointsEmpty
+    bool gameOver(); //Prüfe Abbruchbedingungen - prüfe Feld pointsEmpty
     void end();
     
 private:
+    Field* pField;
     GhostList Ghosts;
     Pacman* pPacman;
 };

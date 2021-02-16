@@ -18,7 +18,7 @@
 #include "color.h"
 
 Game::Game() {
-    
+    pField = new Field();
 }
 
 BaseModel* Game::getPacman() {
@@ -31,7 +31,9 @@ void Game::update(float dtime) {
     {
         (*it)->update(dtime);
     }
+    this->pField->update(dtime);
     this->pPacman->update(dtime);
+    this->pPacman->adjustArrow(pField);
     
 }
 
@@ -42,40 +44,42 @@ void Game::draw(const Camera Cam)
     {
         (*it)->draw(Cam);
     }
+    this->pField->draw(Cam);
     this->pPacman->draw(Cam);
+    
         
 
 }
 
-void Game::start(Field* pField, GLFWwindow* pWindow) {
+void Game::start(GLFWwindow* pWindow) {
  
-    this->createGameModels(pField, pWindow);
+    this->createGameModels(pWindow);
     
 }
 
-void Game::createGameModels(Field* pField, GLFWwindow* pWindow) {
+void Game::createGameModels(GLFWwindow* pWindow) {
     
     //GHOST RED
-    createGhost(pField, pWindow, Color(242.0f / 255.0f, 5.0f / 255.0f, 3.0f / 255.0f), Color(1,1,1), 12, 15);
+    createGhost(pWindow, Color(242.0f / 255.0f, 5.0f / 255.0f, 3.0f / 255.0f), Color(1,1,1), 13, 14);
 
     //GHOST ORANGE
-    createGhost(pField, pWindow, Color(252.0f / 255.0f, 154.0f / 255.0f, 0.0f / 255.0f), Color(1,1,1), 12, 15);
+    createGhost(pWindow, Color(252.0f / 255.0f, 154.0f / 255.0f, 0.0f / 255.0f), Color(1,1,1), 16, 15);
 
     // GHOST CYAN
-    createGhost(pField, pWindow, Color(105.0f / 255.0f, 252.0f / 255.0f, 255.0f / 255.0f), Color(1,1,1), 13, 15);
+    createGhost(pWindow, Color(105.0f / 255.0f, 252.0f / 255.0f, 255.0f / 255.0f), Color(1,1,1), 13, 15);
 
     // GHOST PINK
-    createGhost(pField, pWindow, Color(252.0f / 255.0f, 154.0f / 255.0f, 153.0f / 255.0f), Color(1,1,1), 14, 15);
+    createGhost(pWindow, Color(252.0f / 255.0f, 154.0f / 255.0f, 153.0f / 255.0f), Color(1,1,1), 14, 15);
 
     // GHOST WHITE
-    createGhost(pField, pWindow, Color(255.0f / 255.0f, 255.0f / 255.0f, 255.0f / 255.0f), Color(0,0,0), 15, 15);
+    createGhost(pWindow, Color(255.0f / 255.0f, 255.0f / 255.0f, 255.0f / 255.0f), Color(0,0,0), 15, 15);
 
     //PACMAN
-    createPacman(pField, pWindow, Color(0,0,0), Color(0,0,0), 15, 15);
+    createPacman(pWindow, Color(0,0,0), Color(0,0,0), 10, 15);
    
 }
 
-void Game::createPacman(Field* pField, GLFWwindow* pWindow, Color primary, Color secondary, float posX, float posZ) {
+void Game::createPacman(GLFWwindow* pWindow, Color primary, Color secondary, float posX, float posZ) {
     
     pPacman = new Pacman(posX, posZ, ASSET_DIRECTORY "single-ghost-complete.dae", false);
     
@@ -98,7 +102,7 @@ void Game::createPacman(Field* pField, GLFWwindow* pWindow, Color primary, Color
     
 }
 
-bool Game::gameOver(Field* pField) {
+bool Game::gameOver() {
     
     if(pField->getPoints().empty()) {
         std::cout << "SIEG DURCH PUNKTE!" << std::endl;
@@ -117,7 +121,7 @@ bool Game::gameOver(Field* pField) {
     
 }
 
-void Game::createGhost(Field* pField, GLFWwindow* pWindow, Color primary, Color secondary, float posX, float posZ) {
+void Game::createGhost(GLFWwindow* pWindow, Color primary, Color secondary, float posX, float posZ) {
     
     Vector a = Vector(1, 0, 0.1f);
     float innerradius = 45;
@@ -155,4 +159,5 @@ void Game::end() {
         delete* it;
     }
     this->Ghosts.clear();
+    this->pField->end();
 }
