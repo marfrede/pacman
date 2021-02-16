@@ -29,7 +29,8 @@ void Field::createField() {
 	pPlane->shader(pShaderPlane, false);
 
 	// TEXTURED TRIANGLE PLAYING FIELD
- //   pPlane = new TrianglePlaneModel(30, 33, 10, 10);
+    //pPlane = new TrianglePlaneModel((float)planeWidth, (float)planeDepth, (float)planeWidth, (float)planeDepth);
+    //PhongShader* pPhongShader = new PhongShader();
 	//pPhongShader->ambientColor(Color(0.2f,0.2f,0.2f));
 	//pPhongShader->diffuseColor(Color(1.0f,1.0f,1.0f));
 	//pPhongShader->diffuseTexture(Texture::LoadShared(TEXTURE_DIRECTORY "dirtyBricks_C_01.dds"));
