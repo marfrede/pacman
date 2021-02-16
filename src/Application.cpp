@@ -39,7 +39,7 @@
 
 using namespace std;
 
-Application::Application(GLFWwindow* pWin) : pWindow(pWin), Paccam(pWin, NULL), Cam(pWin), pModel(NULL), ShadowGenerator(2048, 2048)
+Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin), Paccam(pWin, NULL), pModel(NULL), ShadowGenerator(2048, 2048)
 {
 	createScene();
 }
@@ -60,7 +60,7 @@ void Application::update(float dtime)
 
     pGame->update(dtime);
 
-	if (gamemode == GameMode::FirstPerson) {
+	if (pGame->getGameMode() == GameMode::FirstPerson) {
 		Paccam.update();
 	}
 	else {
@@ -80,24 +80,17 @@ void Application::draw()
 	ShaderLightMapper::instance().activate();
 	// 2. setup shaders and draw models
 
-	if (gamemode == GameMode::FirstPerson) {
-        
-        this->pGame->draw(Paccam);
-        
-		for (ModelList::iterator it = Models.begin(); it != Models.end(); ++it)
-		{
-			(*it)->draw(Paccam);
-		}
-	}
-	else {
-        
-        this->pGame->draw(Cam);
-        
-		for (ModelList::iterator it = Models.begin(); it != Models.end(); ++it)
-		{
-			(*it)->draw(Cam);
-		}
-	}
+    Camera currentCam = Cam;
+    if(pGame->getGameMode() == GameMode::FirstPerson) {
+        currentCam = Paccam;
+    }
+    
+    this->pGame->draw(currentCam);
+    
+    for (ModelList::iterator it = Models.begin(); it != Models.end(); ++it)
+    {
+        (*it)->draw(currentCam);
+    }
 
 	ShaderLightMapper::instance().deactivate();
 
@@ -127,6 +120,6 @@ void Application::createScene()
 	//Models.push_back(pModel);
     
     pGame = new Game();
-    pGame->start(pWindow);
+    pGame->start(pWindow, Cam);
 
 }

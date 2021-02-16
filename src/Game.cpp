@@ -16,6 +16,7 @@
 
 #include "Game.hpp"
 #include "color.h"
+#include "EgoCam.hpp"
 
 Game::Game() {
     pField = new Field();
@@ -51,7 +52,7 @@ void Game::draw(const Camera Cam)
 
 }
 
-void Game::start(GLFWwindow* pWindow) {
+void Game::start(GLFWwindow* pWindow, const Camera Cam) {
  
     this->createGameModels(pWindow);
     

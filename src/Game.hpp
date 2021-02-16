@@ -24,10 +24,13 @@ public:
     
     BaseModel* getPacman();
     
-    void start(GLFWwindow* pWindow); //Platziert Pacman und Geister auf dem Feld
+    void start(GLFWwindow* pWindow, const Camera Cam); //Platziert Pacman und Geister auf dem Feld
     void createGameModels(GLFWwindow* pWindow);
     void createGhost(GLFWwindow* pWindow, Color primary, Color secondary, float posX, float posZ);
     void createPacman(GLFWwindow* pWindow, Color primary, Color secondary, float posX, float posZ);
+    
+    void setGameMode(GameMode gm) {this->gamemode = gm;}
+    GameMode getGameMode() {return this->gamemode;}
     
     void update(float dtime); //Updated Pacman und Geister
     void draw(const Camera camera);
@@ -36,6 +39,7 @@ public:
     void end();
     
 private:
+    GameMode gamemode = GameMode::Debug;
     Field* pField;
     GhostList Ghosts;
     Pacman* pPacman;
