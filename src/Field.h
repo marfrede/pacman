@@ -36,6 +36,7 @@ public:
 
 	/* get fieldtype (wall / point / free) in any field @param x | posX (0 - 29) @param z | posZ (0 - 32) */
 	FieldType getFieldType(int x, int z);
+    PointList getPoints() {return this->Points;}
 
 	/**
 	* removes the point on the given position

@@ -28,6 +28,14 @@ void GameCharacter::update(float dtime) {
     this->steer(dtime);
     this->moveSubs();
 }
+
+void GameCharacter::draw(const Camera Cam) {
+    
+    Model::draw(Cam);
+    
+    this->ext->draw(Cam);
+    
+}
 /*
 void GameCharacter::steer(float dtime) {
 

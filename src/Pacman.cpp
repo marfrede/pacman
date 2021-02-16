@@ -18,6 +18,11 @@ Pacman::Pacman(int posX, int posZ, const char* ModelFile, bool FitSize) : GameCh
 	this->shader(pPhongShader, true);
 }
 
+void Pacman::draw(const Camera Cam) {
+    GameCharacter::draw(Cam);
+    this->arrow->draw(Cam);
+}
+
 void Pacman::steer(float dtime) {
 	// std::cout << "Pacman steer!" << std::endl;
 

@@ -26,6 +26,8 @@ public:
     * @param pPhongShader to use for the pacman
 	*/
 	Pacman(int posX, int posZ, const char* ModelFile, bool FitSize);
+    
+    void draw(const Camera Cam);
 
     void setArrow(BaseModel* arrow) {this->arrow = arrow;}
 

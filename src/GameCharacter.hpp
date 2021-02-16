@@ -46,6 +46,7 @@ public:
     void setExt(Model* ext) {this->ext = ext;}
 
 	virtual void update(float dtime);
+    void draw(const Camera Cam);
 
 	/**
 	 STEERING
