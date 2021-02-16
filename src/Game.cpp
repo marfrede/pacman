@@ -33,6 +33,7 @@ void Game::update(float dtime) {
         (*it)->update(dtime);
     }
     this->pField->update(dtime);
+    
     this->pPacman->update(dtime);
     this->pPacman->adjustArrow(pField);
     
@@ -48,8 +49,6 @@ void Game::draw(const Camera Cam)
     this->pField->draw(Cam);
     this->pPacman->draw(Cam);
     
-        
-
 }
 
 void Game::start(GLFWwindow* pWindow, const Camera Cam) {
@@ -82,7 +81,24 @@ void Game::createGameModels(GLFWwindow* pWindow) {
 
 void Game::createPacman(GLFWwindow* pWindow, Color primary, Color secondary, float posX, float posZ) {
     
-    pPacman = new Pacman(posX, posZ, ASSET_DIRECTORY "single-ghost-complete.dae", false);
+    if(gamemode == GameMode::FirstPerson) {
+        pPacman = new Pacman(posX, posZ, ASSET_DIRECTORY "single-ghost-ext.dae", false);
+        
+        /*Model* ext = new Model(ASSET_DIRECTORY "single-ghost-ext.dae");
+        ConstantShader* cShader = new ConstantShader();
+        cShader->color(Color(1,1,1));
+        ext->shader(cShader);
+        pPacman->setExt(ext);*/
+    } else {
+        pPacman = new Pacman(posX, posZ, ASSET_DIRECTORY "single-ghost-complete.dae", false);
+        
+        Model* ext = new Model(ASSET_DIRECTORY "single-ghost-ext.dae");
+        ConstantShader* cShader = new ConstantShader();
+        cShader->color(Color(1,1,1));
+        ext->shader(cShader);
+        pPacman->setExt(ext);
+    }
+    
     
     pPacman->setWindow(pWindow);
     pPacman->setField(pField);
@@ -92,14 +108,8 @@ void Game::createPacman(GLFWwindow* pWindow, Color primary, Color secondary, flo
     ConstantShader* pShader = new ConstantShader();
     pShader->color(Color(1.0f, 0, 0));
     pModel->shader(pShader, true);
+    //pModel->transform(pPacman->transform());
     pPacman->setArrow(pModel);
-    
-    Model* ext = new Model(ASSET_DIRECTORY "single-ghost-ext.dae");
-    ConstantShader* cShader = new ConstantShader();
-    cShader->color(Color(1,1,1));
-    ext->shader(cShader);
-    pPacman->setExt(ext);
-    
     
 }
 

@@ -10,7 +10,7 @@ void Point::init(int posX, int posZ) {
 	float height = LO_HEIGHT + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (HI_HEIGHT - LO_HEIGHT)));
 	if (LIGHTING) {
 		this->pPointLight = new PointLight();
-		this->pPointLight->color(Color(255.0f / 255.0f, 184.0f / 255.0f, 174.0f / 255.0f));
+        this->pPointLight->color(Color(255.0f / 255.0f, 184.0f / 255.0f, 174.0f / 255.0f));
 		this->pPointLight->attenuation(Vector(1.0f, 1.0f, 1.0f));
 		ShaderLightMapper::instance().addLight(this->pPointLight);
 	}

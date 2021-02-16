@@ -121,5 +121,6 @@ void Application::createScene()
     
     pGame = new Game();
     pGame->start(pWindow, Cam);
+    this->Paccam.setObj(pGame->getPacman());
 
 }

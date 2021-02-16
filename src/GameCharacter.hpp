@@ -38,6 +38,7 @@ public:
 	* @param pShader to use for the character
 	*/
 	GameCharacter(int posX, float y, int posZ, const char* ModelFile, bool FitSize);
+    GameCharacter(int posX, float y, int posZ);
 	~GameCharacter();
 	void setWindow(GLFWwindow* window) { pWindow = window; }
 	void setField(Field* field) { pField = field; }

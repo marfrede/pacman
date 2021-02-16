@@ -71,6 +71,7 @@ void Field::createPoints() {
 	Points.clear();
 	Color pointCol(255.0f / 255.0f, 184.0f / 255.0f, 174.0f / 255.0f);
 	this->pShaderPoint->color(pointCol);
+    /*
 	for (int z = 0; z < PLANE_DEPTH; z++) {
 		for (int x = 0; x < PLANE_WIDTH; x++) {
 			if (this->fieldTypesMap[z * PLANE_WIDTH + x] == FieldType::Point) {
@@ -81,11 +82,13 @@ void Field::createPoints() {
 				);
 			}
 		}
-	}
+	}*/
 	// test one point
-	/*Points.push_back(
-		new Point(PLANE_WIDTH, PLANE_DEPTH, 10, 10, 0.12f, this->pPhongShaderPoint)
-	);*/
+    Points.insert(
+        std::pair<std::pair<int, int>, Point*>(
+            std::pair<int, int>(15, 15),
+            new Point(15, 15, 0.12f, this->pShaderPoint))
+    );
 }
 
 bool Field::removePoint(int x, int z) {
