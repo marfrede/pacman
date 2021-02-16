@@ -18,6 +18,11 @@ Pacman::Pacman(int posX, int posZ, const char* ModelFile, bool FitSize) : GameCh
 	this->shader(pPhongShader, true);
 }
 
+void Pacman::draw(const Camera Cam) {
+    GameCharacter::draw(Cam);
+    this->arrow->draw(Cam);
+}
+
 void Pacman::steer(float dtime) {
 	// std::cout << "Pacman steer!" << std::endl;
 
@@ -65,6 +70,43 @@ void Pacman::steer(float dtime) {
 		<< fieldTypeToString(this->getFieldTypeInFront()) << "\t"
 		<< orientationToString(this->getOrientation()) << "\t"
 		<< (this->checkFront() ? "can go" : "can not go") << std::endl;
+}
+
+void Pacman::adjustArrow(Field* pField) {
+    /*
+    Vector arrPos = this->arrow->transform().translation();
+    Vector target = Vector(0,0,0);
+    Point* closest = NULL;
+    float closestDistance = 999999;
+    Vector xAxis(1, 0, 0);
+    
+    for (auto const& point : pField->getPoints()) {
+        Vector diff =  point.second->transform().translation() - arrPos;
+        if(diff.length() < closestDistance) {
+            closest = point.second;
+            target = diff;
+            closestDistance = diff.length();
+        }
+    }
+    
+    target.normalize();
+    
+    float angle = acos(target.dot(xAxis));
+    
+    if (arrPos.Z < target.Z) {
+        angle = 2 * M_PI - angle;
+    }
+    if (isnan(angle)) { // seltener grenzfall, wenn targetDir und tankPos parallel
+        if (arrPos.X > target.X) angle = 0;
+        else angle = M_PI;
+    }
+    Matrix curTransf = this->arrow->transform();
+    curTransf.m00 = cos(angle);
+    curTransf.m02 = cos(angle);
+    curTransf.m20 = cos(angle);
+    curTransf.m22 = sin(angle);
+    this->arrow->transform(curTransf);
+     */
 }
 
 void Pacman::moveSubs() {

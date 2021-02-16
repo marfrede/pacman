@@ -26,11 +26,12 @@ public:
     * @param pPhongShader to use for the pacman
 	*/
 	Pacman(int posX, int posZ, const char* ModelFile, bool FitSize);
+    
+    void draw(const Camera Cam);
+    void moveSubs();
 
     void setArrow(BaseModel* arrow) {this->arrow = arrow;}
-
-	//void update(float dtime);
-    void moveSubs();
+    void adjustArrow(Field* pField);
 
 	/**
 	 STEERING
@@ -46,7 +47,7 @@ public:
 	//void movePaccam();
 
 private:
-
+    
     BaseModel* arrow;
 
 };

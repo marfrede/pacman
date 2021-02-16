@@ -18,6 +18,8 @@
 #include "vertexbuffer.h"
 #include "indexbuffer.h"
 #include "basemodel.h"
+#include "GameMode.h"
+#include "Game.hpp"
 #include "Wall.h"
 #include "Pacman.hpp"
 #include "Ghost.hpp"
@@ -28,25 +30,23 @@ class Application
 {
 public:
     typedef std::list<BaseModel*> ModelList;
-    typedef std::list<Ghost*> GhostList;
     Application(GLFWwindow* pWin);
     void start();
     void update(float dtime);
     void draw();
     void end();
 protected:
-    bool gameMode = false;
 	void createScene();
-	void createNormalTestScene();
-	void createShadowTestScene();
+    
+    GameMode gamemode = GameMode::Debug;
+    Game* pGame;
+    
     Camera Cam;
     EgoCam Paccam;
-    Field* pField;
+    
     ModelList Models;
-    GhostList Ghosts;
     GLFWwindow* pWindow;
-	BaseModel* pModel;
-    Pacman* pPacman;
+    BaseModel* pModel;
 	ShadowMapGenerator ShadowGenerator;
 };
 
