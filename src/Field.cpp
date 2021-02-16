@@ -93,8 +93,9 @@ bool Field::removePoint(int x, int z) {
 		return false;
 	}
 	this->fieldTypesMap[z * PLANE_WIDTH + x] = FieldType::Free;
-	delete this->Points.at(std::pair<int, int>(x, z));
-	this->Points.erase(std::pair<int, int>(x, z));
+	//delete this->Points.at(std::pair<int, int>(x, z));
+    this->Points.at(std::pair<int, int>(x, z))->ppe.trigger();
+	//this->Points.erase(std::pair<int, int>(x, z));
 	return false;
 }
 
@@ -106,12 +107,14 @@ void Field::draw(const Camera camera) {
 	}
 	for (auto const& point : this->Points) {
 		point.second->draw(camera);
+        point.second->ppe.draw(camera);
 	}
 }
 
 void Field::update(float dtime) {
 	for (auto const& point : this->Points) {
 		point.second->update(dtime);
+        point.second->ppe.update(dtime);
 	}
 }
 

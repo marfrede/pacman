@@ -151,7 +151,6 @@ void Application::end()
 void Application::createScene()
 {
 	Matrix m, n;
-	PhongShader* pPhongShader;
 
 	Color c = Color(1.0f, 0.7f, 1.0f);
 	Vector a = Vector(1, 0, 0.1f);

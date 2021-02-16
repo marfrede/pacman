@@ -46,7 +46,6 @@ TriangleSphereModel::TriangleSphereModel( float Radius, int Stacks, int Slices )
 void TriangleSphereModel::draw(const BaseCamera& Cam)
 {
     BaseModel::draw(Cam);
-    
     VB.activate();
     IB.activate();
     glDrawElements(GL_TRIANGLES, IB.indexCount(), IB.indexFormat(), 0);
