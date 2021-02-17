@@ -57,16 +57,22 @@ void Application::update(float dtime)
 {
     //Menüauswahl
     //Bei Start
-
+    
     pGame->update(dtime);
-
-	if (pGame->getGameMode() == GameMode::FirstPerson) {
-		Paccam.update();
-	}
-	else {
-		Cam.update();
-	}
-
+    
+    if(this->pGame->isGameOver()) {
+        
+        std::cout << "GAME IS OVER!" << std::endl;
+        this->pGame->start(pWindow);
+        
+    }
+        
+        if (pGame->getGameMode() == GameMode::FirstPerson) {
+            Paccam.update();
+        }
+        else {
+            Cam.update();
+        }
 	
 }
 
@@ -120,7 +126,8 @@ void Application::createScene()
 	//Models.push_back(pModel);
     
     pGame = new Game();
-    pGame->start(pWindow, Cam);
+    this->pGame->createGameScene(pWindow);
     this->Paccam.setObj(pGame->getPacman());
+    Cam.update();
 
 }

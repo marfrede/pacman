@@ -45,6 +45,8 @@ public:
 	void setPointLight(PointLight* pL) { pointLight = pL; }
 	void setSpotLight(SpotLight* sL) { spotLight = sL; }
     void setExt(Model* ext) {this->ext = ext;}
+    void setSpawnLocation(int x, int y);
+    std::pair<int, int> getSpawnLocation() {return this->spawnLocation;}
 
 	virtual void update(float dtime);
     void draw(const Camera Cam);
@@ -91,6 +93,8 @@ public:
     */
     bool checkRight();
 
+    void reset();
+    
 	//Sub Movement
     virtual void moveSubs();
 
@@ -118,7 +122,9 @@ protected:
     Model* ext = NULL;
 
 	GLFWwindow* pWindow;
-
+    
+    //Spawning
+    std::pair<int, int> spawnLocation;
 	//STEERING
 	//Rotation
 	float angleToTurn;

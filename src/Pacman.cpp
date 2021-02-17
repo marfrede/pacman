@@ -9,13 +9,22 @@
 #include "Pacman.hpp"
 #include "math.h"
 
-Pacman::Pacman(int posX, int posZ, const char* ModelFile, bool FitSize) : GameCharacter(posX, 0.5f, posZ) {
-	Color yellow(249.0f / 250.0f, 250.0f / 250.0f, 6.0f / 250.0f);
-	PhongShader* pPhongShader = new PhongShader();
-	pPhongShader->ambientColor(yellow);
-	pPhongShader->diffuseColor(yellow);
-	pPhongShader->specularColor(yellow);
-	this->shader(pPhongShader, true);
+Pacman::Pacman(int posX, int posZ, const char* ModelFile, bool FitSize) : GameCharacter(posX, 0.5f, posZ, ModelFile, FitSize) {
+    Color yellow(249.0f / 250.0f, 250.0f / 250.0f, 6.0f / 250.0f);
+    PhongShader* pPhongShader = new PhongShader();
+    pPhongShader->ambientColor(yellow);
+    pPhongShader->diffuseColor(yellow);
+    pPhongShader->specularColor(yellow);
+    this->shader(pPhongShader, true);
+}
+
+Pacman::Pacman(int posX, int posZ) : GameCharacter(posX, 0.5f, posZ) {
+    Color yellow(249.0f / 250.0f, 250.0f / 250.0f, 6.0f / 250.0f);
+    PhongShader* pPhongShader = new PhongShader();
+    pPhongShader->ambientColor(yellow);
+    pPhongShader->diffuseColor(yellow);
+    pPhongShader->specularColor(yellow);
+    this->shader(pPhongShader, true);
 }
 
 void Pacman::draw(const Camera Cam) {
@@ -63,13 +72,13 @@ void Pacman::steer(float dtime) {
 	}
 
 	// pacman, print your infos:
-	std::cout
+	/*std::cout
 		<< this->getFieldPosition().first << ", "
 		<< this->getFieldPosition().second << "\t"
 		<< fieldTypeToString(this->getFieldType()) << "\t"
 		<< fieldTypeToString(this->getFieldTypeInFront()) << "\t"
 		<< orientationToString(this->getOrientation()) << "\t"
-		<< (this->checkFront() ? "can go" : "can not go") << std::endl;
+		<< (this->checkFront() ? "can go" : "can not go") << std::endl;*/
 }
 
 void Pacman::adjustArrow(Field* pField) {

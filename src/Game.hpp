@@ -24,7 +24,8 @@ public:
     
     BaseModel* getPacman();
     
-    void start(GLFWwindow* pWindow, const Camera Cam); //Platziert Pacman und Geister auf dem Feld
+    void createGameScene(GLFWwindow* pWindow); //Erstellt Feld und platziert Pacman und Geister auf dem Feld
+    void start(GLFWwindow* pWindow);
     void createGameModels(GLFWwindow* pWindow);
     void createGhost(GLFWwindow* pWindow, Color primary, Color secondary, float posX, float posZ);
     void createPacman(GLFWwindow* pWindow, Color primary, Color secondary, float posX, float posZ);
@@ -35,14 +36,19 @@ public:
     void update(float dtime); //Updated Pacman und Geister
     void draw(const Camera camera);
     
-    bool gameOver(); //Prüfe Abbruchbedingungen - prüfe Feld pointsEmpty
+    
+    
+    void checkGameOver();
+    bool isGameOver() {return this->gameOver;} //Prüfe Abbruchbedingungen - prüfe Feld pointsEmpty
     void end();
     
 private:
-    GameMode gamemode = GameMode::FirstPerson;
+    GameMode gamemode = GameMode::Debug;
     Field* pField;
     GhostList Ghosts;
     Pacman* pPacman;
+    
+    bool gameOver = true;
 };
 
 #endif /* Game_hpp */

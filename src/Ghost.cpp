@@ -15,7 +15,7 @@ Ghost::Ghost(int posX, int posZ, Color c, const char* ModelFile, bool FitSize) :
 }
 
 Ghost::~Ghost() {
-    //delete this->pShader; (BaseModel does it)
+    GameCharacter::~GameCharacter();
 }
 
 void Ghost::steer(float dtime) {
