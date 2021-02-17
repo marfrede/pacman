@@ -32,17 +32,19 @@ public:
 	~Field();
 	typedef std::list<BaseModel*> ModelList;
 	typedef std::map<std::pair<int, int>, Point*> PointList;
-	ModelList getWalls() { return this->Walls; }
+
+	void reset();
 
 	/* get fieldtype (wall / point / free) in any field @param x | posX (0 - 29) @param z | posZ (0 - 32) */
 	FieldType getFieldType(int x, int z);
-    PointList getPoints() {return this->Points;}
 
 	/**
 	* removes the point on the given position
 	* @return true | when pacman has eaten the point, false | when there was no point at all on this field
 	*/
+	Vector closestPointPos(Vector origin);
 	bool removePoint(int posX, int posZ);
+	bool pointsLeft();
 
 	void draw(const Camera camera);
 	void update(float dtime);
