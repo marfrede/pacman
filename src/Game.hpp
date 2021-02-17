@@ -36,14 +36,12 @@ public:
     void update(float dtime); //Updated Pacman und Geister
     void draw(const Camera camera);
     
-    
-    
-    void checkGameOver();
-    bool isGameOver() {return this->gameOver;} //Prüfe Abbruchbedingungen - prüfe Feld pointsEmpty
+    void checkGameOver(); //Prüfe Abbruchbedingungen - prüfe Feld pointsEmpty
+    bool isGameOver() {return this->gameOver;}
     void end();
     
 private:
-    GameMode gamemode = GameMode::Debug;
+    GameMode gamemode = GameMode::FirstPerson;
     Field* pField;
     GhostList Ghosts;
     Pacman* pPacman;

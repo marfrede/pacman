@@ -82,26 +82,29 @@ void Pacman::steer(float dtime) {
 }
 
 void Pacman::adjustArrow(Field* pField) {
-    
+
     Vector arrPos = this->arrow->transform().translation();
     Vector target = Vector(0,0,0);
     float closestDistance = 999999;
     
-    for (auto const& point : pField->getPoints()) {
-        Vector target = arrPos - point.second->transform().translation();
-        if(target.length() < closestDistance) {
-            closestDistance = target.length();
-        }
-        
-    }
+    std::cout << this->arrow->transform().translation().X << std::endl;
     
+    for (auto const& point : pField->getPoints()) {
+        Vector diff = arrPos - point.second->transform().translation();
+        if(diff.length() < closestDistance) {
+            closestDistance = diff.length();
+            target = diff;
+        }
+           
+    }
+       
     //Target Vector on same height as arrow
     Vector targetH = Vector(target.X, this->arrow->transform().left().Y, target.Z);
     targetH.normalize();
-    
+       
     
     float angle = acos(targetH.dot(this->arrow->transform().left())); //Left weil das Model falsch ausgerichetet ist
-    
+       
     //Randbehandlung
     if (arrPos.Z > targetH.Z) {
         angle = 2 * M_PI - angle;
@@ -110,16 +113,15 @@ void Pacman::adjustArrow(Field* pField) {
         if (arrPos.Z < targetH.Z) angle = 0;
         else angle = M_PI;
     }
-    
+       
     Matrix mTotal, mRot, mRot2, mScale, mMov;
     mScale.scale(0.04f, 0.04f, 0.04f);
     mMov.translation(0, 3, 0);
     mRot.rotationY(angle);
     mRot2.rotationX((M_PI/2));
     mTotal = this->arrow->transform() * mScale * mMov * mRot * mRot2;
-    
+       
     this->arrow->transform(mTotal);
-    
 }
 
 void Pacman::moveSubs() {
