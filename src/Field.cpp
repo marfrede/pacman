@@ -20,6 +20,13 @@ Field::~Field() {
 	delete this->pShaderPoint;
 }
 
+void Field::reset() {
+	delete this->fieldTypesMap;
+	this->initFieldTypesMap();
+	if (SHOW_POINTS) this->createPoints();
+	return;
+}
+
 void Field::createField() {
 
 	// RED CHEQUERED LINE PLAYING FIELD
@@ -29,10 +36,10 @@ void Field::createField() {
 	//pPlane->shader(pShaderPlane, false);
 
 	// TEXTURED TRIANGLE PLAYING FIELD
-    pPlane = new TrianglePlaneModel((float)planeWidth, (float)planeDepth, (float)planeWidth, (float)planeDepth);
-    PhongShader* pPhongShader = new PhongShader();
-	pPhongShader->ambientColor(Color(0.2f,0.2f,0.2f));
-	pPhongShader->diffuseColor(Color(1.0f,1.0f,1.0f));
+	pPlane = new TrianglePlaneModel((float)planeWidth, (float)planeDepth, (float)planeWidth, (float)planeDepth);
+	PhongShader* pPhongShader = new PhongShader();
+	pPhongShader->ambientColor(Color(0.2f, 0.2f, 0.2f));
+	pPhongShader->diffuseColor(Color(1.0f, 1.0f, 1.0f));
 	pPhongShader->diffuseTexture(Texture::LoadShared(TEXTURE_DIRECTORY "dirtyBricks_C_01.dds"));
 	pPlane->shader(pPhongShader, true);
 }
@@ -67,30 +74,39 @@ void Field::createWalls() {
 	}
 }
 
+/**
+* adds the missing points. Initial all points and for further games only the ones missing.
+*/
 void Field::createPoints() {
-	Points.clear();
 	Color pointCol(255.0f / 255.0f, 184.0f / 255.0f, 174.0f / 255.0f);
 	this->pShaderPoint->color(pointCol);
-    
 	for (int z = 0; z < PLANE_DEPTH; z++) {
 		for (int x = 0; x < PLANE_WIDTH; x++) {
 			if (this->fieldTypesMap[z * PLANE_WIDTH + x] == FieldType::Point) {
-				Points.insert(
-					std::pair<std::pair<int, int>, Point*>(
-						std::pair<int, int>(x, z),
-						new Point(x, z, 0.12f, this->pShaderPoint))
-				);
+				std::map<std::pair<int, int>, Point*>::iterator it = this->Points.find(std::pair<int, int>(x, z));
+				if (it == this->Points.end()) { // no entry at x, z
+					this->Points.insert(
+						std::pair<std::pair<int, int>, Point*>(
+							std::pair<int, int>(x, z),
+							new Point(x, z, 0.12f, this->pShaderPoint))
+					);
+				}
 			}
 		}
 	}
-	// test one point
-    /*
-    Points.insert(
-        std::pair<std::pair<int, int>, Point*>(
-            std::pair<int, int>(15, 15),
-            new Point(15, 15, 0.12f, this->pShaderPoint))
-    );
-     */
+}
+Vector Field::closestPointPos(Vector origin) {
+	float closestDistance = 999999;
+	Vector target = Vector(0, 0, 0);
+	for (auto const& point : this->Points) {
+		Vector diff = origin - point.second->transform().translation();
+		if (diff.length() < closestDistance) {
+			closestDistance = diff.length();
+			target = diff;
+		}
+
+	}
+	return target;
 }
 
 bool Field::removePoint(int x, int z) {
@@ -102,6 +118,10 @@ bool Field::removePoint(int x, int z) {
 	delete this->Points.at(std::pair<int, int>(x, z));
 	this->Points.erase(std::pair<int, int>(x, z));
 	return false;
+}
+
+bool Field::pointsLeft() {
+	return !this->Points.empty();
 }
 
 void Field::draw(const Camera camera) {
