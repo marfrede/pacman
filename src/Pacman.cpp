@@ -76,53 +76,38 @@ void Pacman::adjustArrow(Field* pField) {
     
     Vector arrPos = this->arrow->transform().translation();
     Vector target = Vector(0,0,0);
-    Point* punkt = NULL;
     float closestDistance = 999999;
-    Vector xAxis(1, 0, 0);
     
     for (auto const& point : pField->getPoints()) {
-        
-        Vector diff =  arrPos - point.second->transform().translation();
-        if(diff.length() < closestDistance) {
-            punkt = point.second;
-            target = diff;
-            closestDistance = diff.length();
+        Vector target = arrPos - point.second->transform().translation();
+        if(target.length() < closestDistance) {
+            closestDistance = target.length();
         }
         
     }
-    /*
-    Matrix mTotal, rot;
-    rot.identity();
-    rot.lookAt(punkt->transform().translation(), Vector(0,1,0), this->arrow->transform().translation());
-    mTotal = this->arrow->transform() * rot;
-    this->arrow->transform(rot);
-     */
-    /*
-    Matrix current;
-    current.lookAt(closest->transform().translation(), Vector(0,1,0), this->arrow->transform().translation());
-    Matrix mTotal;
-    mTotal = this->transform() * current;
-    this->arrow->transform(mTotal);
-     */
+    
+    //Target Vector on same height as arrow
+    Vector targetH = Vector(target.X, this->arrow->transform().left().Y, target.Z);
+    targetH.normalize();
     
     
-    target.normalize();
+    float angle = acos(targetH.dot(this->arrow->transform().left())); //Left weil das Model falsch ausgerichetet ist
     
-    float angle = acos(target.dot(this->arrow->transform().left()));
-    
-    
-    if (arrPos.X > target.X) {
+    //Randbehandlung
+    if (arrPos.Z > targetH.Z) {
         angle = 2 * M_PI - angle;
     }
-    if (isnan(angle)) { // seltener grenzfall, wenn targetDir und tankPos parallel
-        if (arrPos.Z < target.Z) angle = 0;
+    if (isnan(angle)) { // seltener Grenzfall bei gleicher Ausrichtung
+        if (arrPos.Z < targetH.Z) angle = 0;
         else angle = M_PI;
     }
     
-    Matrix mTotal, rot, mScale;
-    mScale.scale(0.5f, 0.5f, 0.5f);
-    rot.rotationY(angle);
-    mTotal = this->arrow->transform() * mScale * rot;
+    Matrix mTotal, mRot, mRot2, mScale, mMov;
+    mScale.scale(0.04f, 0.04f, 0.04f);
+    mMov.translation(0, 3, 0);
+    mRot.rotationY(angle);
+    mRot2.rotationX((M_PI/2));
+    mTotal = this->arrow->transform() * mScale * mMov * mRot * mRot2;
     
     this->arrow->transform(mTotal);
     
@@ -134,13 +119,10 @@ void Pacman::moveSubs() {
 
 	if (arrow) {
         
-		Matrix mTotal, mMov, mScale, mRot, mTrans;
-		//mMov.translation(this->transform().forward().X, this->transform().forward().Y+0.25, this->transform().forward().Z+0.5);
-        mMov.translation(this->transform().forward()*1.15);;
-        //mScale.scale(0.5f, 0.5f, 0.5f);
-        mRot.rotationY(-(M_PI/2));
+		Matrix mTotal, mMov, mTrans;
+        mMov.translation(this->transform().forward()*0.25);;
         mTrans.translation(this->transform().translation());
-        mTotal = mTrans * mMov * mRot;
+        mTotal = mTrans * mMov;
 
 		this->arrow->transform(mTotal);
          

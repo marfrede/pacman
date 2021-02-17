@@ -39,7 +39,7 @@ public:
     void end();
     
 private:
-    GameMode gamemode = GameMode::Debug;
+    GameMode gamemode = GameMode::FirstPerson;
     Field* pField;
     GhostList Ghosts;
     Pacman* pPacman;
