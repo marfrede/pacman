@@ -21,12 +21,11 @@ GameCharacter::GameCharacter(int posX, float y, int posZ, const char* ModelFile,
 
 GameCharacter::GameCharacter(int posX, float y, int posZ) : Model() {
     Matrix t;
-    t.translation(
-        0.5f + (float)posX - ((float)PLANE_WIDTH) / 2.0f,
-        y,
-        0.5f + (float)posZ - ((float)PLANE_DEPTH) / 2.0f
-    );
+    float x = 0.5f + (float)posX - ((float)PLANE_WIDTH) / 2.0f;
+    float z = 0.5f + (float)posZ - ((float)PLANE_DEPTH) / 2.0f;
+    t.translation(x, y, z);
     this->transform(t);
+    this->setSpawnLocation(posX, posZ);
     angleToTurn = 0.0f;
 }
 

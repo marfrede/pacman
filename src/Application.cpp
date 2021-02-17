@@ -67,12 +67,12 @@ void Application::update(float dtime)
         
     }
         
-        if (pGame->getGameMode() == GameMode::FirstPerson) {
-            Paccam.update();
-        }
-        else {
-            Cam.update();
-        }
+    if (pGame->getGameMode() == GameMode::FirstPerson) {
+        Paccam.update();
+    }
+    else {
+        Cam.update();
+    }
 	
 }
 

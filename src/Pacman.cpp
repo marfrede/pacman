@@ -83,6 +83,8 @@ void Pacman::steer(float dtime) {
 
 void Pacman::adjustArrow(Field* pField) {
     
+    std::cout << "Adjust Arrow" << std::endl;
+    
     Vector arrPos = this->arrow->transform().translation();
     Vector target = Vector(0,0,0);
     float closestDistance = 999999;
