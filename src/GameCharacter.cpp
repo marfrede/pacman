@@ -20,6 +20,17 @@ GameCharacter::GameCharacter(int posX, float y, int posZ, const char* ModelFile,
 	angleToTurn = 0.0f;
 }
 
+GameCharacter::GameCharacter(int posX, float y, int posZ) : Model() {
+    Matrix t;
+    t.translation(
+        0.5f + (float)posX - ((float)PLANE_WIDTH) / 2.0f,
+        y,
+        0.5f + (float)posZ - ((float)PLANE_DEPTH) / 2.0f
+    );
+    this->transform(t);
+    angleToTurn = 0.0f;
+}
+
 GameCharacter::~GameCharacter() {
 }
 
@@ -33,7 +44,9 @@ void GameCharacter::draw(const Camera Cam) {
     
     Model::draw(Cam);
     
-    this->ext->draw(Cam);
+    if(ext) {
+        this->ext->draw(Cam);
+    }
     
 }
 /*

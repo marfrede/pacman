@@ -22,7 +22,7 @@
 #define SHOW_WALLS true
 #define SHOW_POINTS true
 
-#define WALL_HEIGHT 0.3f
+#define WALL_HEIGHT 1.5f
 #define WALL_PADDING 0.0f
 
 class Field

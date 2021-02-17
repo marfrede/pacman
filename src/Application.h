@@ -38,10 +38,9 @@ public:
 protected:
 	void createScene();
     
-    GameMode gamemode = GameMode::Debug;
     Game* pGame;
     
-    Camera Cam;
+    Camera Cam = NULL;
     EgoCam Paccam;
     
     ModelList Models;

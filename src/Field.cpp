@@ -24,16 +24,17 @@ void Field::createField() {
 
 	// RED CHEQUERED LINE PLAYING FIELD
 	int planeWidth = 30, planeDepth = 33;
-	pPlane = new LinePlaneModel((float)planeWidth, (float)planeDepth, (float)planeWidth, (float)planeDepth);
-	pShaderPlane->color(Color(1, 0, 0));
-	pPlane->shader(pShaderPlane, false);
+	//pPlane = new LinePlaneModel((float)planeWidth, (float)planeDepth, (float)planeWidth, (float)planeDepth);
+	//pShaderPlane->color(Color(1, 0, 0));
+	//pPlane->shader(pShaderPlane, false);
 
 	// TEXTURED TRIANGLE PLAYING FIELD
- //   pPlane = new TrianglePlaneModel(30, 33, 10, 10);
-	//pPhongShader->ambientColor(Color(0.2f,0.2f,0.2f));
-	//pPhongShader->diffuseColor(Color(1.0f,1.0f,1.0f));
-	//pPhongShader->diffuseTexture(Texture::LoadShared(TEXTURE_DIRECTORY "dirtyBricks_C_01.dds"));
-	//pPlane->shader(pPhongShader, true);
+    pPlane = new TrianglePlaneModel((float)planeWidth, (float)planeDepth, (float)planeWidth, (float)planeDepth);
+    PhongShader* pPhongShader = new PhongShader();
+	pPhongShader->ambientColor(Color(0.2f,0.2f,0.2f));
+	pPhongShader->diffuseColor(Color(1.0f,1.0f,1.0f));
+	pPhongShader->diffuseTexture(Texture::LoadShared(TEXTURE_DIRECTORY "dirtyBricks_C_01.dds"));
+	pPlane->shader(pPhongShader, true);
 }
 
 void Field::createWalls() {
@@ -70,6 +71,7 @@ void Field::createPoints() {
 	Points.clear();
 	Color pointCol(255.0f / 255.0f, 184.0f / 255.0f, 174.0f / 255.0f);
 	this->pShaderPoint->color(pointCol);
+    
 	for (int z = 0; z < PLANE_DEPTH; z++) {
 		for (int x = 0; x < PLANE_WIDTH; x++) {
 			if (this->fieldTypesMap[z * PLANE_WIDTH + x] == FieldType::Point) {
@@ -82,9 +84,13 @@ void Field::createPoints() {
 		}
 	}
 	// test one point
-	/*Points.push_back(
-		new Point(PLANE_WIDTH, PLANE_DEPTH, 10, 10, 0.12f, this->pPhongShaderPoint)
-	);*/
+    /*
+    Points.insert(
+        std::pair<std::pair<int, int>, Point*>(
+            std::pair<int, int>(15, 15),
+            new Point(15, 15, 0.12f, this->pShaderPoint))
+    );
+     */
 }
 
 bool Field::removePoint(int x, int z) {

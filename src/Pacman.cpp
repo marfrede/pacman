@@ -9,7 +9,7 @@
 #include "Pacman.hpp"
 #include "math.h"
 
-Pacman::Pacman(int posX, int posZ, const char* ModelFile, bool FitSize) : GameCharacter(posX, 0.5f, posZ, ModelFile, FitSize) {
+Pacman::Pacman(int posX, int posZ, const char* ModelFile, bool FitSize) : GameCharacter(posX, 0.5f, posZ) {
 	Color yellow(249.0f / 250.0f, 250.0f / 250.0f, 6.0f / 250.0f);
 	PhongShader* pPhongShader = new PhongShader();
 	pPhongShader->ambientColor(yellow);
@@ -73,40 +73,44 @@ void Pacman::steer(float dtime) {
 }
 
 void Pacman::adjustArrow(Field* pField) {
-    /*
+    
     Vector arrPos = this->arrow->transform().translation();
     Vector target = Vector(0,0,0);
-    Point* closest = NULL;
     float closestDistance = 999999;
-    Vector xAxis(1, 0, 0);
     
     for (auto const& point : pField->getPoints()) {
-        Vector diff =  point.second->transform().translation() - arrPos;
-        if(diff.length() < closestDistance) {
-            closest = point.second;
-            target = diff;
-            closestDistance = diff.length();
+        Vector target = arrPos - point.second->transform().translation();
+        if(target.length() < closestDistance) {
+            closestDistance = target.length();
         }
+        
     }
     
-    target.normalize();
+    //Target Vector on same height as arrow
+    Vector targetH = Vector(target.X, this->arrow->transform().left().Y, target.Z);
+    targetH.normalize();
     
-    float angle = acos(target.dot(xAxis));
     
-    if (arrPos.Z < target.Z) {
+    float angle = acos(targetH.dot(this->arrow->transform().left())); //Left weil das Model falsch ausgerichetet ist
+    
+    //Randbehandlung
+    if (arrPos.Z > targetH.Z) {
         angle = 2 * M_PI - angle;
     }
-    if (isnan(angle)) { // seltener grenzfall, wenn targetDir und tankPos parallel
-        if (arrPos.X > target.X) angle = 0;
+    if (isnan(angle)) { // seltener Grenzfall bei gleicher Ausrichtung
+        if (arrPos.Z < targetH.Z) angle = 0;
         else angle = M_PI;
     }
-    Matrix curTransf = this->arrow->transform();
-    curTransf.m00 = cos(angle);
-    curTransf.m02 = cos(angle);
-    curTransf.m20 = cos(angle);
-    curTransf.m22 = sin(angle);
-    this->arrow->transform(curTransf);
-     */
+    
+    Matrix mTotal, mRot, mRot2, mScale, mMov;
+    mScale.scale(0.04f, 0.04f, 0.04f);
+    mMov.translation(0, 3, 0);
+    mRot.rotationY(angle);
+    mRot2.rotationX((M_PI/2));
+    mTotal = this->arrow->transform() * mScale * mMov * mRot * mRot2;
+    
+    this->arrow->transform(mTotal);
+    
 }
 
 void Pacman::moveSubs() {
@@ -114,14 +118,14 @@ void Pacman::moveSubs() {
 	GameCharacter::moveSubs();
 
 	if (arrow) {
-		Matrix mTotal, mMov, mScale, mRot;
-		mMov.translation(0, 0.25, 0.5);
-		mScale.scale(0.05f, 0.05f, 0.05f);
-		mRot.rotationY(90);
-
-		mTotal = this->transform() * mMov * mScale * mRot;
+        
+		Matrix mTotal, mMov, mTrans;
+        mMov.translation(this->transform().forward()*0.25);;
+        mTrans.translation(this->transform().translation());
+        mTotal = mTrans * mMov;
 
 		this->arrow->transform(mTotal);
+         
 	}
 
 }
