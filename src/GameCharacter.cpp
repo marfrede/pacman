@@ -11,12 +11,11 @@
 
 GameCharacter::GameCharacter(int posX, float y, int posZ, const char* ModelFile, bool FitSize) : Model(ModelFile, FitSize) {
 	Matrix t;
-	t.translation(
-		0.5f + (float)posX - ((float)PLANE_WIDTH) / 2.0f,
-		y,
-		0.5f + (float)posZ - ((float)PLANE_DEPTH) / 2.0f
-	);
+    float x = 0.5f + (float)posX - ((float)PLANE_WIDTH) / 2.0f;
+    float z = 0.5f + (float)posZ - ((float)PLANE_DEPTH) / 2.0f;
+	t.translation(x, y, z);
 	this->transform(t);
+    this->setSpawnLocation(posX, posZ);
 	angleToTurn = 0.0f;
 }
 
@@ -48,6 +47,11 @@ void GameCharacter::draw(const Camera Cam) {
         this->ext->draw(Cam);
     }
     
+}
+
+void GameCharacter::setSpawnLocation(int x, int y) {
+    this->spawnLocation.first = x;
+    this->spawnLocation.second = y;
 }
 /*
 void GameCharacter::steer(float dtime) {
@@ -270,6 +274,18 @@ FieldType GameCharacter::getFieldTypeToRight() {
         posOnField.first,
         posOnField.second
     );
+}
+
+void GameCharacter::reset() {
+    Matrix t;
+    float x = 0.5f + (float)spawnLocation.first - ((float)PLANE_WIDTH) / 2.0f;
+    float z = 0.5f + (float)spawnLocation.second - ((float)PLANE_DEPTH) / 2.0f;
+    
+    t.translation(x, 0.8f, z);
+    this->transform(t);
+    
+    this->angleToTurn = 0.0f;
+    this->moveUnits = 0;
 }
 
 void GameCharacter::moveSubs() {

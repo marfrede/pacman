@@ -19,7 +19,7 @@
 #include "EgoCam.hpp"
 
 Game::Game() {
-    pField = new Field();
+    
 }
 
 BaseModel* Game::getPacman() {
@@ -37,6 +37,10 @@ void Game::update(float dtime) {
     this->pPacman->update(dtime);
     this->pPacman->adjustArrow(pField);
     
+    //if(this->gamemode != GameMode::Debug) {
+        this->checkGameOver();
+    //}
+    
 }
 
 void Game::draw(const Camera Cam)
@@ -51,9 +55,22 @@ void Game::draw(const Camera Cam)
     
 }
 
-void Game::start(GLFWwindow* pWindow, const Camera Cam) {
- 
+void Game::createGameScene(GLFWwindow* pWindow) {
+    
+    pField = new Field();
     this->createGameModels(pWindow);
+    
+}
+
+void Game::start(GLFWwindow* pWindow) {
+ 
+    for (auto const& ghost : this->Ghosts) {
+        ghost->reset();
+    }
+    
+    pPacman->reset();
+    
+    this->gameOver = false;
     
 }
 
@@ -82,13 +99,9 @@ void Game::createGameModels(GLFWwindow* pWindow) {
 void Game::createPacman(GLFWwindow* pWindow, Color primary, Color secondary, float posX, float posZ) {
     
     if(gamemode == GameMode::FirstPerson) {
-        pPacman = new Pacman(posX, posZ, ASSET_DIRECTORY "single-ghost-ext.dae", false);
         
-        /*Model* ext = new Model(ASSET_DIRECTORY "single-ghost-ext.dae");
-        ConstantShader* cShader = new ConstantShader();
-        cShader->color(Color(1,1,1));
-        ext->shader(cShader);
-        pPacman->setExt(ext);*/
+        pPacman = new Pacman(posX, posZ);
+        
     } else {
         pPacman = new Pacman(posX, posZ, ASSET_DIRECTORY "single-ghost-complete.dae", false);
         
@@ -108,27 +121,26 @@ void Game::createPacman(GLFWwindow* pWindow, Color primary, Color secondary, flo
     ConstantShader* pShader = new ConstantShader();
     pShader->color(Color(1.0f, 0, 0));
     pModel->shader(pShader, true);
-    //pModel->transform(pPacman->transform());
     pPacman->setArrow(pModel);
     
 }
 
-bool Game::gameOver() {
+void Game::checkGameOver() {
     
     if(pField->getPoints().empty()) {
-        std::cout << "SIEG DURCH PUNKTE!" << std::endl;
-        return true;
+        this->gameOver = true;
+        return;
     }
 
     for (auto const& ghost : this->Ghosts) {
         Vector diff = pPacman->transform().translation() - ghost->transform().translation();
         if(diff.length() < 1) {
-            std::cout << "NIEDERLAGE DURCH GEISTER" << std::endl;
-            return true;
+            this->gameOver = true;
+            return;
         }
     }
     
-    return false;
+    this->gameOver = false;
     
 }
 
@@ -147,12 +159,14 @@ void Game::createGhost(GLFWwindow* pWindow, Color primary, Color secondary, floa
     g->setExt(ext);
     g->setWindow(pWindow);
     g->setField(pField);
+    
     // point light
     PointLight* pl = new PointLight();
     pl->color(primary);
     pl->attenuation(a);
     ShaderLightMapper::instance().addLight(pl);
     g->setPointLight(pl);
+    
     // spot light
     SpotLight* sl = new SpotLight();
     sl->color(primary);

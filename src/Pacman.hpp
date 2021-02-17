@@ -26,6 +26,7 @@ public:
     * @param pPhongShader to use for the pacman
 	*/
 	Pacman(int posX, int posZ, const char* ModelFile, bool FitSize);
+    Pacman(int posX, int posZ);
     
     void draw(const Camera Cam);
     void moveSubs();
