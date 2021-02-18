@@ -21,6 +21,8 @@ EgoCam::EgoCam(GLFWwindow* pWin, BaseModel* bm) : Camera(pWin)
 
 void EgoCam::update() {
     
+    std::cout << "EGO!" << std::endl;
+    
     Vector Pos = obj->transform().translation(); //m_Position + m_Panning + m_Zoom + m_Rotation;
     Vector Target = obj->transform().translation() + obj->transform().forward(); //m_Target + m_Panning;
     m_ViewMatrix.lookAt(Target, m_Up, Pos);

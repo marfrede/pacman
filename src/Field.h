@@ -23,7 +23,7 @@
 #define SHOW_WALLS true
 #define SHOW_POINTS true
 
-#define WALL_HEIGHT 5.5f
+#define WALL_HEIGHT 1.0f
 #define WALL_PADDING 0.0f
 
 #define POINT_RADIUS 0.03f

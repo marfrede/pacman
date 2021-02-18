@@ -145,8 +145,8 @@ void Game::checkGameOver() {
 void Game::createGhost(GLFWwindow* pWindow, Color primary, Color secondary, float posX, float posZ) {
 
 	Vector a = Vector(1, 0, 0.1f);
-	float innerradius = 45;
-	float outerradius = 90;
+    float innerradius = 45;
+    float outerradius = 70;
 
 	// GHOST WHITE
 	Ghost* g = new Ghost(posX, posZ, primary, ASSET_DIRECTORY "single-ghost-body.dae", false);
@@ -168,11 +168,12 @@ void Game::createGhost(GLFWwindow* pWindow, Color primary, Color secondary, floa
 	// spot light
 	SpotLight* sl = new SpotLight();
 	sl->color(primary);
-	sl->direction(Vector(0, -1, 0));
+    sl->direction(Vector(0, 0, 1));
 	sl->innerRadius(innerradius);
 	sl->outerRadius(outerradius);
 	ShaderLightMapper::instance().addLight(sl);
 	g->setSpotLight(sl);
+ 
 	Ghosts.push_back(g);
 
 }

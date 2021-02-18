@@ -68,9 +68,14 @@ void Application::update(float dtime)
     }
         
     if (pGame->getGameMode() == GameMode::FirstPerson) {
-        Paccam.update();
-    }
-    else {
+        Cam.update(pGame->getPacman()->transform().translation() + pGame->getPacman()->transform().forward());
+        Cam.setPosition(pGame->getPacman()->transform().translation());
+        //Cam.setTarget(pGame->getPacman()->transform().forward());
+    } else if (pGame->getGameMode() == GameMode::ThirdPerson) {
+        Cam.update(pGame->getPacman()->transform().translation());
+        Vector cPos = Vector(pGame->getPacman()->transform().translation().X, 5, pGame->getPacman()->transform().translation().Z);
+        Cam.setPosition(this->pGame->getPacman()->transform().translation() + this->pGame->getPacman()->transform().backward() + this->pGame->getPacman()->transform().up() * 10);
+    } else {
         Cam.update();
     }
 	
@@ -87,9 +92,10 @@ void Application::draw()
 	// 2. setup shaders and draw models
 
     Camera currentCam = Cam;
-    if(pGame->getGameMode() == GameMode::FirstPerson) {
+    
+    /*if(pGame->getGameMode() == GameMode::FirstPerson) {
         currentCam = Paccam;
-    }
+    }*/
     
     this->pGame->draw(currentCam);
     
