@@ -18,6 +18,7 @@
 #include "FieldType.h"
 #include "FieldSizeConstants.h"
 
+#define SHOW_DEBUG_PLANE false
 #define SHOW_PLANE true
 #define SHOW_WALLS true
 #define SHOW_POINTS true
@@ -52,11 +53,11 @@ public:
 	void update(float dtime);
 	void end();
 private:
-	ConstantShader* pShaderPlane;
 	PhongShader* pShaderWall;
 	ConstantShader* pShaderPoint;
 
 	BaseModel* pPlane;
+	LinePlaneModel* pPlaneDebug;
 	ModelList Walls;
 	PointList Points;
 	void createField();

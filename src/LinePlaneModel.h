@@ -17,6 +17,7 @@ class LinePlaneModel : public BaseModel
 {
 public:
     LinePlaneModel( float DimX, float DimZ, int NumSegX, int NumSegZ );
+    LinePlaneModel( float DimX, float DimZ, int NumSegX, int NumSegZ, float y);
     virtual ~LinePlaneModel() {}
     virtual void draw(const BaseCamera& Cam);
 protected:
