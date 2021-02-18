@@ -28,20 +28,20 @@ void Field::reset() {
 }
 
 void Field::createField() {
+	int planeWidth = 30, planeDepth = 33;
 
 	// RED CHEQUERED LINE PLAYING FIELD
-	int planeWidth = 30, planeDepth = 33;
-	//pPlane = new LinePlaneModel((float)planeWidth, (float)planeDepth, (float)planeWidth, (float)planeDepth);
-	//pShaderPlane->color(Color(1, 0, 0));
-	//pPlane->shader(pShaderPlane, false);
+	pPlane = new LinePlaneModel((float)planeWidth, (float)planeDepth, (float)planeWidth, (float)planeDepth);
+	pShaderPlane->color(Color(1, 0, 0));
+	pPlane->shader(pShaderPlane, false);
 
 	// TEXTURED TRIANGLE PLAYING FIELD
-	pPlane = new TrianglePlaneModel((float)planeWidth, (float)planeDepth, (float)planeWidth, (float)planeDepth);
-	PhongShader* pPhongShader = new PhongShader();
-	pPhongShader->ambientColor(Color(0.2f, 0.2f, 0.2f));
-	pPhongShader->diffuseColor(Color(1.0f, 1.0f, 1.0f));
-	pPhongShader->diffuseTexture(Texture::LoadShared(TEXTURE_DIRECTORY "dirtyBricks_C_01.dds"));
-	pPlane->shader(pPhongShader, true);
+	//pPlane = new TrianglePlaneModel((float)planeWidth, (float)planeDepth, (float)planeWidth, (float)planeDepth);
+	//PhongShader* pPhongShader = new PhongShader();
+	//pPhongShader->ambientColor(Color(0.2f, 0.2f, 0.2f));
+	//pPhongShader->diffuseColor(Color(1.0f, 1.0f, 1.0f));
+	//pPhongShader->diffuseTexture(Texture::LoadShared(TEXTURE_DIRECTORY "dirtyBricks_C_01.dds"));
+	//pPlane->shader(pPhongShader, true);
 }
 
 void Field::createWalls() {
@@ -197,6 +197,8 @@ void Field::initWallPositions() {
 		{{17,28}, {10,2}},
 
 		// outer walls
+		{{0,14}, {1,3}}, // portal wall
+		{{29,14}, {1,3}}, // portal wall
 		{{1,1}, {28,1}},
 		{{1,2}, {1,8}}, // {{1,1}, {1,10}},
 		{{28,2}, {1,8}}, // {{28,1}, {1,10}},
@@ -263,6 +265,11 @@ void Field::initFieldTypesMap() {
 				// no points at this specific position (why Namco?)
 				if ((x == 14 || x == 15) && z == 24) {
 					this->fieldTypesMap[z * PLANE_WIDTH + x] = FieldType::Free;
+				}
+
+				// portals
+				if (z == 15 && (x == 1 || x == 28)) {
+					this->fieldTypesMap[z * PLANE_WIDTH + x] = FieldType::Portal;
 				}
 			}
 		}
