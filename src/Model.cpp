@@ -25,6 +25,7 @@ Model::Model(const char* ModelFile, bool FitSize) : pMeshes(NULL), MeshCount(0),
 }
 Model::~Model()
 {
+    
     if(pMeshes) {
         delete this->pMeshes;
     }
