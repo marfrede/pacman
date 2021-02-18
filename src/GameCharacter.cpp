@@ -11,46 +11,46 @@
 
 GameCharacter::GameCharacter(int posX, float y, int posZ, const char* ModelFile, bool FitSize) : Model(ModelFile, FitSize) {
 	Matrix t;
-    float x = 0.5f + (float)posX - ((float)PLANE_WIDTH) / 2.0f;
-    float z = 0.5f + (float)posZ - ((float)PLANE_DEPTH) / 2.0f;
+	float x = 0.5f + (float)posX - ((float)PLANE_WIDTH) / 2.0f;
+	float z = 0.5f + (float)posZ - ((float)PLANE_DEPTH) / 2.0f;
 	t.translation(x, y, z);
 	this->transform(t);
-    this->setSpawnLocation(posX, posZ);
+	this->setSpawnLocation(posX, posZ);
 	angleToTurn = 0.0f;
 }
 
 GameCharacter::GameCharacter(int posX, float y, int posZ) : Model() {
-    Matrix t;
-    float x = 0.5f + (float)posX - ((float)PLANE_WIDTH) / 2.0f;
-    float z = 0.5f + (float)posZ - ((float)PLANE_DEPTH) / 2.0f;
-    t.translation(x, y, z);
-    this->transform(t);
-    this->setSpawnLocation(posX, posZ);
-    angleToTurn = 0.0f;
+	Matrix t;
+	float x = 0.5f + (float)posX - ((float)PLANE_WIDTH) / 2.0f;
+	float z = 0.5f + (float)posZ - ((float)PLANE_DEPTH) / 2.0f;
+	t.translation(x, y, z);
+	this->transform(t);
+	this->setSpawnLocation(posX, posZ);
+	angleToTurn = 0.0f;
 }
 
 GameCharacter::~GameCharacter() {
 }
 
 void GameCharacter::update(float dtime) {
-    
-    this->steer(dtime);
-    this->moveSubs();
+
+	this->steer(dtime);
+	this->moveSubs();
 }
 
 void GameCharacter::draw(const Camera Cam) {
-    
-    Model::draw(Cam);
-    
-    if(ext) {
-        this->ext->draw(Cam);
-    }
-    
+
+	Model::draw(Cam);
+
+	if (ext) {
+		this->ext->draw(Cam);
+	}
+
 }
 
 void GameCharacter::setSpawnLocation(int x, int y) {
-    this->spawnLocation.first = x;
-    this->spawnLocation.second = y;
+	this->spawnLocation.first = x;
+	this->spawnLocation.second = y;
 }
 /*
 void GameCharacter::steer(float dtime) {
@@ -109,7 +109,9 @@ bool GameCharacter::doCurrentAction(float dtime) {
 
 	}
 	else if (moveUnits > 0) { //Check movement
-
+		if (moveUnits == 1) { // before entering the field
+			this->eat();
+		}
 		move(dtime);
 
 		return true;
@@ -183,11 +185,11 @@ bool GameCharacter::checkFront() {
 }
 
 bool GameCharacter::checkLeft() {
-    return (this->getFieldTypeToLeft() != FieldType::Wall);
+	return (this->getFieldTypeToLeft() != FieldType::Wall);
 }
 
 bool GameCharacter::checkRight() {
-    return (this->getFieldTypeToRight() != FieldType::Wall);
+	return (this->getFieldTypeToRight() != FieldType::Wall);
 }
 
 std::pair<int, int> GameCharacter::getFieldPosition() {
@@ -198,15 +200,7 @@ std::pair<int, int> GameCharacter::getFieldPosition() {
 		);
 }
 
-FieldType GameCharacter::getFieldType() {
-	std::pair<int, int> posOnField = this->getFieldPosition();
-	return this->pField->getFieldType(
-		posOnField.first,
-		posOnField.second
-	);
-}
-
-FieldType GameCharacter::getFieldTypeInFront() {
+std::pair<int, int> GameCharacter::getFieldPositionInFront() {
 	std::pair<int, int> posOnField = this->getFieldPosition();
 	switch (this->getOrientation())
 	{
@@ -223,84 +217,97 @@ FieldType GameCharacter::getFieldTypeInFront() {
 		posOnField.second++;
 		break;
 	}
+	return posOnField;
+}
+
+FieldType GameCharacter::getFieldType() {
+	std::pair<int, int> posOnField = this->getFieldPosition();
 	return this->pField->getFieldType(
 		posOnField.first,
 		posOnField.second
 	);
 }
 
+FieldType GameCharacter::getFieldTypeInFront() {
+	std::pair<int, int> posInFrontOnField = this->getFieldPositionInFront();
+	return this->pField->getFieldType(
+		posInFrontOnField.first,
+		posInFrontOnField.second
+	);
+}
+
 FieldType GameCharacter::getFieldTypeToLeft() {
-    std::pair<int, int> posOnField = this->getFieldPosition();
-    switch (this->getOrientation())
-    {
-    case Orientation::North:
-        posOnField.first--;
-        break;
-    case Orientation::East:
-        posOnField.second--;
-        break;
-    case Orientation::West:
-        posOnField.second++;
-        break;
-    default:
-        posOnField.first++;
-        break;
-    }
-    return this->pField->getFieldType(
-        posOnField.first,
-        posOnField.second
-    );
+	std::pair<int, int> posOnField = this->getFieldPosition();
+	switch (this->getOrientation())
+	{
+	case Orientation::North:
+		posOnField.first--;
+		break;
+	case Orientation::East:
+		posOnField.second--;
+		break;
+	case Orientation::West:
+		posOnField.second++;
+		break;
+	default:
+		posOnField.first++;
+		break;
+	}
+	return this->pField->getFieldType(
+		posOnField.first,
+		posOnField.second
+	);
 }
 
 FieldType GameCharacter::getFieldTypeToRight() {
-    std::pair<int, int> posOnField = this->getFieldPosition();
-    switch (this->getOrientation())
-    {
-    case Orientation::North:
-        posOnField.first++;
-        break;
-    case Orientation::East:
-        posOnField.second++;
-        break;
-    case Orientation::West:
-        posOnField.second--;
-        break;
-    default:
-        posOnField.first--;
-        break;
-    }
-    return this->pField->getFieldType(
-        posOnField.first,
-        posOnField.second
-    );
+	std::pair<int, int> posOnField = this->getFieldPosition();
+	switch (this->getOrientation())
+	{
+	case Orientation::North:
+		posOnField.first++;
+		break;
+	case Orientation::East:
+		posOnField.second++;
+		break;
+	case Orientation::West:
+		posOnField.second--;
+		break;
+	default:
+		posOnField.first--;
+		break;
+	}
+	return this->pField->getFieldType(
+		posOnField.first,
+		posOnField.second
+	);
 }
 
 void GameCharacter::reset() {
-    Matrix t;
-    float x = 0.5f + (float)spawnLocation.first - ((float)PLANE_WIDTH) / 2.0f;
-    float z = 0.5f + (float)spawnLocation.second - ((float)PLANE_DEPTH) / 2.0f;
-    
-    t.translation(x, 0.8f, z);
-    this->transform(t);
-    
-    this->angleToTurn = 0.0f;
-    this->moveUnits = 0;
+	Matrix t;
+	float x = 0.5f + (float)spawnLocation.first - ((float)PLANE_WIDTH) / 2.0f;
+	float z = 0.5f + (float)spawnLocation.second - ((float)PLANE_DEPTH) / 2.0f;
+
+	t.translation(x, 0.8f, z);
+	this->transform(t);
+
+	this->angleToTurn = 0.0f;
+	this->moveUnits = 0;
 }
 
 void GameCharacter::moveSubs() {
-    
-    if(pointLight) {
-        this->pointLight->position(this->transform().translation());
-    }
-    if(spotLight) {
-        this->spotLight->position(this->transform().translation());
-    }
-    if(ext) {
-        this->ext->transform(this->transform());
-    }
-	
+
+	if (pointLight) {
+		this->pointLight->position(this->transform().translation());
+	}
+	if (spotLight) {
+		this->spotLight->position(this->transform().translation());
+	}
+	if (ext) {
+		this->ext->transform(this->transform());
+	}
+
 }
-    
+
 Orientation GameCharacter::getOrientation() {
 	Vector orientation = this->transform().forward();
 	if (orientation.Z > 0.5f) {

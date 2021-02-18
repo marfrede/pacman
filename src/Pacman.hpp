@@ -48,7 +48,8 @@ public:
 	//void movePaccam();
 
 private:
-    
+	/** eat point */
+	void eat();
     BaseModel* arrow;
 
 };

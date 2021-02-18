@@ -65,20 +65,16 @@ void Pacman::steer(float dtime) {
 			return;
 		}
 		doCurrentAction(dtime);
-
-		// eat point
-		std::pair<int, int> pos = this->getFieldPosition();
-		this->pField->removePoint(pos.first, pos.second);
 	}
 
 	// pacman, print your infos:
-	/*std::cout
-		<< this->getFieldPosition().first << ", "
-		<< this->getFieldPosition().second << "\t"
-		<< fieldTypeToString(this->getFieldType()) << "\t"
-		<< fieldTypeToString(this->getFieldTypeInFront()) << "\t"
-		<< orientationToString(this->getOrientation()) << "\t"
-		<< (this->checkFront() ? "can go" : "can not go") << std::endl;*/
+	//std::cout
+		//<< this->getFieldPosition().first << ", "
+		//<< this->getFieldPosition().second << "\t"
+		//<< fieldTypeToString(this->getFieldType()) << "\t"
+		//<< fieldTypeToString(this->getFieldTypeInFront()) << "\t"
+		//<< orientationToString(this->getOrientation()) << "\t"
+		//<< (this->checkFront() ? "can go" : "can not go") << std::endl;
 }
 
 void Pacman::adjustArrow(Field* pField) {
@@ -129,6 +125,11 @@ void Pacman::moveSubs() {
          
 	}
 
+}
+
+void Pacman::eat() {
+    std::pair<int, int> pos = this->getFieldPositionInFront();
+    this->pField->removePoint(pos.first, pos.second);
 }
 
 
