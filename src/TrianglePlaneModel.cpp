@@ -24,13 +24,21 @@ TrianglePlaneModel::TrianglePlaneModel( float DimX, float DimZ, int NumSegX, int
         {
             VB.addNormal(0, 1, 0);
 
+            //float s0 = (float) j/(float)(NumSegX-1);
+            //float t0 = (float) i/(float)(NumSegZ-1);
+            //VB.addTexcoord0( s0, t0);
+
+            //float s1 = s0 * (float)NumSegX;
+            //float t1 = t0 * (float)NumSegZ;
+            //VB.addTexcoord1( s1, t1);
+
             float s0 = (float) j/(float)(NumSegX-1);
             float t0 = (float) i/(float)(NumSegZ-1);
-            VB.addTexcoord0( s0, t0);
+            VB.addTexcoord0( j, i);
 
             float s1 = s0 * (float)NumSegX;
             float t1 = t0 * (float)NumSegZ;
-            VB.addTexcoord1( s1, t1);
+            VB.addTexcoord1( j, i);
 
             float px = startx + j*stepx;
             float pz = startz + i*stepz;

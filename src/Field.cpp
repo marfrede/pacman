@@ -5,17 +5,15 @@ Field::Field()
 	this->initWallPositions();
 	this->initFieldTypesMap();
 
-	this->pShaderPlane = new ConstantShader();
 	this->pShaderWall = new PhongShader();
 	this->pShaderPoint = new ConstantShader();
 
-	if (SHOW_PLANE) this->createField();
-	if (SHOW_WALLS) this->createWalls();
+	this->createField();
+	this->createWalls();
 	if (SHOW_POINTS) this->createPoints();
 }
 
 Field::~Field() {
-	delete this->pShaderPlane;
 	delete this->pShaderWall;
 	delete this->pShaderPoint;
 }
@@ -28,20 +26,23 @@ void Field::reset() {
 }
 
 void Field::createField() {
-
-	// RED CHEQUERED LINE PLAYING FIELD
 	int planeWidth = 30, planeDepth = 33;
-	//pPlane = new LinePlaneModel((float)planeWidth, (float)planeDepth, (float)planeWidth, (float)planeDepth);
-	//pShaderPlane->color(Color(1, 0, 0));
-	//pPlane->shader(pShaderPlane, false);
-
-	// TEXTURED TRIANGLE PLAYING FIELD
-	pPlane = new TrianglePlaneModel((float)planeWidth, (float)planeDepth, (float)planeWidth, (float)planeDepth);
-	PhongShader* pPhongShader = new PhongShader();
-	pPhongShader->ambientColor(Color(0.2f, 0.2f, 0.2f));
-	pPhongShader->diffuseColor(Color(1.0f, 1.0f, 1.0f));
-	pPhongShader->diffuseTexture(Texture::LoadShared(TEXTURE_DIRECTORY "dirtyBricks_C_01.dds"));
-	pPlane->shader(pPhongShader, true);
+	if (SHOW_DEBUG_PLANE) {
+		// RED CHEQUERED LINE PLAYING FIELD
+		ConstantShader* pConstShader = new ConstantShader();
+		pPlaneDebug = new LinePlaneModel((float)planeWidth, (float)planeDepth, (float)planeWidth, (float)planeDepth, 0.01f);
+		pConstShader->color(Color(1, 0, 0));
+		pPlaneDebug->shader(pConstShader, true);
+	}
+	if (SHOW_PLANE) {
+		// TEXTURED TRIANGLE PLAYING FIELD
+		pPlane = new TrianglePlaneModel((float)planeWidth, (float)planeDepth, (float)planeWidth, (float)planeDepth);
+		PhongShader* pPhongShader = new PhongShader();
+		pPhongShader->ambientColor(Color(0.2f, 0.2f, 0.2f));
+		pPhongShader->diffuseColor(Color(1.0f, 1.0f, 1.0f));
+		pPhongShader->diffuseTexture(Texture::LoadShared(TEXTURE_DIRECTORY "MetalPlates004_1K_Color.jpg"));
+		pPlane->shader(pPhongShader, true);
+	}
 }
 
 void Field::createWalls() {
@@ -52,8 +53,8 @@ void Field::createWalls() {
 	this->pShaderWall->diffuseColor(Color(1.0f, 1.0f, 1.0f));
 	this->pShaderWall->specularColor(Color(1.0f, 1.0f, 1.0f));
 	//pPhongShaderWall->diffuseTexture(Texture::LoadShared(ASSET_DIRECTORY "smiley.png"));
-	this->pShaderWall->diffuseTexture(Texture::LoadShared(TEXTURE_DIRECTORY "PaintedPlaster014_4K_Color.jpg"));
-	this->pShaderWall->normalTexture(Texture::LoadShared(TEXTURE_DIRECTORY "PaintedPlaster014_4K_Normal.jpg"));
+	this->pShaderWall->diffuseTexture(Texture::LoadShared(TEXTURE_DIRECTORY "MetalPlates004_1K_Color.jpg"));
+	//this->pShaderWall->normalTexture(Texture::LoadShared(TEXTURE_DIRECTORY ""));
 	std::cout << this->pShaderWall->normalTexture() << std::endl;
 	//pPhong->normalTexture(pMat->NormalMap);
 
@@ -125,7 +126,8 @@ bool Field::pointsLeft() {
 }
 
 void Field::draw(const Camera camera) {
-	this->pPlane->draw(camera);
+	if (SHOW_DEBUG_PLANE) this->pPlaneDebug->draw(camera);
+	if (SHOW_PLANE) this->pPlane->draw(camera);
 	for (ModelList::iterator wall = this->Walls.begin(); wall != this->Walls.end(); ++wall)
 	{
 		(*wall)->draw(camera);
@@ -153,73 +155,78 @@ void Field::end()
 	}
 	this->Walls.clear();
 	delete this->pPlane;
-	delete this->pShaderPlane;
+	delete this->pPlaneDebug;
 	delete this->pShaderWall;
 	delete this->pShaderPoint;
 }
 
 
 void Field::initWallPositions() {
-	this->wallPositions = {
-		// inner walls
-		{{3,3}, {4,3}},
-		{{8,3}, {5,3}},
-		{{17,3}, {5,3}},
-		{{23,3}, {4,3}},
-		{{3,7}, {4,2}},
-		{{8,7}, {2,8}},
-		{{11,7}, {8,2}},
-		{{20,7}, {2,8}},
-		{{23,7}, {4,2}},
-		{{14,9}, {2,3}}, // {{14,8}, {2,4}},
-		{{10,10}, {3,2}}, // {{9,10}, {4,2}},
-		{{17,10}, {3,2}}, // {{17,10}, {4,2}},
-		{{11,13}, {3,2}},
-		{{16,13}, {3,2}},
-		{{11,16}, {8,2}},
-		{{11,15}, {2,1}}, // {{10,15}, {2,3}},
-		{{17,15}, {2,1}}, // {{16,15}, {2,3}},
-		{{8,16}, {2,5}},
-		{{20,16}, {2,5}},
-		{{11,19}, {8,2}},
-		{{14,21}, {2,3}}, // {{14,20}, {2,4}},
-		{{3,22}, {4,2}},
-		{{8,22}, {5,2}},
-		{{17,22}, {5,2}},
-		{{23,22}, {4,2}},
-		{{5,24}, {2,3}}, // {{5,23}, {2,4}},
-		{{23,24}, {2,3}}, // {{23,23}, {2,4}},
-		{{8,25}, {2,3}}, // {{8,25}, {2,4}},
-		{{11,25}, {8,2}},
-		{{20,25}, {2,3}}, // {{20,25}, {2,4}},
-		{{14,27}, {2,3}}, // {{14,26}, {2,4}},
-		{{3,28}, {10,2}},
-		{{17,28}, {10,2}},
+	if (SHOW_WALLS) {
+		this->wallPositions = {
+			// inner walls
+			{{3,3}, {4,3}},
+			{{8,3}, {5,3}},
+			{{17,3}, {5,3}},
+			{{23,3}, {4,3}},
+			{{3,7}, {4,2}},
+			{{8,7}, {2,8}},
+			{{11,7}, {8,2}},
+			{{20,7}, {2,8}},
+			{{23,7}, {4,2}},
+			{{14,9}, {2,3}}, // {{14,8}, {2,4}},
+			{{10,10}, {3,2}}, // {{9,10}, {4,2}},
+			{{17,10}, {3,2}}, // {{17,10}, {4,2}},
+			{{11,13}, {3,2}},
+			{{16,13}, {3,2}},
+			{{11,16}, {8,2}},
+			{{11,15}, {2,1}}, // {{10,15}, {2,3}},
+			{{17,15}, {2,1}}, // {{16,15}, {2,3}},
+			{{8,16}, {2,5}},
+			{{20,16}, {2,5}},
+			{{11,19}, {8,2}},
+			{{14,21}, {2,3}}, // {{14,20}, {2,4}},
+			{{3,22}, {4,2}},
+			{{8,22}, {5,2}},
+			{{17,22}, {5,2}},
+			{{23,22}, {4,2}},
+			{{5,24}, {2,3}}, // {{5,23}, {2,4}},
+			{{23,24}, {2,3}}, // {{23,23}, {2,4}},
+			{{8,25}, {2,3}}, // {{8,25}, {2,4}},
+			{{11,25}, {8,2}},
+			{{20,25}, {2,3}}, // {{20,25}, {2,4}},
+			{{14,27}, {2,3}}, // {{14,26}, {2,4}},
+			{{3,28}, {10,2}},
+			{{17,28}, {10,2}},
 
-		// outer walls
-		{{1,1}, {28,1}},
-		{{1,2}, {1,8}}, // {{1,1}, {1,10}},
-		{{28,2}, {1,8}}, // {{28,1}, {1,10}},
-		{{1,10}, {6,1}},
-		{{23,10}, {6,1}},
-		{{6,11}, {1,3}}, // {{6,10}, {1,5}},
-		{{23,11}, {1,3}}, // {{23,10}, {1,5}},
-		{{1,14}, {6,1}},
-		{{23,14}, {6,1}},
-		{{1,16}, {6,1}},
-		{{23,16}, {6,1}},
-		{{6,17}, {1,3}}, // {{6,16}, {1,5}},
-		{{23,17}, {1,3}}, // {{23,16}, {1,5}},
-		{{1,20}, {6,1}},
-		{{23,20}, {6,1}},
-		{{1,21}, {1,10}}, // {{1,20}, {1,12}},
-		{{28,21}, {1,10}}, // {{28,20}, {1,12}},
-		{{1,31}, {28,1}},
-		// outer / inner walls
-		{{14,2}, {2,4}},
-		{{2,25}, {2,2}},
-		{{26,25}, {2,2}},
-	};
+			// outer walls
+			{{1,1}, {28,1}},
+			{{1,2}, {1,8}}, // {{1,1}, {1,10}},
+			{{28,2}, {1,8}}, // {{28,1}, {1,10}},
+			{{1,10}, {6,1}},
+			{{23,10}, {6,1}},
+			{{6,11}, {1,3}}, // {{6,10}, {1,5}},
+			{{23,11}, {1,3}}, // {{23,10}, {1,5}},
+			{{1,14}, {6,1}},
+			{{23,14}, {6,1}},
+			{{1,16}, {6,1}},
+			{{23,16}, {6,1}},
+			{{6,17}, {1,3}}, // {{6,16}, {1,5}},
+			{{23,17}, {1,3}}, // {{23,16}, {1,5}},
+			{{1,20}, {6,1}},
+			{{23,20}, {6,1}},
+			{{1,21}, {1,10}}, // {{1,20}, {1,12}},
+			{{28,21}, {1,10}}, // {{28,20}, {1,12}},
+			{{1,31}, {28,1}},
+			// outer / inner walls
+			{{14,2}, {2,4}},
+			{{2,25}, {2,2}},
+			{{26,25}, {2,2}},
+		};
+	}
+	else {
+		this->wallPositions = {};
+	}
 }
 
 FieldType Field::getFieldType(int x, int z) {

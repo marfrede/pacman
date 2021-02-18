@@ -8,6 +8,30 @@
 
 #include "LinePlaneModel.h"
 
+LinePlaneModel::LinePlaneModel( float DimX, float DimZ, int NumSegX, int NumSegZ, float y)
+{
+    VB.begin();
+    
+    float StepX = DimX / (float)NumSegX;
+    float StepZ = DimZ / (float)NumSegZ;
+    
+    float BeginX = -DimZ/2.0f;
+    float BeginZ = -DimX/2.0f;
+    
+    for( int i=0; i<=NumSegX; ++i )
+    {
+        VB.addVertex( BeginZ + i*StepX, y, BeginX );
+        VB.addVertex( BeginZ + i*StepX, y, -BeginX );
+    }
+    for( int i=0; i<=NumSegZ; ++i )
+    {
+        VB.addVertex( BeginZ, y, BeginX + i*StepZ );
+        VB.addVertex( -BeginZ, y, BeginX + i*StepZ );
+    }
+    
+    VB.end();
+    
+}
 LinePlaneModel::LinePlaneModel( float DimX, float DimZ, int NumSegX, int NumSegZ )
 {
     VB.begin();
