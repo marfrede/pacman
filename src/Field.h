@@ -18,8 +18,8 @@
 #include "FieldType.h"
 #include "FieldSizeConstants.h"
 
-#define SHOW_DEBUG_PLANE false
-#define SHOW_PLANE true
+#define SHOW_DEBUG_PLANE true
+#define SHOW_PLANE false
 #define SHOW_WALLS true
 #define SHOW_POINTS true
 
