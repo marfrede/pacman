@@ -36,7 +36,8 @@ void Field::createField() {
 	}
 	if (SHOW_PLANE) {
 		// TEXTURED TRIANGLE PLAYING FIELD
-		pPlane = new TrianglePlaneModel((float)planeWidth, (float)planeDepth, (float)planeWidth, (float)planeDepth);
+		//pPlane = new TrianglePlaneModel((float)planeWidth, (float)planeDepth, (float)planeWidth, (float)planeDepth);
+		pPlane = new TriangleBoxModel(30, 0.1f, 33);
 		PhongShader* pPhongShader = new PhongShader();
 		pPhongShader->ambientColor(Color(0.2f, 0.2f, 0.2f));
 		pPhongShader->diffuseColor(Color(1.0f, 1.0f, 1.0f));
