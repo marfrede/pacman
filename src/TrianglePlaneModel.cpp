@@ -34,7 +34,7 @@ TrianglePlaneModel::TrianglePlaneModel( float DimX, float DimZ, int NumSegX, int
 
             float px = startx + j*stepx;
             float pz = startz + i*stepz;
-            float py = 0;
+            float py = 0.1f;
             VB.addVertex(px, py, pz);
             
         }

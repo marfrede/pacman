@@ -88,7 +88,7 @@ void Field::createPoints() {
 					this->Points.insert(
 						std::pair<std::pair<int, int>, Point*>(
 							std::pair<int, int>(x, z),
-							new Point(x, z, 0.12f, this->pShaderPoint))
+							new Point(x, z, POINT_RADIUS, this->pShaderPoint))
 					);
 				}
 			}

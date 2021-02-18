@@ -73,10 +73,10 @@ void Game::start(GLFWwindow* pWindow) {
 
 void Game::createGameModels(GLFWwindow* pWindow) {
 
-	//GHOST RED
+	// GHOST RED
 	createGhost(pWindow, Color(242.0f / 255.0f, 5.0f / 255.0f, 3.0f / 255.0f), Color(1, 1, 1), 13, 14);
 
-	//GHOST ORANGE
+	// GHOST ORANGE
 	createGhost(pWindow, Color(252.0f / 255.0f, 154.0f / 255.0f, 0.0f / 255.0f), Color(1, 1, 1), 16, 15);
 
 	// GHOST CYAN
@@ -88,7 +88,7 @@ void Game::createGameModels(GLFWwindow* pWindow) {
 	// GHOST WHITE
 	createGhost(pWindow, Color(255.0f / 255.0f, 255.0f / 255.0f, 255.0f / 255.0f), Color(0, 0, 0), 15, 15);
 
-	//PACMAN
+	// PACMAN
 	createPacman(pWindow, Color(0, 0, 0), Color(0, 0, 0), 10, 15);
 
 }
