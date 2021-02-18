@@ -7,8 +7,8 @@
 #include "Lights.h"
 #include "FieldSizeConstants.h"
 
-#define LO_HEIGHT 0.35f
-#define HI_HEIGHT 0.65f
+#define LO_HEIGHT 0.45f
+#define HI_HEIGHT 0.55f
 
 #define LIGHTING false
 
