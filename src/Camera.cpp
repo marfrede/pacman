@@ -215,3 +215,9 @@ void Camera::update()
     Vector Target = target(); //m_Target + m_Panning;
     m_ViewMatrix.lookAt(Target, m_Up, Pos);
 }
+
+void Camera::update(Vector target) {
+    Vector Pos = position(); //m_Position + m_Panning + m_Zoom + m_Rotation;
+    Vector Target = target; //m_Target + m_Panning;
+    m_ViewMatrix.lookAt(Target, m_Up, Pos);
+}
