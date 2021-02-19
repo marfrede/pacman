@@ -33,7 +33,7 @@ void Game::update(float dtime) {
 		(*it)->update(dtime);
 	}
 	this->pField->update(dtime);
-
+    
 	this->pPacman->update(dtime);
 	this->pPacman->adjustArrow(pField);
 
@@ -93,19 +93,19 @@ void Game::checkGameOver() {
 void Game::createGameModels(GLFWwindow* pWindow) {
 
 	// GHOST RED
-	//createGhost(pWindow, Color(242.0f / 255.0f, 5.0f / 255.0f, 3.0f / 255.0f), Color(1, 1, 1), 13, 14);
+	createGhost(pWindow, Color(242.0f / 255.0f, 5.0f / 255.0f, 3.0f / 255.0f), Color(1, 1, 1), 13, 14);
 
-	//// GHOST ORANGE
-	//createGhost(pWindow, Color(252.0f / 255.0f, 154.0f / 255.0f, 0.0f / 255.0f), Color(1, 1, 1), 16, 15);
+	// GHOST ORANGE
+	createGhost(pWindow, Color(252.0f / 255.0f, 154.0f / 255.0f, 0.0f / 255.0f), Color(1, 1, 1), 16, 15);
 
-	//// GHOST CYAN
-	//createGhost(pWindow, Color(105.0f / 255.0f, 252.0f / 255.0f, 255.0f / 255.0f), Color(1, 1, 1), 13, 15);
+	// GHOST CYAN
+	createGhost(pWindow, Color(105.0f / 255.0f, 252.0f / 255.0f, 255.0f / 255.0f), Color(1, 1, 1), 13, 15);
 
-	//// GHOST PINK
-	//createGhost(pWindow, Color(252.0f / 255.0f, 154.0f / 255.0f, 153.0f / 255.0f), Color(1, 1, 1), 14, 15);
+    // GHOST PINK
+	createGhost(pWindow, Color(252.0f / 255.0f, 154.0f / 255.0f, 153.0f / 255.0f), Color(1, 1, 1), 14, 15);
 
-	//// GHOST WHITE
-	//createGhost(pWindow, Color(255.0f / 255.0f, 255.0f / 255.0f, 255.0f / 255.0f), Color(0, 0, 0), 15, 15);
+	// GHOST WHITE
+	createGhost(pWindow, Color(255.0f / 255.0f, 255.0f / 255.0f, 255.0f / 255.0f), Color(0, 0, 0), 15, 15);
 
 	// PACMAN
 	createPacman(pWindow, Color(0, 0, 0), Color(0, 0, 0), 10, 15);
@@ -119,6 +119,10 @@ void Game::createPacman(GLFWwindow* pWindow, Color primary, Color secondary, flo
 	ConstantShader* pShader = new ConstantShader();
 	pShader->color(Color(1.0f, 0, 0));
 	arrow->shader(pShader, true);
+    
+    Vector a = Vector(10, 0, 10);
+    float innerradius = 45;
+    float outerradius = 70;
 
 	// Pacman
 	if (gamemode == GameMode::FirstPerson) {
@@ -134,11 +138,26 @@ void Game::createPacman(GLFWwindow* pWindow, Color primary, Color secondary, flo
 	}
 	pPacman->setWindow(pWindow);
 	pPacman->setField(pField);
+    
+    PointLight* pl = new PointLight();
+    pl->color(primary);
+    pl->attenuation(a);
+    ShaderLightMapper::instance().addLight(pl);
+    pPacman->setPointLight(pl);
+    
+    // spot light
+    SpotLight* sl = new SpotLight();
+    sl->color(primary);
+    sl->direction(Vector(0, -1, 0));
+    sl->innerRadius(innerradius);
+    sl->outerRadius(outerradius);
+    ShaderLightMapper::instance().addLight(sl);
+    pPacman->setSpotLight(sl);
 }
 
 void Game::createGhost(GLFWwindow* pWindow, Color primary, Color secondary, float posX, float posZ) {
 
-	Vector a = Vector(1, 0, 0.1f);
+	Vector a = Vector(1, 0, 1);
     float innerradius = 45;
     float outerradius = 70;
 
