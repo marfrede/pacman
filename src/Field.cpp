@@ -5,17 +5,18 @@ Field::Field()
 	this->initWallPositions();
 	this->initFieldTypesMap();
 
+	this->pShaderPortal = new PhongShader();
 	this->pShaderWall = new PhongShader();
 	this->pShaderPoint = new ConstantShader();
 
 	this->createField();
 	this->createWalls();
+	if (SHOW_PORTALS) this->createPortals();
 	if (SHOW_POINTS) this->createPoints();
 }
 
 Field::~Field() {
-	delete this->pShaderWall;
-	delete this->pShaderPoint;
+	this->end();
 }
 
 void Field::reset() {
@@ -48,17 +49,12 @@ void Field::createField() {
 }
 
 void Field::createWalls() {
-
-	// 1. set shader equally for all walls
-	this->pShaderWall->ambientColor(Color(0.2f, 0.2f, 0.2f)); // normal grey
-	//pPhongShaderWall->ambientColor(Color(0.14902f, 0.15294f, 0.8f)); // pacman blue wall color
+	// 2. make shader
+	this->pShaderWall->ambientColor(Color(0.2f, 0.2f, 0.2f)); // grey
 	this->pShaderWall->diffuseColor(Color(1.0f, 1.0f, 1.0f));
 	this->pShaderWall->specularColor(Color(1.0f, 1.0f, 1.0f));
-	//pPhongShaderWall->diffuseTexture(Texture::LoadShared(ASSET_DIRECTORY "smiley.png"));
 	this->pShaderWall->diffuseTexture(Texture::LoadShared(TEXTURE_DIRECTORY "MetalPlates004_1K_Color.jpg"));
 	//this->pShaderWall->normalTexture(Texture::LoadShared(TEXTURE_DIRECTORY ""));
-	std::cout << this->pShaderWall->normalTexture() << std::endl;
-	//pPhong->normalTexture(pMat->NormalMap);
 
 	// 2. make walls
 	for (auto const& wall : this->wallPositions)
@@ -98,6 +94,13 @@ void Field::createPoints() {
 		}
 	}
 }
+
+void Field::createPortals() {
+	this->pShaderPortal->diffuseTexture(Texture::LoadShared(TEXTURE_DIRECTORY "portal-green.png"));
+	this->Portals.push_back(new Portal(28, 15, Orientation::East, this->pShaderPortal));
+	this->Portals.push_back(new Portal(1, 15, Orientation::West, this->pShaderPortal));
+}
+
 Vector Field::closestPointPos(Vector origin) {
 	float closestDistance = 999999;
 	Vector target = Vector(0, 0, 0);
@@ -113,18 +116,20 @@ Vector Field::closestPointPos(Vector origin) {
 }
 
 bool Field::removePoint(int x, int z) {
-	bool isPoint = this->fieldTypesMap[z * PLANE_WIDTH + x] == FieldType::Point;
-	if (!isPoint) {
+	if (SHOW_POINTS) {
+		bool isPoint = this->fieldTypesMap[z * PLANE_WIDTH + x] == FieldType::Point;
+		if (!isPoint) {
+			return false;
+		}
+		this->fieldTypesMap[z * PLANE_WIDTH + x] = FieldType::Free;
+		delete this->Points.at(std::pair<int, int>(x, z));
+		this->Points.erase(std::pair<int, int>(x, z));
 		return false;
 	}
-	this->fieldTypesMap[z * PLANE_WIDTH + x] = FieldType::Free;
-	delete this->Points.at(std::pair<int, int>(x, z));
-	this->Points.erase(std::pair<int, int>(x, z));
-	return false;
 }
 
 bool Field::pointsLeft() {
-	return !this->Points.empty();
+	return !this->Points.empty() || !SHOW_POINTS;
 }
 
 void Field::draw(const Camera camera) {
@@ -134,6 +139,10 @@ void Field::draw(const Camera camera) {
 	{
 		(*wall)->draw(camera);
 	}
+	for (PortalList::iterator portal = this->Portals.begin(); portal != this->Portals.end(); ++portal)
+	{
+		(*portal)->draw(camera);
+	}
 	for (auto const& point : this->Points) {
 		point.second->draw(camera);
 	}
@@ -142,6 +151,10 @@ void Field::draw(const Camera camera) {
 void Field::update(float dtime) {
 	for (auto const& point : this->Points) {
 		point.second->update(dtime);
+	}
+	for (PortalList::iterator portal = this->Portals.begin(); portal != this->Portals.end(); ++portal)
+	{
+		(*portal)->update(dtime);
 	}
 }
 
@@ -156,9 +169,14 @@ void Field::end()
 		delete* it;
 	}
 	this->Walls.clear();
+	for (PortalList::iterator it = Portals.begin(); it != Portals.end(); ++it) {
+		delete* it;
+	}
+	this->Portals.clear();
 	delete this->pPlane;
 	delete this->pPlaneDebug;
 	delete this->pShaderWall;
+	delete this->pShaderPortal;
 	delete this->pShaderPoint;
 }
 
@@ -240,7 +258,6 @@ FieldType Field::getFieldType(int x, int z) {
 
 void Field::initFieldTypesMap() {
 	this->fieldTypesMap = new FieldType[PLANE_WIDTH * PLANE_DEPTH];
-
 	std::fill_n(this->fieldTypesMap, PLANE_WIDTH * PLANE_DEPTH, FieldType::Free);
 
 	// add walls
