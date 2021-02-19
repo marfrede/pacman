@@ -27,7 +27,7 @@ TriangleBoxModel::TriangleBoxModel(float Width, float Height, float Depth)
     VB.addTexcoord0(Width / replication, Depth / replication);
     VB.addVertex(W, -H, -D);
 
-    VB.addNormal(0, -1, 0);//Unten links 3
+    VB.addNormal(0, -1, 0); //Unten links 3
     VB.addTexcoord0(0, Depth / replication);
     VB.addVertex(-W, -H, -D);
 

@@ -47,19 +47,20 @@ float sat( in float a)
 void main()
 {
 
-    mat3 NormalMat = mat3(Tangent, Bitangent, Normal);
+    mat3 NormalMat = mat3(Tangent, -Bitangent, Normal);
     vec4 NormalText = texture(NormalTexture, Texcoord);
-    vec3 NormalFromNormalMap = vec3(NormalText.r * 2 - 1, NormalText.g * 2 - 1, NormalText.b * 2 - 1);
+    vec3 NormalFromNormalMap = vec3(NormalText.x * 2.0f - 1.0f, NormalText.y * 2.0f - 1.0f, NormalText.z * 2.0f - 1.0f);
     vec3 NewNormal = NormalMat * NormalFromNormalMap;
 
+    vec3 N = normalize(NewNormal);
+    vec3 E = normalize(EyePos-Position);
+    
     vec3 FColor = vec3(0,0,0);
 
     vec4 DiffTex = texture( DiffuseTexture, Texcoord);
     if(DiffTex.a <0.3f) discard;
 
     // vec3 N = normalize(Normal);
-    vec3 N = normalize(NewNormal);
-    vec3 E = normalize(EyePos-Position);
     
     for(int i=0; i<LightCount; i++) {
         if(lights[i].Type == 0) {
@@ -68,14 +69,21 @@ void main()
             vec3 L = normalize(lights[i].Position-Position);
             vec3 R = reflect(-L,N);
             vec3 H = normalize(L+E);
+            if(dot(L, N) > 0 ) {
             
             vec3 LightColor = lights[i].Color;
+            
             float dist = sqrt( pow((lights[i].Position-Position).x, 2) + pow((lights[i].Position-Position).y, 2) + pow((lights[i].Position-Position).z, 2) );
+            
             float att = 1.0/( lights[i].Attenuation.x + lights[i].Attenuation.y * dist + lights[i].Attenuation.z * dist * dist );
             
             vec3 DiffuseComponent = att * LightColor * DiffuseColor * sat(dot(N,L));
-            vec3 SpecularComponent = att * LightColor * SpecularColor * pow( sat(dot(N,H)), SpecularExp);
+            vec3 SpecularComponent;
+            
+            SpecularComponent = att * LightColor * SpecularColor * pow( sat(dot(N,H)), SpecularExp);
+            SpecularComponent = vec3(0,0,0);
             FColor += vec3(DiffuseComponent*DiffTex.rgb + SpecularComponent);
+            }
             //FragColor = vec4((DiffuseComponent + AmbientColor)*DiffTex.rgb + SpecularComponent ,DiffTex.a);
             
         } else if(lights[i].Type == 1) {
@@ -84,9 +92,11 @@ void main()
             vec3 L = normalize(-lights[i].Direction);
             vec3 R = reflect(-L,N);
             vec3 H = normalize(L+E);
+            if(dot(L, N) > 0 ) {
             vec3 DiffuseComponent = lights[i].Color * DiffuseColor * sat(dot(N,L));
             vec3 SpecularComponent = lights[i].Color * SpecularColor * pow( sat(dot(N,H)), SpecularExp);
             FColor += vec3(DiffuseComponent*DiffTex.rgb + SpecularComponent);
+            }
             //FragColor = vec4((DiffuseComponent + AmbientColor)*DiffTex.rgb + SpecularComponent ,DiffTex.a);
             
         } else if(lights[i].Type == 2) {
@@ -95,17 +105,18 @@ void main()
             vec3 L = normalize(lights[i].Position-Position);
             vec3 R = reflect(-L,N);
             vec3 H = normalize(L+E);
-            
+            if(dot(L, N) > 0 ) {
             float o = acos(dot(-lights[i].Direction, L));
             
             vec3 LightColor = lights[i].Color * (1-sat( (o-lights[i].SpotRadius.x) / (lights[i].SpotRadius.y - lights[i].SpotRadius.x) ));
             
-            float dist = sqrt( pow((lights[i].Position-Position).x, 2) + pow((lights[i].Position-Position).y, 2) + pow((lights[i].Position-Position).z, 2) );
+            float dist = length(L);
             float att = 1.0/( lights[i].Attenuation.x + lights[i].Attenuation.y * dist + lights[i].Attenuation.z * dist * dist );
             
             vec3 DiffuseComponent = LightColor * DiffuseColor * sat(dot(N,L));
             vec3 SpecularComponent = LightColor * SpecularColor * pow( sat(dot(N,H)), SpecularExp);
             FColor += vec3(DiffuseComponent*DiffTex.rgb + SpecularComponent);
+            }
             //FragColor = vec4((DiffuseComponent + AmbientColor)*DiffTex.rgb + SpecularComponent ,DiffTex.a);
             
         }
