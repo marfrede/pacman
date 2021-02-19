@@ -75,6 +75,10 @@ public:
 	 */
 	virtual void eat() { return; }
 	/**
+	 * eat point
+	 */
+	virtual void teleport() { return; }
+	/**
 	 * perform current action
 	 * @param dtime deltatime
 	 */
@@ -105,6 +109,10 @@ public:
 	// FIELD POSITION INFOS
 	 /** get the field the character stands on as first = posX, second = posZ (0, 0 would be top left corner) */
 	std::pair<int, int> getFieldPosition();
+	/** set the field the character should stand on as first = posX, second = posZ (0, 0 would be top left corner) */
+	void setFieldPosition(int posX, float y, int posZ);
+	/** set the field the character should stand on as first = posX, second = posZ (0, 0 would be top left corner) AND set a rotation value to perform also */
+	void setFieldPosition(int posX, float y, int posZ, float rotation);
 	/** get the field the character looks at as first = posX, second = posZ (0, 0 would be top left corner) */
 	std::pair<int, int> getFieldPositionInFront();
 	/** get the field type the character stands on as enum {Wall, Point, Free} */
