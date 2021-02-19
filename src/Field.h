@@ -14,19 +14,21 @@
 #include "lineplanemodel.h"
 #include "triangleplanemodel.h"
 #include "Wall.h"
+#include "Portal.h"
 #include "Point.h"
 #include "FieldType.h"
 #include "FieldSizeConstants.h"
 
 #define SHOW_DEBUG_PLANE false
-#define SHOW_PLANE true
+#define SHOW_PLANE false
 #define SHOW_WALLS true
 #define SHOW_POINTS true
+#define SHOW_PORTALS true
 
-#define WALL_HEIGHT 1.5f
+#define WALL_HEIGHT 0.5f
 #define WALL_PADDING 0.0f
 
-#define POINT_RADIUS 0.03f
+#define POINT_RADIUS 0.05f
 
 class Field
 {
@@ -34,6 +36,7 @@ public:
 	Field();
 	~Field();
 	typedef std::list<BaseModel*> ModelList;
+	typedef std::list<Portal*> PortalList;
 	typedef std::map<std::pair<int, int>, Point*> PointList;
 
 	void reset();
@@ -47,6 +50,10 @@ public:
 	*/
 	Vector closestPointPos(Vector origin);
 	bool removePoint(int posX, int posZ);
+	/**
+	* returns false if all points are consumed 
+	* returns true if points are left OR no points are generated at all
+	*/
 	bool pointsLeft();
 
 	void draw(const Camera camera);
@@ -54,17 +61,20 @@ public:
 	void end();
 private:
 	PhongShader* pShaderWall;
+	PhongShader* pShaderPortal;
 	ConstantShader* pShaderPoint;
 
 	BaseModel* pPlane;
 	LinePlaneModel* pPlaneDebug;
 	ModelList Walls;
+	PortalList Portals;
 	PointList Points;
 	void createField();
 	void initWallPositions();
 	void initFieldTypesMap();
 	void createWalls();
 	void createPoints();
+	void createPortals();
 
 	/* map origin position (x, z) to expansion (width, depth) */
 	std::map<std::pair<int, int>, std::pair<int, int>> wallPositions;

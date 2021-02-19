@@ -50,6 +50,8 @@ public:
 private:
 	/** eat point */
 	void eat();
+	/** teleport when stepping on portal */
+	void teleport();
     BaseModel* arrow;
 
 };
