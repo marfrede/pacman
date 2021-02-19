@@ -113,33 +113,27 @@ void Game::createGameModels(GLFWwindow* pWindow) {
 }
 
 void Game::createPacman(GLFWwindow* pWindow, Color primary, Color secondary, float posX, float posZ) {
+	
+	//Arrow
+	Model* arrow = new Model(ASSET_DIRECTORY "arrow.dae", false);
+	ConstantShader* pShader = new ConstantShader();
+	pShader->color(Color(1.0f, 0, 0));
+	arrow->shader(pShader, true);
 
+	// Pacman
 	if (gamemode == GameMode::FirstPerson) {
-
-		pPacman = new Pacman(posX, posZ);
-
+		pPacman = new Pacman(posX, posZ, arrow);
 	}
 	else {
 		pPacman = new Pacman(posX, posZ, ASSET_DIRECTORY "single-ghost-complete.dae", false);
-
 		Model* ext = new Model(ASSET_DIRECTORY "single-ghost-ext.dae");
 		ConstantShader* cShader = new ConstantShader();
 		cShader->color(Color(1, 1, 1));
 		ext->shader(cShader);
 		pPacman->setExt(ext);
 	}
-
-
 	pPacman->setWindow(pWindow);
 	pPacman->setField(pField);
-
-	//Arrow
-	Model* pModel = new Model(ASSET_DIRECTORY "arrow.dae", false);
-	ConstantShader* pShader = new ConstantShader();
-	pShader->color(Color(1.0f, 0, 0));
-	pModel->shader(pShader, true);
-	pPacman->setArrow(pModel);
-
 }
 
 void Game::createGhost(GLFWwindow* pWindow, Color primary, Color secondary, float posX, float posZ) {

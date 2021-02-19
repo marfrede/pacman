@@ -10,26 +10,37 @@
 #include "math.h"
 
 Pacman::Pacman(int posX, int posZ, const char* ModelFile, bool FitSize) : GameCharacter(posX, 0.5f, posZ, ModelFile, FitSize) {
-	Color yellow(249.0f / 250.0f, 250.0f / 250.0f, 6.0f / 250.0f);
-	PhongShader* pPhongShader = new PhongShader();
-	pPhongShader->ambientColor(yellow);
-	pPhongShader->diffuseColor(yellow);
-	pPhongShader->specularColor(yellow);
-	this->shader(pPhongShader, true);
+	this->init();
 }
 
-Pacman::Pacman(int posX, int posZ) : GameCharacter(posX, 0.5f, posZ) {
+Pacman::Pacman(int posX, int posZ, BaseModel* arrow) : GameCharacter(posX, 0.5f, posZ) {
+	this->init(arrow);
+}
+
+void Pacman::init() {
 	Color yellow(249.0f / 250.0f, 250.0f / 250.0f, 6.0f / 250.0f);
 	PhongShader* pPhongShader = new PhongShader();
 	pPhongShader->ambientColor(yellow);
 	pPhongShader->diffuseColor(yellow);
 	pPhongShader->specularColor(yellow);
 	this->shader(pPhongShader, true);
+	this->rotateSpeed = 350;
+	this->movingSpeed = 3.2;
+	this->arrow = nullptr;
+}
+
+void Pacman::init(BaseModel* arrow) {
+	this->init();
+	this->arrow = arrow;
+	std::cout << "arrow found1" << std::endl << std::endl << std::endl;
 }
 
 void Pacman::draw(const Camera Cam) {
 	GameCharacter::draw(Cam);
-	this->arrow->draw(Cam);
+	if (this->arrow) {
+		std::cout << "arrow found2" << std::endl << std::endl << std::endl;
+		this->arrow->draw(Cam);
+	}
 }
 
 void Pacman::steer(float dtime) {
@@ -78,6 +89,11 @@ void Pacman::steer(float dtime) {
 }
 
 void Pacman::adjustArrow(Field* pField) {
+	if (!this->arrow) {
+		return;
+	}
+
+	std::cout << "arrow found3" << std::endl << std::endl << std::endl;
 
 	Vector arrPos = this->arrow->transform().translation();
 	Vector target = this->pField->closestPointPos(arrPos);
@@ -114,17 +130,17 @@ void Pacman::moveSubs() {
 
 	GameCharacter::moveSubs();
 
-	if (arrow) {
-
-		Matrix mTotal, mMov, mTrans;
-		mMov.translation(this->transform().forward() * 0.25);;
-		mTrans.translation(this->transform().translation());
-		mTotal = mTrans * mMov;
-
-		this->arrow->transform(mTotal);
-
+	if (!this->arrow) {
+		return;
 	}
 
+	std::cout << "arrow found4" << std::endl << std::endl << std::endl;
+
+	Matrix mTotal, mMov, mTrans;
+	mMov.translation(this->transform().forward() * 0.25);;
+	mTrans.translation(this->transform().translation());
+	mTotal = mTrans * mMov;
+	this->arrow->transform(mTotal);
 }
 
 void Pacman::eat() {
