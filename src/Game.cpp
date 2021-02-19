@@ -112,21 +112,20 @@ void Game::createGameModels(GLFWwindow* pWindow) {
 
 }
 
-void Game::createPacman(GLFWwindow* pWindow, Color primary, Color secondary, float posX, float posZ) {
-	
-	//Arrow
-	Model* arrow = new Model(ASSET_DIRECTORY "arrow.dae", false);
-	ConstantShader* pShader = new ConstantShader();
-	pShader->color(Color(1.0f, 0, 0));
-	arrow->shader(pShader, true);
-    
+void Game::createPacman(GLFWwindow* pWindow, Color primary, Color secondary, float posX, float posZ) {    
     Vector a = Vector(10, 0, 10);
     float innerradius = 45;
     float outerradius = 70;
 
 	// Pacman
 	if (gamemode == GameMode::FirstPerson) {
-		pPacman = new Pacman(posX, posZ, arrow);
+		//Arrow
+		Model* arrow = new Model(ASSET_DIRECTORY "arrow.dae", false);
+		ConstantShader* pShader = new ConstantShader();
+		pShader->color(Color(1.0f, 0, 0));
+		arrow->shader(pShader, true);
+		pPacman = new Pacman(posX, posZ);
+		pPacman->setArrow(arrow);
 	}
 	else {
 		pPacman = new Pacman(posX, posZ, ASSET_DIRECTORY "single-ghost-complete.dae", false);

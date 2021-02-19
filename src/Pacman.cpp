@@ -13,8 +13,8 @@ Pacman::Pacman(int posX, int posZ, const char* ModelFile, bool FitSize) : GameCh
 	this->init();
 }
 
-Pacman::Pacman(int posX, int posZ, BaseModel* arrow) : GameCharacter(posX, 0.5f, posZ) {
-	this->init(arrow);
+Pacman::Pacman(int posX, int posZ) : GameCharacter(posX, 0.5f, posZ) {
+	this->init();
 }
 
 void Pacman::init() {
@@ -29,8 +29,7 @@ void Pacman::init() {
 	this->arrow = nullptr;
 }
 
-void Pacman::init(BaseModel* arrow) {
-	this->init();
+void Pacman::setArrow(BaseModel* arrow) {
 	this->arrow = arrow;
 }
 
