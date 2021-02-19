@@ -61,20 +61,16 @@ void Application::update(float dtime)
     pGame->update(dtime);
     
     if(this->pGame->isGameOver()) {
-        
         std::cout << "GAME IS OVER!" << std::endl;
         this->pGame->start(pWindow);
-        
     }
         
     if (pGame->getGameMode() == GameMode::FirstPerson) {
-        Cam.update(pGame->getPacman()->transform().translation() + pGame->getPacman()->transform().forward());
         Cam.setPosition(pGame->getPacman()->transform().translation());
-        //Cam.setTarget(pGame->getPacman()->transform().forward());
+        Cam.update(pGame->getPacman()->transform().translation() + pGame->getPacman()->transform().forward());
     } else if (pGame->getGameMode() == GameMode::ThirdPerson) {
+        Cam.setPosition(this->pGame->getPacman()->transform().translation() + this->pGame->getPacman()->transform().backward() * 5 + this->pGame->getPacman()->transform().up() * 10);
         Cam.update(pGame->getPacman()->transform().translation());
-        Vector cPos = Vector(pGame->getPacman()->transform().translation().X, 5, pGame->getPacman()->transform().translation().Z);
-        Cam.setPosition(this->pGame->getPacman()->transform().translation() + this->pGame->getPacman()->transform().backward() + this->pGame->getPacman()->transform().up() * 10);
     } else {
         Cam.update();
     }

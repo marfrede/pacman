@@ -71,6 +71,25 @@ void Game::start(GLFWwindow* pWindow) {
 	this->gameOver = false;
 }
 
+void Game::checkGameOver() {
+
+    if (!pField->pointsLeft()) {
+        this->gameOver = true;
+        return;
+    }
+
+    for (auto const& ghost : this->Ghosts) {
+        Vector diff = pPacman->transform().translation() - ghost->transform().translation();
+        if (diff.length() < 1) {
+            this->gameOver = true;
+            return;
+        }
+    }
+
+    this->gameOver = false;
+
+}
+
 void Game::createGameModels(GLFWwindow* pWindow) {
 
 	// GHOST RED
@@ -123,25 +142,6 @@ void Game::createPacman(GLFWwindow* pWindow, Color primary, Color secondary, flo
 
 }
 
-void Game::checkGameOver() {
-
-	if (!pField->pointsLeft()) {
-		this->gameOver = true;
-		return;
-	}
-
-	for (auto const& ghost : this->Ghosts) {
-		Vector diff = pPacman->transform().translation() - ghost->transform().translation();
-		if (diff.length() < 1) {
-			this->gameOver = true;
-			return;
-		}
-	}
-
-	this->gameOver = false;
-
-}
-
 void Game::createGhost(GLFWwindow* pWindow, Color primary, Color secondary, float posX, float posZ) {
 
 	Vector a = Vector(1, 0, 0.1f);
@@ -164,11 +164,11 @@ void Game::createGhost(GLFWwindow* pWindow, Color primary, Color secondary, floa
 	pl->attenuation(a);
 	ShaderLightMapper::instance().addLight(pl);
 	g->setPointLight(pl);
-
+    
 	// spot light
 	SpotLight* sl = new SpotLight();
 	sl->color(primary);
-    sl->direction(Vector(0, 0, 1));
+    sl->direction(Vector(0, -1, 0));
 	sl->innerRadius(innerradius);
 	sl->outerRadius(outerradius);
 	ShaderLightMapper::instance().addLight(sl);
