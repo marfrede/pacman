@@ -308,14 +308,14 @@ void GameCharacter::reset() {
 void GameCharacter::moveSubs() {
 
 	if (pointLight) {
-        std::cout << "Hat Punktlight" << std::endl;
+        // std::cout << "Hat Punktlight" << std::endl;
 		this->pointLight->position(this->transform().translation());
-        std::cout << this->pointLight->position() << std::endl;
+        // std::cout << this->pointLight->position() << std::endl;
 	}
 	if (spotLight) {
-        std::cout << "Hat Spotlight" << std::endl;
+        // std::cout << "Hat Spotlight" << std::endl;
 		this->spotLight->position(this->transform().translation());
-        std::cout << this->spotLight->position() << std::endl;
+        // std::cout << this->spotLight->position() << std::endl;
 	}
 	if (ext) {
 		this->ext->transform(this->transform());

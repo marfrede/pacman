@@ -26,12 +26,10 @@ public:
     * @param pPhongShader to use for the pacman
 	*/
 	Pacman(int posX, int posZ, const char* ModelFile, bool FitSize);
-    Pacman(int posX, int posZ);
+    Pacman(int posX, int posZ, BaseModel* arrow);
     
     void draw(const Camera Cam);
     void moveSubs();
-
-    void setArrow(BaseModel* arrow) {this->arrow = arrow;}
     void adjustArrow(Field* pField);
 
 	/**
@@ -43,17 +41,14 @@ public:
 	  */
 	void steer(float dtime);
 
-	//void setEgoCam(EgoCam cam){paccam=&cam;}
-	//EgoCam* paccam;
-	//void movePaccam();
-
 private:
+	void init();
+	void init(BaseModel* arrow);
 	/** eat point */
 	void eat();
 	/** teleport when stepping on portal */
 	void teleport();
     BaseModel* arrow;
-
 };
 
 #endif /* Pacman_hpp */
