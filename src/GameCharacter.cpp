@@ -10,22 +10,14 @@
 #include "math.h"
 
 GameCharacter::GameCharacter(int posX, float y, int posZ, const char* ModelFile, bool FitSize) : Model(ModelFile, FitSize) {
-	Matrix t;
-	float x = 0.5f + (float)posX - ((float)PLANE_WIDTH) / 2.0f;
-	float z = 0.5f + (float)posZ - ((float)PLANE_DEPTH) / 2.0f;
-	t.translation(x, y, z);
-	this->transform(t);
 	this->setSpawnLocation(posX, posZ);
+	this->setFieldPosition(posX, y, posZ);
 	angleToTurn = 0.0f;
 }
 
 GameCharacter::GameCharacter(int posX, float y, int posZ) : Model() {
-	Matrix t;
-	float x = 0.5f + (float)posX - ((float)PLANE_WIDTH) / 2.0f;
-	float z = 0.5f + (float)posZ - ((float)PLANE_DEPTH) / 2.0f;
-	t.translation(x, y, z);
-	this->transform(t);
 	this->setSpawnLocation(posX, posZ);
+	this->setFieldPosition(posX, y, posZ);
 	angleToTurn = 0.0f;
 }
 
@@ -90,7 +82,6 @@ void GameCharacter::steer(float dtime) {
 }
 */
 bool GameCharacter::doCurrentAction(float dtime) {
-
 	//Check rotation
 	if (angleToTurn > 0) {
 		//Führe Rotation nach rechts aus
@@ -111,6 +102,7 @@ bool GameCharacter::doCurrentAction(float dtime) {
 	else if (moveUnits > 0) { //Check movement
 		if (moveUnits == 1) { // before entering the field
 			this->eat();
+			this->teleport();
 		}
 		move(dtime);
 
@@ -198,6 +190,25 @@ std::pair<int, int> GameCharacter::getFieldPosition() {
 		(int)(pos.X + (float)PLANE_WIDTH / 2.0f),
 		(int)(pos.Z + (float)PLANE_DEPTH / 2.0f)
 		);
+}
+
+void GameCharacter::setFieldPosition(int posX, float y, int posZ) {
+	Matrix t;
+	float x = 0.5f + (float)posX - ((float)PLANE_WIDTH) / 2.0f;
+	float z = 0.5f + (float)posZ - ((float)PLANE_DEPTH) / 2.0f;
+	t.translation(x, y, z);
+	this->transform(t);
+	return;
+}
+
+void GameCharacter::setFieldPosition(int posX, float y, int posZ, float rotation) {
+	Matrix t, rot;
+	float x = 0.5f + (float)posX - ((float)PLANE_WIDTH) / 2.0f;
+	float z = 0.5f + (float)posZ - ((float)PLANE_DEPTH) / 2.0f;
+	t.translation(x, y, z);
+	rot.rotationY(rotation);
+	this->transform(t * rot);
+	return;
 }
 
 std::pair<int, int> GameCharacter::getFieldPositionInFront() {
