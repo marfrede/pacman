@@ -50,6 +50,7 @@ public:
 	*/
 	Vector closestPointPos(Vector origin);
 	bool removePoint(int posX, int posZ);
+
 	/**
 	* returns false if all points are consumed 
 	* returns true if points are left OR no points are generated at all
@@ -78,8 +79,10 @@ private:
 
 	/* map origin position (x, z) to expansion (width, depth) */
 	std::map<std::pair<int, int>, std::pair<int, int>> wallPositions;
+
 	/* whole map as 2D Array */
 	FieldType* fieldTypesMap = NULL;
+
 	void printFieldTypesMap();
 };
 #endif /* Field_hpp */
