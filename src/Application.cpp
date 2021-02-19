@@ -68,9 +68,11 @@ void Application::update(float dtime)
     if (pGame->getGameMode() == GameMode::FirstPerson) {
         Cam.setPosition(pGame->getPacman()->transform().translation());
         Cam.update(pGame->getPacman()->transform().translation() + pGame->getPacman()->transform().forward());
+        
     } else if (pGame->getGameMode() == GameMode::ThirdPerson) {
         Cam.setPosition(this->pGame->getPacman()->transform().translation() + this->pGame->getPacman()->transform().backward() * 5 + this->pGame->getPacman()->transform().up() * 10);
         Cam.update(pGame->getPacman()->transform().translation());
+        
     } else {
         Cam.update();
     }
