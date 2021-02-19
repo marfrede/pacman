@@ -64,6 +64,7 @@ public:
     void mouseInput( int x, int y, int Button, int State);
     
     virtual void update();
+    void update(Vector target);
     virtual const Matrix& getViewMatrix() const;
     virtual const Matrix& getProjectionMatrix() const;
 protected:

@@ -61,16 +61,17 @@ void Application::update(float dtime)
     pGame->update(dtime);
     
     if(this->pGame->isGameOver()) {
-        
         std::cout << "GAME IS OVER!" << std::endl;
         this->pGame->start(pWindow);
-        
     }
         
     if (pGame->getGameMode() == GameMode::FirstPerson) {
-        Paccam.update();
-    }
-    else {
+        Cam.setPosition(pGame->getPacman()->transform().translation());
+        Cam.update(pGame->getPacman()->transform().translation() + pGame->getPacman()->transform().forward());
+    } else if (pGame->getGameMode() == GameMode::ThirdPerson) {
+        Cam.setPosition(this->pGame->getPacman()->transform().translation() + this->pGame->getPacman()->transform().backward() * 5 + this->pGame->getPacman()->transform().up() * 10);
+        Cam.update(pGame->getPacman()->transform().translation());
+    } else {
         Cam.update();
     }
 	
@@ -87,9 +88,10 @@ void Application::draw()
 	// 2. setup shaders and draw models
 
     Camera currentCam = Cam;
-    if(pGame->getGameMode() == GameMode::FirstPerson) {
+    
+    /*if(pGame->getGameMode() == GameMode::FirstPerson) {
         currentCam = Paccam;
-    }
+    }*/
     
     this->pGame->draw(currentCam);
     
