@@ -9,8 +9,8 @@
 #include "Pacman.hpp"
 #include "math.h"
 
-Pacman::Pacman(int posX, int posZ, const char* ModelFile, bool FitSize) : GameCharacter(posX, 0.5f, posZ, ModelFile, FitSize) {
-	this->init();
+Pacman::Pacman(int posX, int posZ, Color c, const char* ModelFile, bool FitSize) : GameCharacter(posX, 0.5f, posZ, ModelFile, FitSize) {
+	this->init(c);
 }
 
 Pacman::Pacman(int posX, int posZ) : GameCharacter(posX, 0.5f, posZ) {
@@ -18,12 +18,18 @@ Pacman::Pacman(int posX, int posZ) : GameCharacter(posX, 0.5f, posZ) {
 }
 
 void Pacman::init() {
-	Color yellow(249.0f / 250.0f, 250.0f / 250.0f, 6.0f / 250.0f);
-	PhongShader* pPhongShader = new PhongShader();
-	pPhongShader->ambientColor(yellow);
-	pPhongShader->diffuseColor(yellow);
-	pPhongShader->specularColor(yellow);
-	this->shader(pPhongShader, true);
+    ConstantShader* pShader = new ConstantShader();
+    pShader->color(Color(0,0,0));
+    this->shader(pShader, true);
+    this->rotateSpeed = 350;
+    this->movingSpeed = 3.2;
+    this->arrow = nullptr;
+}
+
+void Pacman::init(Color c) {
+    ConstantShader* pShader = new ConstantShader();
+    pShader->color(c);
+    this->shader(pShader, true);
 	this->rotateSpeed = 350;
 	this->movingSpeed = 3.2;
 	this->arrow = nullptr;
@@ -122,6 +128,8 @@ void Pacman::adjustArrow(Field* pField) {
 }
 
 void Pacman::moveSubs() {
+    std::cout << "Pacman move subs" << std::endl;
+    
 	GameCharacter::moveSubs();
 
 	if (!this->arrow) {
