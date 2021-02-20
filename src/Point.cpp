@@ -3,9 +3,6 @@
 Point::Point(int posX, int posZ, float radius, BaseShader* pShader) : TriangleSphereModel(radius) {
 	this->shader(pShader, false); // field deletes shader
 	this->init(posX, posZ);
-    
-    this->ppe = ParticlePopEmitter(25);
-    this->ppe.setPosition(this->pos);
 }
 
 void Point::init(int posX, int posZ) {

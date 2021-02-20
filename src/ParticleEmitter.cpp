@@ -10,20 +10,19 @@
 #include <list>
 #include "ConstantShader.h"
 
-ParticleEmitter::ParticleEmitter(int quantity) {
+ParticleEmitter::ParticleEmitter() {
     
-    for(int i=0; i<quantity; i++) {
+    for(int i=0; i<maxParticles; i++) {
         Particle* p = new Particle(this->position,
                                                Vector(0,1,0),
                                                45,
                                                200,
-                                  1);
+                                                1);
         ConstantShader* cShader = new ConstantShader();
         cShader->color(Color(1,1,1));
         p->shader(cShader);
         this->particles.push_back(p);
     }
-    
 }
 
 void ParticleEmitter::update(float dtime) {
@@ -32,10 +31,7 @@ void ParticleEmitter::update(float dtime) {
         
         (*it)->update(dtime);
         
-        if((*it)->isAlive() == false) {
-            (*it)->setPosition(this->position);
-            (*it)->setAlive(true);
-        }
+        
         
     }
     

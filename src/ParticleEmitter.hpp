@@ -16,7 +16,7 @@
 class ParticleEmitter
 {
 public:
-    ParticleEmitter(int quantity);
+    ParticleEmitter();
     
     void setPosition(Vector position) {this->position = position;}
     
@@ -26,6 +26,10 @@ public:
 protected:
     
     Vector position;
+    int maxParticles = 100;
+    
+    int currentlyActiveBegin = 0;
+    int currentlyActiveEnd = 0;
     
     std::list<Particle*> particles;
     

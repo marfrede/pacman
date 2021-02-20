@@ -332,6 +332,21 @@ void Application::createScene()
 	Models.push_back(pPacman);
     
     
+    TriangleBoxModel* tpm = new TriangleBoxModel(1,1,1);
+    Matrix mTrans, mTotal;
+    mTotal = tpm->transform() * mTrans.translation(0, 2, 0);
+    tpm->transform(mTotal);
+    cShader = new ConstantShader();
+    tpm->shader(cShader);
+    Models.push_back(tpm);
+    
+    TrianglePlaneModel* tppm = new TrianglePlaneModel(1,1,1,1);
+    mTrans, mTotal;
+    mTotal = tppm->transform() * mTrans.translation(1, 2, 0);
+    tppm->transform(mTotal);
+    cShader = new ConstantShader();
+    tppm->shader(cShader);
+    Models.push_back(tppm);
 
 }
 

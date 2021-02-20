@@ -15,9 +15,9 @@
 class ParticlePopEmitter : public ParticleEmitter
 {
 public:
-    ParticlePopEmitter(int quantity);
+    ParticlePopEmitter();
     
-    void trigger();
+    void trigger(Vector pos, int quantity);
     
     void update(float dtime);
     void draw(const Camera Cam);

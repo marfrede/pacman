@@ -8,25 +8,23 @@
 
 #include "Particle.hpp"
 
-Particle::Particle(Vector position, Vector velocity, float rotation, float lifetime, float gravity) : LinePlaneModel(1, 1, 1, 1) {
+Particle::Particle(Vector position, Vector velocity, float rotation, float lifetime, float gravity) : TrianglePlaneModel(1, 1, 1, 1) {
 
-    this->transform.translation(position);
-    this->transform.rotationZ(rotation);
-    this->velocity = velocity;
-    this->lifetime = lifetime;
-    this->gravity = gravity;
-    this->alive = true;
+    Matrix mTotal, mTrans;
+    mTotal = this->transform() * mTrans.translation(position);
+    this->transform(mTotal);
+    //this->transform().rotationZ(rotation);
     
 }
 
 void Particle::update(float dtime) {
     
-    this->position.X += velocity.X * dtime;
-    this->position.Y += velocity.Y * gravity * dtime;
-    //Z auslassen, da Kamerarichtung
+    //std::cout << "Update Particle" << std::endl;
     
-    this->transform.translation(this->position);
-    this->transform.rotationY(1); //Rotation in eine Richtung
+    Matrix mTotal, mTrans;
+    mTrans.translation(this->velocity * 0.001f);
+    mTotal = this->transform() * mTrans;
+    this->transform(mTotal);
     
     this->lifetime -= dtime;
     
@@ -38,11 +36,27 @@ void Particle::update(float dtime) {
 
 void Particle::draw(const BaseCamera& Cam)
 {
-    BaseModel::draw(Cam);
+    TrianglePlaneModel::draw(Cam);
 
     VB.activate();
     
     glDrawArrays(GL_LINES, 0, VB.vertexCount());
     
     VB.deactivate();
+}
+
+void Particle::reset(Vector pos) {
+    
+    Matrix mTrans, mTotal;
+    mTrans.translation((pos - this->transform().translation()));
+    mTotal = this->transform() * mTrans;
+    this->transform(mTotal);
+    
+    this->alive = true;
+    this->lifetime = 300;//rand() % 50);
+    Vector velo = Vector((rand() % 10), (rand() % 10), (rand() % 10));
+    this->velocity = velo.normalize();
+    
+    this->rotation = 1;
+    
 }

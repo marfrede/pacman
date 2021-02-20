@@ -59,6 +59,8 @@ private:
 	void initFieldTypesMap();
 	void createWalls();
 	void createPoints();
+    
+    ParticlePopEmitter* ppe;
 
 	/* map origin position (x, z) to expansion (width, depth) */
 	std::map<std::pair<int, int>, std::pair<int, int>> wallPositions;

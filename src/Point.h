@@ -19,7 +19,6 @@ public:
 	Point(int posX, int posZ, float radius, BaseShader* pShader);
 	void update(float dtime);
 	~Point();
-    ParticlePopEmitter ppe = NULL;
 private:
 	Vector pos;
 	bool goingUp;

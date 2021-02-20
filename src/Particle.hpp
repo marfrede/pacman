@@ -12,9 +12,10 @@
 #include <stdio.h>
 #include "vector.h"
 #include "matrix.h"
-#include "LinePlaneModel.h"
+#include "TrianglePlaneModel.h"
+#include "TriangleBoxModel.h"
 
-class Particle : public LinePlaneModel
+class Particle : public TrianglePlaneModel
 {
 public:
     Particle(Vector position, Vector velocity, float rotation, float lifetime, float gravity);
@@ -27,8 +28,9 @@ public:
     void update(float dtime);
     void draw(const BaseCamera& Cam);
     
+    void reset(Vector pos);
+    
 protected:
-    Matrix transform;
     
     Vector position;
     Vector velocity;

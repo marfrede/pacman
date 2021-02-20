@@ -8,56 +8,65 @@
 
 #include "ParticlePopEmitter.hpp"
 
-ParticlePopEmitter::ParticlePopEmitter(int quantity) : ParticleEmitter(quantity) {
+ParticlePopEmitter::ParticlePopEmitter() : ParticleEmitter() {
     
 }
 
-void ParticlePopEmitter::trigger() {
-    this->triggered = true;
+void ParticlePopEmitter::trigger(Vector pos, int quantity) {
     
-    std::cout << "TRIGGERED!" << std::endl;
+    //std::cout << "**TRIGGER**" << std::endl;
     
-    std::cout << this->triggered << std::endl;
-    std::cout << (this->triggered == true) << std::endl;
-}
-
-void ParticlePopEmitter::update(float dtime) {
+    int tmpQuantity = quantity;
     
-    if(this->triggered == true) {
+    //Exception wenn alle aktiv sind
+    
+    for(std::list<Particle*>::iterator it = this->particles.begin(); it != this->particles.end(); it++) {
         
-        if(this->particles.size() == 0) {
-            this->empty = true;
-        }
-        
-        std::cout << "im trigger" << std::endl;
-        
-        int counter = 0;
-        
-        for(std::list<Particle*>::iterator it = this->particles.begin(); it != this->particles.end(); it++) {
+        if((*it)->isAlive() == false && tmpQuantity > 0) {
             
-            std::cout << "Partikel " << counter << " !" << std::endl;
+            (*it)->reset(pos);
             
-            (*it)->update(dtime);
-            
-            if((*it)->isAlive() == false) {
-                (*it)->~Particle();
-                it = particles.erase(it);
-            }
-            counter++;
+            tmpQuantity--;
             
         }
         
     }
+    
+}
+
+void ParticlePopEmitter::update(float dtime) {
+
+    //std::cout << "# Update Start #" << std::endl;
+    
+    int counter = 0 ;
+    
+    for(std::list<Particle*>::iterator it = this->particles.begin(); it != this->particles.end(); it++) {
+        
+        //std::cout << counter << std::endl;
+        
+        if((*it)->isAlive() == true) {
+            
+            (*it)->update(dtime);
+            
+            //std::cout << "Er lebt!: " << (*it)->transform().translation() << std::endl;
+            //(*it)->
+        }
+        
+    }
+    
+   // std::cout << "# Update End #" << std::endl;
     
 }
 
 void ParticlePopEmitter::draw(const Camera Cam) {
-    if(this->triggered == true) {
         
         for(std::list<Particle*>::iterator it = this->particles.begin(); it != this->particles.end(); it++) {
             
-            (*it)->draw(Cam);
+            if((*it)->isAlive() == true) {
+                
+                (*it)->draw(Cam);
+                
+            }
             
         }
-    }
 }

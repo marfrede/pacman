@@ -58,13 +58,13 @@ void Pacman::steer(float dtime) {
 	}
 
 	// pacman, print your infos:
-	std::cout
+	/*std::cout
 		<< this->getFieldPosition().first << ", "
 		<< this->getFieldPosition().second << "\t"
 		<< fieldTypeToString(this->getFieldType()) << "\t"
 		<< fieldTypeToString(this->getFieldTypeInFront()) << "\t"
 		<< orientationToString(this->getOrientation()) << "\t"
-		<< (this->checkFront() ? "can go" : "can not go") << std::endl;
+		<< (this->checkFront() ? "can go" : "can not go") << std::endl;*/
 }
 
 void Pacman::moveSubs() {
