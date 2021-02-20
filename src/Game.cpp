@@ -131,17 +131,27 @@ void Game::createPacman(GLFWwindow* pWindow, Color primary, Color secondary, flo
 		arrow->shader(pShader, true);
 		pPacman = new Pacman(posX, posZ);
 		pPacman->setArrow(arrow);
-	}
-	else {
-		pPacman = new Pacman(posX, posZ, ASSET_DIRECTORY "single-ghost-complete.dae", false);
-		Model* ext = new Model(ASSET_DIRECTORY "single-ghost-ext.dae");
-		ConstantShader* cShader = new ConstantShader();
-		cShader->color(Color(1, 1, 1));
-		ext->shader(cShader);
+	} else {
+		pPacman = new Pacman(posX, posZ, ASSET_DIRECTORY "pacman-body.dae", false);
+        ConstantShader* cShader = new ConstantShader();
+        cShader->color(Color(1, 1, 0));
+        pPacman->shader(cShader);
+        
+		Model* ext = new Model(ASSET_DIRECTORY "pacman-ext.dae");
+        cShader = new ConstantShader();
+        cShader->color(Color(0, 0, 0));
+        ext->shader(cShader);
 		pPacman->setExt(ext);
 	}
 	pPacman->setWindow(pWindow);
 	pPacman->setField(pField);
+    
+    /*
+    Matrix mTotal, mScale;
+    mScale.scale(0.25f);
+    mTotal = pPacman->transform() * mScale;
+    pPacman->transform(mTotal);
+     */
     
     PointLight* pl = new PointLight();
     pl->color(primary);
