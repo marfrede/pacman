@@ -41,19 +41,27 @@ public:
 
 	void reset();
 
+	/* convert global position to field position */
+	std::pair<int, int> getPosOnField(Vector position);
+
 	/* get fieldtype (wall / point / free) in any field @param x | posX (0 - 29) @param z | posZ (0 - 32) */
 	FieldType getFieldType(int x, int z);
 
-	/**
-	* removes the point on the given position
-	* @return true | when pacman has eaten the point, false | when there was no point at all on this field
-	*/
-	Vector closestPointPos(Vector origin);
-	bool removePoint(int posX, int posZ);
+	/* get fieldtype (wall / point / free) in from any position @param Vector(float, float, float) */
+	FieldType getFieldType(Vector position);
 
 	/**
-	* returns false if all points are consumed 
-	* returns true if points are left OR no points are generated at all
+	* removes the point on the given position and delete point object
+	* @return true | when pacman has eaten the point, false | when there was no point at all on this field
+	*/
+	bool removePoint(int posX, int posZ);
+
+	/* get global position of the closest Point point from global position origin on the field */
+	Vector closestPointPos(Vector origin);
+
+	/**
+	* returns false if all points are consumed
+	* returns true if points are left OR no points are generated at all (e.g. Debug Mode)
 	*/
 	bool pointsLeft();
 
@@ -71,11 +79,11 @@ private:
 	PortalList Portals;
 	PointList Points;
 	void createField();
-	void initWallPositions();
-	void initFieldTypesMap();
 	void createWalls(float wallHeight);
 	void createPoints();
 	void createPortals();
+	void initWallPositions();
+	void initFieldTypesMap();
 
 	/* map origin position (x, z) to expansion (width, depth) */
 	std::map<std::pair<int, int>, std::pair<int, int>> wallPositions;
