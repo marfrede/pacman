@@ -13,23 +13,14 @@ Pacman::Pacman(int posX, int posZ, Color c, const char* ModelFile, bool FitSize)
 	this->init(c);
 }
 
-Pacman::Pacman(int posX, int posZ) : GameCharacter(posX, 0.5f, posZ) {
-	this->init();
-}
-
-void Pacman::init() {
-    ConstantShader* pShader = new ConstantShader();
-    pShader->color(Color(0,0,0));
-    this->shader(pShader, true);
-    this->rotateSpeed = 350;
-    this->movingSpeed = 3.2;
-    this->arrow = nullptr;
+Pacman::Pacman(int posX, int posZ, Color c) : GameCharacter(posX, 0.5f, posZ) {
+	this->init(c);
 }
 
 void Pacman::init(Color c) {
-    ConstantShader* pShader = new ConstantShader();
-    pShader->color(c);
-    this->shader(pShader, true);
+	ConstantShader* pShader = new ConstantShader();
+	pShader->color(c);
+	this->shader(pShader, true);
 	this->rotateSpeed = 350;
 	this->movingSpeed = 3.2;
 	this->arrow = nullptr;
@@ -115,7 +106,7 @@ void Pacman::adjustArrow(Field* pField, GameMode gamemode) {
 
 	Matrix mTotal, mRotY, mRotX, mScale, mMov;
 	mScale.identity();
-	if(gamemode != GameMode::Debug) {
+	if (gamemode != GameMode::Debug) {
 		mScale.scale(0.04f, 0.04f, 0.04f);
 	}
 	mMov.translation(0, 3, 0);
@@ -127,8 +118,8 @@ void Pacman::adjustArrow(Field* pField, GameMode gamemode) {
 }
 
 void Pacman::moveSubs() {
-    std::cout << "Pacman move subs" << std::endl;
-    
+	std::cout << "Pacman move subs" << std::endl;
+
 	GameCharacter::moveSubs();
 
 	if (!this->arrow) {

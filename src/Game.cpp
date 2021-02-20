@@ -138,7 +138,7 @@ void Game::createPacman(GLFWwindow* pWindow, Color primary, Color secondary, flo
 	else {
 		// Pacman without Model
         lightColor = Color(1,1,1);
-		pPacman = new Pacman(posX, posZ);
+		pPacman = new Pacman(posX, posZ, Color(0, 0, 0));
 	}
 
 	// Arrow
