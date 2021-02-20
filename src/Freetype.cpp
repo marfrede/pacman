@@ -162,6 +162,7 @@ void Freetype::initFont() {
             std::pair<float, float> Bearing;
             Bearing.first = face->glyph->bitmap_left;
             Bearing.second = face->glyph->bitmap_top;
+            
             Character character = {
                 texture,
                 Size,
@@ -191,11 +192,11 @@ void Freetype::initFont() {
 
     // render loop
     // -----------
-    while (!glfwWindowShouldClose(window))
-    {
+    //while (!glfwWindowShouldClose(window))
+    //{
         // input
         // -----
-        processInput(window);
+        //processInput(window);
 
         // render
         // ------
@@ -207,11 +208,11 @@ void Freetype::initFont() {
        
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-    }
+    //    glfwSwapBuffers(window);
+     //   glfwPollEvents();
+   // }
 
-    glfwTerminate();
+   // glfwTerminate();
 }
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
@@ -238,7 +239,8 @@ void Freetype::RenderText(FreetypeShader &shader, std::string text, float x, flo
 {
     // activate corresponding render state
     shader.activate(Cam);
-    glUniform3f(glGetUniformLocation(shader.openGLProgramID(), "textColor"), color.X, color.Y, color.Z);
+    //glUniform3f(glGetUniformLocation(shader.openGLProgramID(), "textColor"), color.X, color.Y, color.Z);
+    shader.color(Color(color.X, color.Y, color.Z));
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(VAO);
 

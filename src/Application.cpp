@@ -113,9 +113,7 @@ void Application::draw()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
     Freetype ft = Freetype(Cam, pWindow);
-    
     ft.initFont();
-    
     //FreetypeShader ftShader = FreetypeShader();
     //std::string text = "HALLO WELT ICH SCHREIBE GANZ VIEL DAMIT DER BILDSCHIRM SO VOLL WIE MÖGLICH IST";
     
