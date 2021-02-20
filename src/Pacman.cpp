@@ -118,7 +118,7 @@ void Pacman::adjustArrow(Field* pField, GameMode gamemode) {
 }
 
 void Pacman::moveSubs() {
-	std::cout << "Pacman move subs" << std::endl;
+	// std::cout << "Pacman move subs" << std::endl;
 
 	GameCharacter::moveSubs();
 
