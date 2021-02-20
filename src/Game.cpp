@@ -120,12 +120,7 @@ void Game::createGameModels(GLFWwindow* pWindow) {
 void Game::createPacman(GLFWwindow* pWindow, Color primary, Color secondary, float posX, float posZ) {
     // std::cout << "PACMAN " << std::endl;
 
-	// Light 1
-    Vector a = Vector(0.35f, 0.35f, 0.35f);
-    float innerradius = 45;
-    float outerradius = 70;
-    Color lightColor = primary;
-
+	Color lightColor;
 	if (gamemode != GameMode::FirstPerson) {
 		// Pacman with Model
 		pPacman = new Pacman(posX, posZ, primary, ASSET_DIRECTORY "pacman-body.dae", false);
@@ -134,11 +129,14 @@ void Game::createPacman(GLFWwindow* pWindow, Color primary, Color secondary, flo
         cShader->color(secondary);
         ext->shader(cShader);
 		pPacman->setExt(ext);
+		// Pacman primary color
+		lightColor = primary;
 	}
 	else {
 		// Pacman without Model
-        lightColor = Color(1,1,1);
 		pPacman = new Pacman(posX, posZ, Color(0, 0, 0));
+		// Pacman white color
+        lightColor = Color(1,1,1);
 	}
 
 	// Arrow
@@ -155,6 +153,10 @@ void Game::createPacman(GLFWwindow* pWindow, Color primary, Color secondary, flo
 	pPacman->setField(pField);
     
 	// Light 2
+	Vector a = Vector(0.35f, 0.35f, 0.35f);
+	float innerradius = 45;
+	float outerradius = 70;
+
     PointLight* pl = new PointLight();
     pl->color(lightColor);
     pl->attenuation(a);
