@@ -85,38 +85,37 @@ void Pacman::steer(float dtime) {
 		//<< (this->checkFront() ? "can go" : "can not go") << std::endl;
 }
 
-void Pacman::adjustArrow(Field* pField) {
+void Pacman::adjustArrow(Field* pField, GameMode gamemode) {
 	if (!this->arrow) {
 		return;
 	}
 
+	Vector pacPos = this->transform().translation();
 	Vector arrPos = this->arrow->transform().translation();
-	Vector target = this->pField->closestPointPos(arrPos);
+	Vector target = this->pField->closestPointPos(arrPos); // Here, the arrow position and not the Pacman position is used to determine the closest point, as the arrow is always moved (translation) a bit BEFORE Pacman (depending on Pacman's current orientation). This means that the arrow always points to the point Pacman is already looking at in case there are several points in the same distance. 
+	Vector dirToTarget = pacPos - target;
+	dirToTarget.Y = 0; // just horiztontal direction important! 
+	dirToTarget.normalize();
 
-	// std::cout << this->arrow->transform().translation().X << std::endl;
-
-	//Target Vector on same height as arrow
-	Vector targetH = Vector(target.X, this->arrow->transform().left().Y, target.Z);
-	targetH.normalize();
-
-
-	float angle = acos(targetH.dot(this->arrow->transform().left())); //Left weil das Model falsch ausgerichetet ist
-
-	//Randbehandlung
-	if (arrPos.Z > targetH.Z) {
-		angle = 2 * M_PI - angle;
+	float angle = acos(dirToTarget.dot(this->arrow->transform().left())); //direction left instead of forward used because the arrow 3D model  is misaligned (ponting left)
+	if (pacPos.Z < target.Z && abs(pacPos.Z - target.Z) > 0.1f) {
+		// scalar calcs smallest angle
+		angle = -angle;
 	}
-	if (isnan(angle)) { // seltener Grenzfall bei gleicher Ausrichtung
-		if (arrPos.Z < targetH.Z) angle = 0;
-		else angle = M_PI;
+	if (isnan(angle)) { // Limit case with alignment (scalar = 0)
+		if (pacPos.Z < target.Z) angle = -M_PI / 2.0f;
+		else angle = M_PI / 2.0f;
 	}
 
-	Matrix mTotal, mRot, mRot2, mScale, mMov;
-	mScale.scale(0.04f, 0.04f, 0.04f);
+	Matrix mTotal, mRotY, mRotX, mScale, mMov;
+	mScale.identity();
+	if(gamemode != GameMode::Debug) {
+		mScale.scale(0.04f, 0.04f, 0.04f);
+	}
 	mMov.translation(0, 3, 0);
-	mRot.rotationY(angle);
-	mRot2.rotationX((M_PI / 2));
-	mTotal = this->arrow->transform() * mScale * mMov * mRot * mRot2;
+	mRotY.rotationY(angle);
+	mRotX.rotationX((M_PI / 2));
+	mTotal = this->arrow->transform() * mScale * mMov * mRotY * mRotX;
 
 	this->arrow->transform(mTotal);
 }

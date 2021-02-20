@@ -108,7 +108,7 @@ Vector Field::closestPointPos(Vector origin) {
 		Vector diff = origin - point.second->transform().translation();
 		if (diff.length() < closestDistance) {
 			closestDistance = diff.length();
-			target = diff;
+			target = point.second->transform().translation();
 		}
 
 	}
@@ -252,8 +252,15 @@ void Field::initWallPositions() {
 }
 
 FieldType Field::getFieldType(int x, int z) {
-
+	if (x < 0 || z < 0 || x >= PLANE_WIDTH|| z >= PLANE_DEPTH) {
+		return FieldType::OutOfField;
+	}
 	return this->fieldTypesMap[z * PLANE_WIDTH + x];
+}
+
+FieldType Field::getFieldType(Vector position) {
+	std::pair<int, int> posOnField = this->getPosOnField(position);
+	return this->getFieldType(posOnField.first, posOnField.second);
 }
 
 void Field::initFieldTypesMap() {
@@ -321,4 +328,10 @@ void Field::printFieldTypesMap() {
 		}
 		std::cout << " <" << std::endl;
 	}
+}
+
+std::pair<int, int> Field::getPosOnField(Vector position) {
+	int x = position.X + ((float)PLANE_WIDTH / 2.0f - 0.5f);
+	int z = position.Z + ((float)PLANE_DEPTH / 2.0f - 0.5f);
+	return std::pair<int, int>(x, z);
 }

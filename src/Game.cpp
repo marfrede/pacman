@@ -33,9 +33,9 @@ void Game::update(float dtime) {
 		(*it)->update(dtime);
 	}
 	this->pField->update(dtime);
-    
+
 	this->pPacman->update(dtime);
-	this->pPacman->adjustArrow(pField);
+	this->pPacman->adjustArrow(pField, this->gamemode);
 
 	//if(this->gamemode != GameMode::Debug) {
 	this->checkGameOver();
@@ -73,20 +73,20 @@ void Game::start(GLFWwindow* pWindow) {
 
 void Game::checkGameOver() {
 
-    if (!pField->pointsLeft()) {
-        this->gameOver = true;
-        return;
-    }
+	if (!pField->pointsLeft()) {
+		this->gameOver = true;
+		return;
+	}
 
-    for (auto const& ghost : this->Ghosts) {
-        Vector diff = pPacman->transform().translation() - ghost->transform().translation();
-        if (diff.length() < 1) {
-            this->gameOver = true;
-            return;
-        }
-    }
+	for (auto const& ghost : this->Ghosts) {
+		Vector diff = pPacman->transform().translation() - ghost->transform().translation();
+		if (diff.length() < 1) {
+			this->gameOver = true;
+			return;
+		}
+	}
 
-    this->gameOver = false;
+	this->gameOver = false;
 
 }
 
@@ -112,22 +112,10 @@ void Game::createGameModels(GLFWwindow* pWindow) {
 
 }
 
-void Game::createPacman(GLFWwindow* pWindow, Color primary, Color secondary, float posX, float posZ) {    
-    Vector a = Vector(10, 0, 10);
-    float innerradius = 45;
-    float outerradius = 70;
+void Game::createPacman(GLFWwindow* pWindow, Color primary, Color secondary, float posX, float posZ) {
 
-	// Pacman
-	if (gamemode == GameMode::FirstPerson) {
-		//Arrow
-		Model* arrow = new Model(ASSET_DIRECTORY "arrow.dae", false);
-		ConstantShader* pShader = new ConstantShader();
-		pShader->color(Color(1.0f, 0, 0));
-		arrow->shader(pShader, true);
-		pPacman = new Pacman(posX, posZ);
-		pPacman->setArrow(arrow);
-	}
-	else {
+	if (gamemode != GameMode::FirstPerson) {
+		// Pacman with Model
 		pPacman = new Pacman(posX, posZ, ASSET_DIRECTORY "single-ghost-complete.dae", false);
 		Model* ext = new Model(ASSET_DIRECTORY "single-ghost-ext.dae");
 		ConstantShader* cShader = new ConstantShader();
@@ -135,30 +123,50 @@ void Game::createPacman(GLFWwindow* pWindow, Color primary, Color secondary, flo
 		ext->shader(cShader);
 		pPacman->setExt(ext);
 	}
+	else {
+		// Pacman without Model
+		pPacman = new Pacman(posX, posZ);
+	}
+
+	// Arrow
+	if (gamemode == GameMode::FirstPerson || gamemode == GameMode::Debug) {
+		Model* arrow = new Model(ASSET_DIRECTORY "arrow.dae", false);
+		ConstantShader* pShader = new ConstantShader();
+		pShader->color(Color(1.0f, 0, 0));
+		arrow->shader(pShader, true);
+		pPacman->setArrow(arrow);
+	}
+
+	// Window and Field
 	pPacman->setWindow(pWindow);
 	pPacman->setField(pField);
-    
-    PointLight* pl = new PointLight();
-    pl->color(primary);
-    pl->attenuation(a);
-    ShaderLightMapper::instance().addLight(pl);
-    pPacman->setPointLight(pl);
-    
-    // spot light
-    SpotLight* sl = new SpotLight();
-    sl->color(primary);
-    sl->direction(Vector(0, -1, 0));
-    sl->innerRadius(innerradius);
-    sl->outerRadius(outerradius);
-    ShaderLightMapper::instance().addLight(sl);
-    pPacman->setSpotLight(sl);
+
+	// Light
+	Vector a = Vector(10, 0, 10);
+	float innerradius = 45;
+	float outerradius = 70;
+
+	PointLight* pl = new PointLight();
+	pl->color(primary);
+	pl->attenuation(a);
+	ShaderLightMapper::instance().addLight(pl);
+	pPacman->setPointLight(pl);
+
+	// spot light
+	SpotLight* sl = new SpotLight();
+	sl->color(primary);
+	sl->direction(Vector(0, -1, 0));
+	sl->innerRadius(innerradius);
+	sl->outerRadius(outerradius);
+	ShaderLightMapper::instance().addLight(sl);
+	pPacman->setSpotLight(sl);
 }
 
 void Game::createGhost(GLFWwindow* pWindow, Color primary, Color secondary, float posX, float posZ) {
 
 	Vector a = Vector(1, 0, 1);
-    float innerradius = 45;
-    float outerradius = 70;
+	float innerradius = 45;
+	float outerradius = 70;
 
 	// GHOST WHITE
 	Ghost* g = new Ghost(posX, posZ, primary, ASSET_DIRECTORY "single-ghost-body.dae", false);
@@ -176,16 +184,16 @@ void Game::createGhost(GLFWwindow* pWindow, Color primary, Color secondary, floa
 	pl->attenuation(a);
 	ShaderLightMapper::instance().addLight(pl);
 	g->setPointLight(pl);
-    
+
 	// spot light
 	SpotLight* sl = new SpotLight();
 	sl->color(primary);
-    sl->direction(Vector(0, -1, 0));
+	sl->direction(Vector(0, -1, 0));
 	sl->innerRadius(innerradius);
 	sl->outerRadius(outerradius);
 	ShaderLightMapper::instance().addLight(sl);
 	g->setSpotLight(sl);
- 
+
 	Ghosts.push_back(g);
 
 }

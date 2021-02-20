@@ -13,6 +13,8 @@
 #include "PhongShader.h"
 #include "GameCharacter.hpp"
 #include "EgoCam.hpp"
+#include "FieldType.h"
+#include "GameMode.h"
 #include <stdio.h>
 
 class Pacman : public GameCharacter
@@ -31,7 +33,7 @@ public:
     void draw(const Camera Cam);
     void moveSubs();
 	void setArrow(BaseModel* arrow);
-    void adjustArrow(Field* pField);
+    void adjustArrow(Field* pField, GameMode gamemode);
 
 	/**
 	 STEERING
