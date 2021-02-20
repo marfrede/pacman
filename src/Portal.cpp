@@ -1,4 +1,6 @@
 #include "Portal.h"
+#include "Lights.h"
+#include "ShaderLightMapper.h"
 #ifndef M_PI
 #define M_PI 3.1415926535897932
 #endif // !M_PI
@@ -15,6 +17,13 @@ Portal::Portal(int posX, int posZ, Orientation orientation, BaseShader* pShader)
 		(float)posZ + 0.5f - (float)PLANE_DEPTH / 2.0f
 	);
 	this->transform(t * rotZ);
+    
+    Vector a = Vector(0.5f, 0, 0.5f);
+    PointLight* pl = new PointLight();
+    pl->color(Color(0,1,0));
+    pl->attenuation(a);
+    pl->position(this->transform().translation() + this->transform().up());
+    ShaderLightMapper::instance().addLight(pl);
 }
 
 void Portal::update(float dtime) {
