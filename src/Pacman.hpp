@@ -27,7 +27,7 @@ public:
     * @param posZ (min:0, max:planeDepth) z position on the field
     * @param pPhongShader to use for the pacman
 	*/
-	Pacman(int posX, int posZ, const char* ModelFile, bool FitSize);
+	Pacman(int posX, int posZ, Color c, const char* ModelFile, bool FitSize);
     Pacman(int posX, int posZ);
     
     void draw(const Camera Cam);
@@ -45,7 +45,8 @@ public:
 	void steer(float dtime);
 
 private:
-	void init();
+    void init();
+	void init(Color c);
 	void init(BaseModel* arrow);
 	/** eat point */
 	void eat();

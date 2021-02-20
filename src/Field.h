@@ -20,12 +20,12 @@
 #include "FieldSizeConstants.h"
 
 #define SHOW_DEBUG_PLANE false
-#define SHOW_PLANE false
+#define SHOW_PLANE true
 #define SHOW_WALLS true
 #define SHOW_POINTS true
 #define SHOW_PORTALS true
 
-#define WALL_HEIGHT 0.5f
+#define WALL_HEIGHT 5.5f
 #define WALL_PADDING 0.0f
 
 #define POINT_RADIUS 0.05f
@@ -33,7 +33,7 @@
 class Field
 {
 public:
-	Field();
+	Field(float wallHeight);
 	~Field();
 	typedef std::list<BaseModel*> ModelList;
 	typedef std::list<Portal*> PortalList;
@@ -79,7 +79,7 @@ private:
 	PortalList Portals;
 	PointList Points;
 	void createField();
-	void createWalls();
+	void createWalls(float wallHeight);
 	void createPoints();
 	void createPortals();
 	void initWallPositions();
@@ -90,6 +90,9 @@ private:
 
 	/* whole map as 2D Array */
 	FieldType* fieldTypesMap = NULL;
+    
+    /* WallHeight */
+    float wallHeight = 5.5f;
 
 	void printFieldTypesMap();
 };

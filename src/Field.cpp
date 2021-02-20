@@ -1,6 +1,6 @@
 #include "Field.h"
 
-Field::Field()
+Field::Field(float wallHeight)
 {
 	this->initWallPositions();
 	this->initFieldTypesMap();
@@ -10,7 +10,7 @@ Field::Field()
 	this->pShaderPoint = new ConstantShader();
 
 	this->createField();
-	this->createWalls();
+	this->createWalls(wallHeight);
 	if (SHOW_PORTALS) this->createPortals();
 	if (SHOW_POINTS) this->createPoints();
 }
@@ -38,8 +38,8 @@ void Field::createField() {
 	}
 	if (SHOW_PLANE) {
 		// TEXTURED TRIANGLE PLAYING FIELD
-		//pPlane = new TrianglePlaneModel((float)planeWidth, (float)planeDepth, (float)planeWidth, (float)planeDepth);
-		pPlane = new TriangleBoxModel(30, 0.1f, 33);
+		pPlane = new TrianglePlaneModel((float)planeWidth, (float)planeDepth, (float)planeWidth, (float)planeDepth);
+		//pPlane = new TriangleBoxModel(30, 0.1f, 33);
 		PhongShader* pPhongShader = new PhongShader();
 		pPhongShader->ambientColor(Color(0.2f, 0.2f, 0.2f));
 		pPhongShader->diffuseColor(Color(1.0f, 1.0f, 1.0f));
@@ -48,7 +48,7 @@ void Field::createField() {
 	}
 }
 
-void Field::createWalls() {
+void Field::createWalls(float wallHeight) {
 	// 2. make shader
 	this->pShaderWall->ambientColor(Color(0.2f, 0.2f, 0.2f)); // grey
 	this->pShaderWall->diffuseColor(Color(1.0f, 1.0f, 1.0f));
@@ -62,7 +62,7 @@ void Field::createWalls() {
 		Walls.push_back(
 			new Wall(
 				wall.second.first, // width
-				WALL_HEIGHT,
+				wallHeight,
 				wall.second.second, // depth
 				wall.first.first, // posX
 				wall.first.second, // posY
