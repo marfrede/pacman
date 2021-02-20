@@ -21,10 +21,7 @@ void Particle::update(float dtime) {
     
     //std::cout << "Update Particle" << std::endl;
     
-    Matrix mTotal, mTrans;
-    mTrans.translation(this->velocity * 0.001f);
-    mTotal = this->transform() * mTrans;
-    this->transform(mTotal);
+    
     
     this->lifetime -= dtime;
     
@@ -38,6 +35,31 @@ void Particle::draw(const BaseCamera& Cam)
 {
     TrianglePlaneModel::draw(Cam);
 
+    //Cam.getViewMatrix()
+    Matrix m = this->transform();
+    
+    //Cam.g
+    
+    m.m00 = Cam.getViewMatrix().m00;
+    m.m01 = Cam.getViewMatrix().m01;
+    m.m02 = Cam.getViewMatrix().m02;
+    m.m10 = Cam.getViewMatrix().m10;
+    m.m11 = Cam.getViewMatrix().m11;
+    m.m12 = Cam.getViewMatrix().m12;
+    m.m20 = Cam.getViewMatrix().m20;
+    m.m21 = Cam.getViewMatrix().m21;
+    m.m22 = Cam.getViewMatrix().m22;
+    
+    //m.rotationZ(90);
+    this->transform(m);
+    /*
+    Matrix mTotal, mTrans;
+    mTrans.translation(this->velocity * 0.001f);
+    mTotal = this->transform() * mTrans;
+    this->transform(mTotal);
+    */
+    
+    
     VB.activate();
     
     glDrawArrays(GL_LINES, 0, VB.vertexCount());
@@ -46,7 +68,9 @@ void Particle::draw(const BaseCamera& Cam)
 }
 
 void Particle::reset(Vector pos) {
-    
+    Matrix reset;
+    reset.identity();
+    this->transform(reset);
     Matrix mTrans, mTotal;
     mTrans.translation((pos - this->transform().translation()));
     mTotal = this->transform() * mTrans;
