@@ -57,7 +57,12 @@ void Game::draw(const Camera Cam)
 
 void Game::createGameScene(GLFWwindow* pWindow) {
 
-	pField = new Field();
+    if(gamemode == GameMode::FirstPerson) {
+        pField = new Field(5.5f);
+    } else {
+        pField = new Field(1.5f);
+    }
+	
 	this->createGameModels(pWindow);
 
 }
