@@ -34,6 +34,7 @@ public:
     void moveSubs();
 	void setArrow(BaseModel* arrow);
     void adjustArrow(Field* pField, GameMode gamemode);
+    void reset();
 
 	/**
 	 STEERING

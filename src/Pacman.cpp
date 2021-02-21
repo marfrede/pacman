@@ -117,6 +117,18 @@ void Pacman::adjustArrow(Field* pField, GameMode gamemode) {
 	this->arrow->transform(mTotal);
 }
 
+void Pacman::reset() {
+    Matrix t;
+    float x = 0.5f + (float)spawnLocation.first - ((float)PLANE_WIDTH) / 2.0f;
+    float z = 0.5f + (float)spawnLocation.second - ((float)PLANE_DEPTH) / 2.0f;
+
+    t.translation(x, 0.5f, z);
+    this->transform(t);
+
+    this->angleToTurn = 0.0f;
+    this->moveUnits = 0;
+}
+
 void Pacman::moveSubs() {
 	// std::cout << "Pacman move subs" << std::endl;
 

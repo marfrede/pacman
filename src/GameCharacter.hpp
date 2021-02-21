@@ -101,7 +101,7 @@ public:
 	*/
 	bool checkRight();
 
-	void reset();
+	virtual void reset();
 
 	//Sub Movement
 	virtual void moveSubs();
