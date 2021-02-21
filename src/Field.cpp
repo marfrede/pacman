@@ -55,7 +55,7 @@ void Field::createWalls(float wallHeight) {
 	this->pShaderWall->diffuseColor(Color(1.0f, 1.0f, 1.0f));
 	this->pShaderWall->specularColor(Color(1.0f, 1.0f, 1.0f));
 	this->pShaderWall->diffuseTexture(Texture::LoadShared(TEXTURE_DIRECTORY "MetalPlates004_1K_Color.jpg"));
-	//this->pShaderWall->normalTexture(Texture::LoadShared(TEXTURE_DIRECTORY ""));
+	this->pShaderWall->normalTexture(Texture::LoadShared(TEXTURE_DIRECTORY "MetalPlates004_1K_Normal.jpg"));
 
 	// 2. make walls
 	for (auto const& wall : this->wallPositions)
