@@ -23,20 +23,20 @@ TriangleBoxModel::TriangleBoxModel(float Width, float Height, float Depth)
 
 	VB.addNormal(0, -1, 0); //Oben rechts 1
 	VB.addTexcoord0(Width / replication, 0);
-    VB.addTexcoord1(-1, 0, 0);
-    VB.addTexcoord2(0, 0, 1);
+	VB.addTexcoord1(-1, 0, 0);
+	VB.addTexcoord2(0, 0, 1);
 	VB.addVertex(W, -H, D);
 
 	VB.addNormal(0, -1, 0); //Unten rechts 2
 	VB.addTexcoord0(Width / replication, Depth / replication);
-    VB.addTexcoord1(-1, 0, 0);
-    VB.addTexcoord2(0, 0, 1);
+	VB.addTexcoord1(-1, 0, 0);
+	VB.addTexcoord2(0, 0, 1);
 	VB.addVertex(W, -H, -D);
 
 	VB.addNormal(0, -1, 0); //Unten links 3
 	VB.addTexcoord0(0, Depth / replication);
-    VB.addTexcoord1(-1, 0, 0);
-    VB.addTexcoord2(0, 0, 1);
+	VB.addTexcoord1(-1, 0, 0);
+	VB.addTexcoord2(0, 0, 1);
 	VB.addVertex(-W, -H, -D);
 
 	// FRONT
@@ -48,20 +48,20 @@ TriangleBoxModel::TriangleBoxModel(float Width, float Height, float Depth)
 
 	VB.addNormal(0, 0, 1); //Oben rechts 5
 	VB.addTexcoord0(Width / replication, 0);
-    VB.addTexcoord1(1, 0, 0);
-    VB.addTexcoord2(0, 1, 0);
+	VB.addTexcoord1(1, 0, 0);
+	VB.addTexcoord2(0, 1, 0);
 	VB.addVertex(W, H, D);
 
 	VB.addNormal(0, 0, 1); //Unten rechts 6
 	VB.addTexcoord0(Width / replication, Height / replication);
-    VB.addTexcoord1(1, 0, 0);
-    VB.addTexcoord2(0, 1, 0);
+	VB.addTexcoord1(1, 0, 0);
+	VB.addTexcoord2(0, 1, 0);
 	VB.addVertex(W, -H, D);
 
 	VB.addNormal(0, 0, 1); //Unten links 7
 	VB.addTexcoord0(0, Height / replication);
-    VB.addTexcoord1(1, 0, 0);
-    VB.addTexcoord2(0, 1, 0);
+	VB.addTexcoord1(1, 0, 0);
+	VB.addTexcoord2(0, 1, 0);
 	VB.addVertex(-W, -H, D);
 
 	// RIGHT
