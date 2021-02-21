@@ -8,11 +8,17 @@ Field::Field(float wallHeight)
 	this->pShaderPortal = new PhongShader();
 	this->pShaderWall = new PhongShader();
 	this->pShaderPoint = new ConstantShader();
+    
+    
 
 	this->createField();
 	this->createWalls(wallHeight);
 	if (SHOW_PORTALS) this->createPortals();
-	if (SHOW_POINTS) this->createPoints();
+    if (SHOW_POINTS) {
+        this->pointCol = Color(255.0f / 255.0f, 184.0f / 255.0f, 174.0f / 255.0f);
+        this->createPoints();
+        this->particlePopEmitter = new ParticlePopEmitter(100, pointCol);
+    }
 }
 
 Field::~Field() {
@@ -77,8 +83,7 @@ void Field::createWalls(float wallHeight) {
 * adds the missing points. Initial all points and for further games only the ones missing.
 */
 void Field::createPoints() {
-	Color pointCol(255.0f / 255.0f, 184.0f / 255.0f, 174.0f / 255.0f);
-	this->pShaderPoint->color(pointCol);
+	this->pShaderPoint->color(this->pointCol);
 	for (int z = 0; z < PLANE_DEPTH; z++) {
 		for (int x = 0; x < PLANE_WIDTH; x++) {
 			if (this->fieldTypesMap[z * PLANE_WIDTH + x] == FieldType::Point) {
@@ -122,6 +127,7 @@ bool Field::removePoint(int x, int z) {
 			return false;
 		}
 		this->fieldTypesMap[z * PLANE_WIDTH + x] = FieldType::Free;
+        this->particlePopEmitter->trigger(this->Points.at(std::pair<int, int>(x, z))->transform().translation(), 10);
 		delete this->Points.at(std::pair<int, int>(x, z));
 		this->Points.erase(std::pair<int, int>(x, z));
 		return false;
@@ -135,6 +141,7 @@ bool Field::pointsLeft() {
 void Field::draw(const Camera camera) {
 	if (SHOW_DEBUG_PLANE) this->pPlaneDebug->draw(camera);
 	if (SHOW_PLANE) this->pPlane->draw(camera);
+    this->particlePopEmitter->draw(camera);
 	for (ModelList::iterator wall = this->Walls.begin(); wall != this->Walls.end(); ++wall)
 	{
 		(*wall)->draw(camera);
@@ -149,6 +156,7 @@ void Field::draw(const Camera camera) {
 }
 
 void Field::update(float dtime) {
+    this->particlePopEmitter->update(dtime);
 	for (auto const& point : this->Points) {
 		point.second->update(dtime);
 	}

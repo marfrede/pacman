@@ -18,6 +18,7 @@
 #include "Point.h"
 #include "FieldType.h"
 #include "FieldSizeConstants.h"
+#include "ParticlePopEmitter.hpp"
 
 #define SHOW_DEBUG_PLANE false
 #define SHOW_PLANE true
@@ -78,6 +79,8 @@ private:
 	ModelList Walls;
 	PortalList Portals;
 	PointList Points;
+    Color pointCol;
+    ParticlePopEmitter* particlePopEmitter;
 	void createField();
 	void createWalls(float wallHeight);
 	void createPoints();

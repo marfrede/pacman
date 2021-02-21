@@ -12,7 +12,7 @@
 #endif
 #include "lights.h"
 
-#define MaxLightCount 80
+#define MaxLightCount 14
 
 class ShaderLightMapper
 {
