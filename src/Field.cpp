@@ -44,7 +44,7 @@ void Field::createField() {
 		pPhongShader->ambientColor(Color(0.2f, 0.2f, 0.2f));
 		pPhongShader->diffuseColor(Color(1.0f, 1.0f, 1.0f));
 		pPhongShader->diffuseTexture(Texture::LoadShared(TEXTURE_DIRECTORY "MetalPlates004_1K_Color.jpg"));
-		//pPhongShader->normalTexture(Texture::LoadShared(TEXTURE_DIRECTORY "MetalPlates004_1K_Normal.jpg"));
+		pPhongShader->normalTexture(Texture::LoadShared(TEXTURE_DIRECTORY "MetalPlates004_1K_Normal.jpg"));
 		pPlane->shader(pPhongShader, true);
 	}
 }
