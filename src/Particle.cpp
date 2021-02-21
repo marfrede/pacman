@@ -14,7 +14,7 @@ Particle::Particle(Vector position, Vector velocity, float rotation, float lifet
     mRot.rotationY(M_PI/2);
     mTrans.translation(position);
     mTotal = this->transform() * mTrans * mRot;
-    
+    this->alive = false;
     this->transform(mTotal);
     
 }
