@@ -12,6 +12,7 @@
 #include "GameMode.h"
 #include "Ghost.hpp"
 #include "Pacman.hpp"
+#include "GameOverEnum.h"
 #include <stdio.h>
 #include <list>
 
@@ -36,8 +37,7 @@ public:
     void update(float dtime); //Updated Pacman und Geister
     void draw(const Camera camera);
     
-    void checkGameOver(); //Prüfe Abbruchbedingungen - prüfe Feld pointsEmpty
-    bool isGameOver() {return this->gameOver;}
+    GameOver checkGameOver(); //Prüfe Abbruchbedingungen - prüfe Feld pointsEmpty
     void end();
     
 private:
@@ -45,8 +45,6 @@ private:
     Field* pField;
     GhostList Ghosts;
     Pacman* pPacman;
-    
-    bool gameOver = true;
 };
 
 #endif /* Game_hpp */
