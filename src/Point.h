@@ -23,7 +23,7 @@ private:
 	bool goingUp;
 	void init(int posX, int posZ);
 	void setPosition(float x, float y, float z);
-	PointLight* pPointLight = NULL;
+	SpotLight* pSpotLight = NULL;
 };
 
 #endif /* Point_hpp */

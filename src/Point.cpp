@@ -9,10 +9,13 @@ void Point::init(int posX, int posZ) {
 	this->goingUp = true;
 	float height = LO_HEIGHT + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (HI_HEIGHT - LO_HEIGHT)));
 	if (LIGHTING) {
-		this->pPointLight = new PointLight();
-        this->pPointLight->color(Color(255.0f / 255.0f, 184.0f / 255.0f, 174.0f / 255.0f));
-		this->pPointLight->attenuation(Vector(1.0f, 1.0f, 1.0f));
-		ShaderLightMapper::instance().addLight(this->pPointLight);
+		this->pSpotLight = new SpotLight();
+        this->pSpotLight->color(Color(255.0f / 255.0f / 4.0f, 184.0f / 255.0f / 4.0f, 174.0f / 255.0f / 4.0f));
+		this->pSpotLight->attenuation(Vector(0.1f, 0.1f, 0.1f));
+		this->pSpotLight->direction(Vector(0, -1, 0));
+		this->pSpotLight->innerRadius(10.0f);
+		this->pSpotLight->outerRadius(12.0f);
+		ShaderLightMapper::instance().addLight(this->pSpotLight);
 	}
 	this->setPosition(posX, height, posZ);
 }
@@ -28,7 +31,7 @@ void Point::setPosition(float x, float y, float z) {
 	);
 	this->transform(t);
 	if (LIGHTING) {
-		this->pPointLight->position(this->transform().translation());
+		this->pSpotLight->position(this->transform().translation());
 	}
 }
 
@@ -51,6 +54,6 @@ void Point::update(float dtime) {
 
 Point::~Point() {
 	if (LIGHTING) {
-		delete this->pPointLight;
+		delete this->pSpotLight;
 	}
 }
