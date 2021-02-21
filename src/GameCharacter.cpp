@@ -7,7 +7,6 @@
 //
 
 #include "GameCharacter.hpp"
-#include "math.h"
 
 GameCharacter::GameCharacter(int posX, float y, int posZ, const char* ModelFile, bool FitSize) : Model(ModelFile, FitSize) {
 	this->setSpawnLocation(posX, posZ);

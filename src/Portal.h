@@ -6,6 +6,9 @@
 #include "BaseShader.h"
 #include "Orientation.h"
 #include "FieldSizeConstants.h"
+#include "Lights.h"
+#include "ShaderLightMapper.h"
+#include "Pi.h"
 
 class Portal : public TrianglePlaneModel
 {

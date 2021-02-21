@@ -1,9 +1,4 @@
 #include "Portal.h"
-#include "Lights.h"
-#include "ShaderLightMapper.h"
-#ifndef M_PI
-#define M_PI 3.1415926535897932
-#endif // !M_PI
 
 
 Portal::Portal(int posX, int posZ, Orientation orientation, BaseShader* pShader) :TrianglePlaneModel(1.0f, 1.0f, 1.0f, 1.0f)
