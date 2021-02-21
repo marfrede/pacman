@@ -18,11 +18,7 @@
 #include "Model.h"
 #include <stdio.h>
 #include <list>
-
-#ifndef M_PI
-#define M_PI 3.1415926535897932
-#endif
-
+#include "Pi.h"
 class GameCharacter : public Model
 {
 

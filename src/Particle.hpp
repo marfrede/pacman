@@ -14,6 +14,7 @@
 #include "matrix.h"
 #include "TrianglePlaneModel.h"
 #include "TriangleBoxModel.h"
+#include "Pi.h"
 
 class Particle : public TrianglePlaneModel
 {
