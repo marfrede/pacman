@@ -38,12 +38,13 @@ void Field::createField() {
 	}
 	if (SHOW_PLANE) {
 		// TEXTURED TRIANGLE PLAYING FIELD
-		pPlane = new TrianglePlaneModel((float)planeWidth, (float)planeDepth, (float)planeWidth, (float)planeDepth);
-		//pPlane = new TriangleBoxModel(30, 0.1f, 33);
+		//pPlane = new TrianglePlaneModel((float)planeWidth, (float)planeDepth, (float)planeWidth / 4.0f, (float)planeDepth / 4.0f);
+		pPlane = new TriangleBoxModel(30, 0.0f, 33);
 		PhongShader* pPhongShader = new PhongShader();
 		pPhongShader->ambientColor(Color(0.2f, 0.2f, 0.2f));
 		pPhongShader->diffuseColor(Color(1.0f, 1.0f, 1.0f));
 		pPhongShader->diffuseTexture(Texture::LoadShared(TEXTURE_DIRECTORY "MetalPlates004_1K_Color.jpg"));
+		pPhongShader->normalTexture(Texture::LoadShared(TEXTURE_DIRECTORY "MetalPlates004_1K_Normal.jpg"));
 		pPlane->shader(pPhongShader, true);
 	}
 }
@@ -54,7 +55,7 @@ void Field::createWalls(float wallHeight) {
 	this->pShaderWall->diffuseColor(Color(1.0f, 1.0f, 1.0f));
 	this->pShaderWall->specularColor(Color(1.0f, 1.0f, 1.0f));
 	this->pShaderWall->diffuseTexture(Texture::LoadShared(TEXTURE_DIRECTORY "MetalPlates004_1K_Color.jpg"));
-	//this->pShaderWall->normalTexture(Texture::LoadShared(TEXTURE_DIRECTORY ""));
+	this->pShaderWall->normalTexture(Texture::LoadShared(TEXTURE_DIRECTORY "MetalPlates004_1K_Normal.jpg"));
 
 	// 2. make walls
 	for (auto const& wall : this->wallPositions)
