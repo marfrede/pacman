@@ -9,6 +9,12 @@
 #ifndef ParticleEmitter_hpp
 #define ParticleEmitter_hpp
 
+#ifdef WIN32
+#define TEXTURE_DIRECTORY "../../assets/texture/"
+#else
+#define TEXTURE_DIRECTORY "../assets/texture/"
+#endif
+
 #include <stdio.h>
 #include <list>
 #include "Particle.hpp"
@@ -17,6 +23,7 @@ class ParticleEmitter
 {
 public:
     ParticleEmitter(int maxParticles, Color color);
+    ParticleEmitter(int maxParticles, BaseShader* pShader);
     
     void setPosition(Vector position) {this->position = position;}
     void setColor(Color color) {this->color = color;}

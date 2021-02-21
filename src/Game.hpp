@@ -41,7 +41,7 @@ public:
     void end();
     
 private:
-    GameMode gamemode = GameMode::ThirdPerson;
+    GameMode gamemode = GameMode::FirstPerson;
     Field* pField;
     GhostList Ghosts;
     Pacman* pPacman;

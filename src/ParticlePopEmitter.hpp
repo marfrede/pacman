@@ -15,19 +15,19 @@
 class ParticlePopEmitter : public ParticleEmitter
 {
 public:
-    ParticlePopEmitter(int maxParticles, Color color);
-    
-    void trigger(Vector pos, int quantity);
-    
-    void update(float dtime);
-    void draw(const Camera Cam);
-    
-    bool empty = false;
-    
+	ParticlePopEmitter(int maxParticles, Color color);
+	ParticlePopEmitter(int maxParticles, BaseShader* pShader);
+
+	void trigger(Vector pos, int quantity);
+
+	void update(float dtime);
+	void draw(const Camera Cam);
+
+	bool empty = false;
+
 protected:
-    
-    bool triggered = false;
-    
+	bool triggered = false;
+
 };
 
 #endif /* ParticlePopEmitter_hpp */

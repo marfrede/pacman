@@ -30,6 +30,8 @@
 #define WALL_PADDING 0.0f
 
 #define POINT_RADIUS 0.05f
+#define POINT_PARTICLES_TEXTURE true
+#define POINT_PARTICLES_NUMBER 4  
 
 class Field
 {
@@ -79,7 +81,6 @@ private:
 	ModelList Walls;
 	PortalList Portals;
 	PointList Points;
-    Color pointCol;
     ParticlePopEmitter* particlePopEmitter;
 	void createField();
 	void createWalls(float wallHeight);
@@ -87,6 +88,7 @@ private:
 	void createPortals();
 	void initWallPositions();
 	void initFieldTypesMap();
+	void initParticleEmitter(Color color);
 
 	/* map origin position (x, z) to expansion (width, depth) */
 	std::map<std::pair<int, int>, std::pair<int, int>> wallPositions;
