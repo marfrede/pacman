@@ -8,7 +8,7 @@
 
 #include "Particle.hpp"
 
-Particle::Particle(Vector position, Vector velocity, float rotation, float lifetime, float gravity) : TrianglePlaneModel(0.02f, 0.02f, 1, 1) {
+Particle::Particle(Vector position, Vector velocity, float rotation, float lifetime, float gravity) : TrianglePlaneModel(0.005f, 0.005f, 1, 1) {
 
     Matrix mTotal, mTrans, mRot;
     mRot.rotationY(M_PI/2);
