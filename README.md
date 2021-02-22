@@ -13,11 +13,11 @@ You lose if you get caught by one of the ghosts running around the map!
 
 Spacebar			- Start / Pause / Start New Game
 
-W / Arrow-Up 		- Run forward
-A / Arrow-Left	  	- Turn left
-D / Arrow-Right  	- Turn right
+- W / Arrow-Up 		- Run forward
+- A / Arrow-Left	  	- Turn left
+- D / Arrow-Right  	- Turn right
 
-G 				- Switch between First- and Third-Person
+- G 				- Switch between First- and Third-Person
 
 ### PRINTS
 
