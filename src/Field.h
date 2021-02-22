@@ -31,7 +31,7 @@
 
 #define POINT_RADIUS 0.05f
 #define POINT_PARTICLES_TEXTURE true
-#define POINT_PARTICLES_NUMBER 4  
+#define POINT_PARTICLES_NUMBER 10
 
 class Field
 {

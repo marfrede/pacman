@@ -33,18 +33,24 @@ public:
     
     void setGameMode(GameMode gm) {this->gamemode = gm;}
     GameMode getGameMode() {return this->gamemode;}
+    GameStatus getGameStatus() {return this->gamestatus;}
     
     void update(float dtime); //Updated Pacman und Geister
     void draw(const Camera camera);
     
-    GameOver checkGameOver(); //Prüfe Abbruchbedingungen - prüfe Feld pointsEmpty
+    GameStatus checkGameOver(); //Prüfe Abbruchbedingungen - prüfe Feld pointsEmpty
+    void manageInputs(GLFWwindow* pWindow);
+    
     void end();
     
 private:
     GameMode gamemode = GameMode::FirstPerson;
+    GameStatus gamestatus = GameStatus::NOT_STARTED;
     Field* pField;
     GhostList Ghosts;
     Pacman* pPacman;
+    
+    bool spacePressed = false;
 };
 
 #endif /* Game_hpp */

@@ -25,6 +25,7 @@
 #include "Ghost.hpp"
 #include "ShadowMapGenerator.h"
 #include "FieldSizeConstants.h"
+#include "HUD.hpp"
 
 class Application
 {
@@ -37,6 +38,8 @@ public:
     void end();
 protected:
 	void createScene();
+    void moveCamera();
+    HUD* hud;
     
     Game* pGame;
     

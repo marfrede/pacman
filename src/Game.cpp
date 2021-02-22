@@ -74,22 +74,42 @@ void Game::start(GLFWwindow* pWindow) {
 		ghost->reset();
 	}
 	pPacman->reset();
+    this->gamestatus = GameStatus::PLAYING;
 }
 
-GameOver Game::checkGameOver() {
+void Game::manageInputs(GLFWwindow* pWindow) {
+    if (glfwGetKey(pWindow, GLFW_KEY_SPACE) == GLFW_PRESS) {
+        if(spacePressed == false) {
+            if(gamestatus == GameStatus::PLAYING) {
+                gamestatus = GameStatus::PAUSE;
+            } else if (gamestatus == GameStatus::PAUSE) {
+                gamestatus = GameStatus::PLAYING;
+            } else {
+                this->start(pWindow);
+            }
+            spacePressed = true;
+        }
+    } else {
+        spacePressed = false;
+    }
+}
+
+GameStatus Game::checkGameOver() {
 
 	if (!pField->pointsLeft()) {
-		return GameOver::ALL_POINTS_COLLECTED;
+        this->gamestatus = GameStatus::ALL_POINTS_COLLECTED;
+        
 	}
 
 	for (auto const& ghost : this->Ghosts) {
 		Vector diff = pPacman->transform().translation() - ghost->transform().translation();
 		if (diff.length() < 1) {
-			return GameOver::CATCHED_BY_GHOST;
+            this->gamestatus = GameStatus::CATCHED_BY_GHOST;
 		}
 	}
 
-	return GameOver::NO;
+    return this->gamestatus;
+    
 }
 
 void Game::createGameModels(GLFWwindow* pWindow) {

@@ -58,24 +58,21 @@ void Application::update(float dtime)
     //Menüauswahl
     //Bei Start
     
-    pGame->update(dtime);
-
-    GameOver go = this->pGame->checkGameOver();
+    pGame->manageInputs(pWindow);
+    
+    /*
     if(go != GameOver::NO) {
         std::cout << "GAME IS OVER! (" << gameOverToString(go) << ")" << std::endl;
         this->pGame->start(pWindow);
     }
-        
-    if (pGame->getGameMode() == GameMode::FirstPerson) {
-        Cam.setPosition(pGame->getPacman()->transform().translation());
-        Cam.update(pGame->getPacman()->transform().translation() + pGame->getPacman()->transform().forward());    
-    } else if (pGame->getGameMode() == GameMode::ThirdPerson) {
-        Cam.setPosition(this->pGame->getPacman()->transform().translation() + this->pGame->getPacman()->transform().backward() * 5 + this->pGame->getPacman()->transform().up() * 10);
-        Cam.update(pGame->getPacman()->transform().translation());
+     */
+    
+    if(this->pGame->getGameStatus() == GameStatus::PLAYING) {
+        pGame->update(dtime);
+        moveCamera();
     } else {
-        Cam.update();
+        //hud->displayMenu(gs);
     }
-	
 }
 
 void Application::draw()
@@ -89,16 +86,15 @@ void Application::draw()
 	// 2. setup shaders and draw models
 
     Camera currentCam = Cam;
-    
-    /*if(pGame->getGameMode() == GameMode::FirstPerson) {
-        currentCam = Paccam;
-    }*/
-    
     this->pGame->draw(currentCam);
     
     for (ModelList::iterator it = Models.begin(); it != Models.end(); ++it)
     {
         (*it)->draw(currentCam);
+    }
+    
+    if(this->pGame->getGameStatus() != GameStatus::PLAYING) {
+        hud->displayMenu(this->pGame->getGameStatus());
     }
 
 	ShaderLightMapper::instance().deactivate();
@@ -128,9 +124,22 @@ void Application::createScene()
 	//pModel->shadowCaster(false);
 	//Models.push_back(pModel);
     
+    hud = new HUD();
     pGame = new Game();
     this->pGame->createGameScene(pWindow);
     this->Paccam.setObj(pGame->getPacman());
-    Cam.update();
+    
+    moveCamera();
+}
 
+void Application::moveCamera() {
+    if (pGame->getGameMode() == GameMode::FirstPerson) {
+        Cam.setPosition(pGame->getPacman()->transform().translation());
+        Cam.update(pGame->getPacman()->transform().translation() + pGame->getPacman()->transform().forward());
+    } else if (pGame->getGameMode() == GameMode::ThirdPerson) {
+        Cam.setPosition(this->pGame->getPacman()->transform().translation() + this->pGame->getPacman()->transform().backward() * 5 + this->pGame->getPacman()->transform().up() * 10);
+        Cam.update(pGame->getPacman()->transform().translation());
+    } else {
+        Cam.update();
+    }
 }
