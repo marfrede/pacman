@@ -30,24 +30,22 @@
 class Application
 {
 public:
-    typedef std::list<BaseModel*> ModelList;
-    Application(GLFWwindow* pWin);
-    void start();
-    void update(float dtime);
-    void draw();
-    void end();
+	typedef std::list<BaseModel*> ModelList;
+	Application(GLFWwindow* pWin);
+	void start();
+	void update(float dtime);
+	void draw();
+	void end();
 protected:
 	void createScene();
-    void moveCamera();
-    HUD* hud;
-    
-    Game* pGame;
-    
-    Camera Cam = NULL;
-    
-    ModelList Models;
-    GLFWwindow* pWindow;
-    BaseModel* pModel;
+	void moveCamera();
+
+	HUD* hud;
+	Game* pGame;
+	Camera Cam = NULL;
+
+	GLFWwindow* pWindow;
+	BaseModel* pModel;
 	ShadowMapGenerator ShadowGenerator;
 };
 
