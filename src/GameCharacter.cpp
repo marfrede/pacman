@@ -47,6 +47,7 @@ void GameCharacter::setExt(const char* modelDir, Color color) {
 	ConstantShader* cShader = new ConstantShader();
 	cShader->color(color);
 	ext->shader(cShader, true);
+    this->ext->transform(this->transform());
 }
 
 void GameCharacter::update(float dtime) {

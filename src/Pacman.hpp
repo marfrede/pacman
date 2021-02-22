@@ -34,7 +34,9 @@ public:
     void draw(const Camera Cam);
     void moveSubs();
 	void setArrow(const char* modelFile, Color color);
+    void setModelActive(bool modelActive) {this->modelActive = modelActive; }
     void adjustArrow(Field* pField, GameMode gamemode);
+    void changeGameMode(GameMode gamemode);
     void reset();
 
 	/**
@@ -54,6 +56,8 @@ private:
 	/** teleport when stepping on portal */
 	void teleport();
     BaseModel* arrow;
+    bool modelActive = false;
+    Color primary;
 };
 
 #endif /* Pacman_hpp */

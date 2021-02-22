@@ -41,6 +41,7 @@ public:
     
     GameStatus checkGameOver(); //Prüfe Abbruchbedingungen - prüfe Feld pointsEmpty
     void manageInputs(GLFWwindow* pWindow);
+    void switchGameMode();
     
     void end();
     
@@ -51,7 +52,7 @@ private:
     GhostList Ghosts;
     Pacman* pPacman;
     
-    bool spacePressed = false;
+    bool buttonPressed = false;
 };
 
 #endif /* Game_hpp */

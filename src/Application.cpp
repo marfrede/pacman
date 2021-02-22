@@ -46,17 +46,13 @@ void Application::start()
 
 void Application::update(float dtime)
 {
-	pGame->manageInputs(pWindow);
-
-	if (this->pGame->getGameStatus() == GameStatus::PLAYING) {
-		pGame->update(dtime);
-		moveCamera();
-	}
-	else {
-		//hud->displayMenu(gs);
-		//std::cout << "GAME IS OVER! (" << gameOverToString(go) << ")" << std::endl;
-		//this->pGame->start(pWindow);
-	}
+    pGame->manageInputs(pWindow);
+    if(this->pGame->getGameStatus() == GameStatus::PLAYING) {
+        pGame->update(dtime);
+        moveCamera();
+    } else {
+        moveCamera();
+    }
 }
 
 void Application::draw()
@@ -68,12 +64,11 @@ void Application::draw()
 	ShaderLightMapper::instance().activate();
 	// 2. setup shaders and draw models
 
-	Camera currentCam = Cam;
-	this->pGame->draw(currentCam);
 
-	if (this->pGame->getGameStatus() != GameStatus::PLAYING) {
-		hud->displayMenu(this->pGame->getGameStatus());
-	}
+    this->pGame->draw(Cam);
+    if(this->pGame->getGameStatus() != GameStatus::PLAYING) {
+        hud->displayMenu(this->pGame->getGameStatus());
+    }
 
 	ShaderLightMapper::instance().deactivate();
 
