@@ -8,13 +8,13 @@ Field::Field(float wallHeight)
 	this->pShaderPortal = new PhongShader();
 	this->pShaderWall = new PhongShader();
 	this->pShaderPoint = new ConstantShader();
-    
+
 	this->particlePopEmitter = nullptr;
 
 	this->createField();
 	this->createWalls(wallHeight);
 	if (SHOW_PORTALS) this->createPortals();
-    if (SHOW_POINTS)  this->createPoints();
+	if (SHOW_POINTS)  this->createPoints();
 }
 
 Field::~Field() {
@@ -107,9 +107,12 @@ void Field::createPortals() {
 
 Vector Field::closestPointPos(Vector origin) {
 	float closestDistance = 999999;
+	origin.Y = 0;
 	Vector target = Vector(0, 0, 0);
 	for (auto const& point : this->Points) {
-		Vector diff = origin - point.second->transform().translation();
+		Vector pointPosIgnoreY = point.second->transform().translation();
+		pointPosIgnoreY.Y = 0;
+		Vector diff = origin - pointPosIgnoreY;
 		if (diff.length() < closestDistance) {
 			closestDistance = diff.length();
 			target = point.second->transform().translation();
@@ -126,7 +129,7 @@ bool Field::removePoint(int x, int z) {
 			return false;
 		}
 		this->fieldTypesMap[z * PLANE_WIDTH + x] = FieldType::Free;
-        this->particlePopEmitter->trigger(this->Points.at(std::pair<int, int>(x, z))->transform().translation(), POINT_PARTICLES_NUMBER);
+		this->particlePopEmitter->trigger(this->Points.at(std::pair<int, int>(x, z))->transform().translation(), POINT_PARTICLES_NUMBER);
 		delete this->Points.at(std::pair<int, int>(x, z));
 		this->Points.erase(std::pair<int, int>(x, z));
 		return false;
@@ -259,7 +262,7 @@ void Field::initWallPositions() {
 }
 
 FieldType Field::getFieldType(int x, int z) {
-	if (x < 0 || z < 0 || x >= PLANE_WIDTH|| z >= PLANE_DEPTH) {
+	if (x < 0 || z < 0 || x >= PLANE_WIDTH || z >= PLANE_DEPTH) {
 		return FieldType::OutOfField;
 	}
 	return this->fieldTypesMap[z * PLANE_WIDTH + x];
@@ -324,7 +327,8 @@ void Field::initParticleEmitter(Color color) {
 			PhongShader* particleShader = new PhongShader();
 			particleShader->diffuseTexture(Texture::LoadShared(TEXTURE_DIRECTORY "particle-round.png"));
 			this->particlePopEmitter = new ParticlePopEmitter(100, particleShader);
-		} else {
+		}
+		else {
 			this->particlePopEmitter = new ParticlePopEmitter(100, color);
 		}
 	}
