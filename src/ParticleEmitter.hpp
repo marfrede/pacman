@@ -24,12 +24,14 @@ class ParticleEmitter
 public:
     ParticleEmitter(int maxParticles, Color color);
     ParticleEmitter(int maxParticles, BaseShader* pShader);
+    ~ParticleEmitter();
     
     void setPosition(Vector position) {this->position = position;}
     void setColor(Color color) {this->color = color;}
     
     virtual void update(float dtime);
     virtual void draw(const Camera Cam);
+    virtual void end();
     
 protected:
     
