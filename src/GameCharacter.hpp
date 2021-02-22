@@ -38,8 +38,8 @@ public:
 	~GameCharacter();
 	void setWindow(GLFWwindow* window) { pWindow = window; }
 	void setField(Field* field) { pField = field; }
-	void setPointLight(PointLight* pL) { pointLight = pL; }
-	void setSpotLight(SpotLight* sL) { spotLight = sL; }
+    void setPointLight(PointLight* pL);
+    void setSpotLight(SpotLight* sL);
 	void setExt(Model* ext) { this->ext = ext; }
 	void setSpawnLocation(int x, int y);
 	std::pair<int, int> getSpawnLocation() { return this->spawnLocation; }

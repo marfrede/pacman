@@ -27,7 +27,7 @@ void Pacman::init(Color c) {
 }
 
 void Pacman::setArrow(BaseModel* arrow) {
-	this->arrow = arrow;
+    this->arrow = arrow;
 }
 
 void Pacman::draw(const Camera Cam) {
@@ -130,7 +130,6 @@ void Pacman::reset() {
 }
 
 void Pacman::moveSubs() {
-	// std::cout << "Pacman move subs" << std::endl;
 
 	GameCharacter::moveSubs();
 
