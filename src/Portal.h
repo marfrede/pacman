@@ -20,7 +20,10 @@ public:
 	* @param orientation (direction in which the portal points)
 	*/
 	Portal(int posX, int posZ, Orientation orientation, BaseShader* pShader);
+	~Portal();
 	void update(float dtime);
+private:
+	PointLight* pointLight;
 };
 
 #endif

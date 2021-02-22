@@ -30,7 +30,7 @@
 
 using namespace std;
 
-Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin), Paccam(pWin, NULL), pModel(NULL), ShadowGenerator(2048, 2048)
+Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin), pModel(NULL), ShadowGenerator(2048, 2048)
 {
 	createScene();
 }
@@ -47,7 +47,6 @@ void Application::start()
 void Application::update(float dtime)
 {
     pGame->manageInputs(pWindow);
-    
     if(this->pGame->getGameStatus() == GameStatus::PLAYING) {
         pGame->update(dtime);
         moveCamera();
@@ -58,7 +57,6 @@ void Application::update(float dtime)
 
 void Application::draw()
 {
-	ShadowGenerator.generate(Models);
 
 	// 1. clear screen
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -66,13 +64,8 @@ void Application::draw()
 	ShaderLightMapper::instance().activate();
 	// 2. setup shaders and draw models
 
+
     this->pGame->draw(Cam);
-    
-    for (ModelList::iterator it = Models.begin(); it != Models.end(); ++it)
-    {
-        (*it)->draw(Cam);
-    }
-    
     if(this->pGame->getGameStatus() != GameStatus::PLAYING) {
         hud->displayMenu(this->pGame->getGameStatus());
     }
@@ -83,43 +76,31 @@ void Application::draw()
 	GLenum Error = glGetError();
 	assert(Error == 0);
 }
+
 void Application::end()
 {
-    this->pGame->end();
-
-	for (ModelList::iterator it = Models.begin(); it != Models.end(); ++it) {
-		delete* it;
-	}
-	this->Models.clear();
+	delete this->hud;
+	delete this->pGame;
 }
 
 void Application::createScene()
 {
-	Matrix m, n;
-
-	// SKY
-	//pModel = new Model(ASSET_DIRECTORY "skybox.obj", false);
-	//pPhongShader = new PhongShader();
-	//pModel->shader(pPhongShader, true);
-	//pModel->shadowCaster(false);
-	//Models.push_back(pModel);
-    
-    hud = new HUD();
-    pGame = new Game();
-    this->pGame->createGameScene(pWindow);
-    this->Paccam.setObj(pGame->getPacman());
-    
-    moveCamera();
+	hud = new HUD();
+	pGame = new Game();
+	this->pGame->createGameScene(pWindow);
+	moveCamera();
 }
 
 void Application::moveCamera() {
-    if (pGame->getGameMode() == GameMode::FirstPerson) {
-        Cam.setPosition(pGame->getPacman()->transform().translation());
-        Cam.update(pGame->getPacman()->transform().translation() + pGame->getPacman()->transform().forward());
-    } else if (pGame->getGameMode() == GameMode::ThirdPerson) {
-        Cam.setPosition(this->pGame->getPacman()->transform().translation() + this->pGame->getPacman()->transform().backward() * 5 + this->pGame->getPacman()->transform().up() * 10);
-        Cam.update(pGame->getPacman()->transform().translation());
-    } else {
-        Cam.update();
-    }
+	if (pGame->getGameMode() == GameMode::FirstPerson) {
+		Cam.setPosition(pGame->getPacman()->transform().translation());
+		Cam.update(pGame->getPacman()->transform().translation() + pGame->getPacman()->transform().forward());
+	}
+	else if (pGame->getGameMode() == GameMode::ThirdPerson) {
+		Cam.setPosition(this->pGame->getPacman()->transform().translation() + this->pGame->getPacman()->transform().backward() * 5 + this->pGame->getPacman()->transform().up() * 10);
+		Cam.update(pGame->getPacman()->transform().translation());
+	}
+	else {
+		Cam.update();
+	}
 }

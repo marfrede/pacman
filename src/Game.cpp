@@ -17,10 +17,14 @@
 
 #include "Game.hpp"
 #include "color.h"
-#include "EgoCam.hpp"
 
 Game::Game() {
+	this->pField = nullptr;
+	this->pPacman = nullptr;
+}
 
+Game::~Game() {
+	this->end();
 }
 
 BaseModel* Game::getPacman() {
@@ -75,7 +79,7 @@ void Game::start(GLFWwindow* pWindow) {
 		ghost->reset();
 	}
 	pPacman->reset();
-    this->gamestatus = GameStatus::PLAYING;
+	this->gamestatus = GameStatus::PLAYING;
 }
 
 void Game::manageInputs(GLFWwindow* pWindow) {
@@ -115,19 +119,19 @@ void Game::switchGameMode() {
 GameStatus Game::checkGameOver() {
 
 	if (!pField->pointsLeft()) {
-        this->gamestatus = GameStatus::ALL_POINTS_COLLECTED;
-        
+		this->gamestatus = GameStatus::ALL_POINTS_COLLECTED;
+
 	}
 
 	for (auto const& ghost : this->Ghosts) {
 		Vector diff = pPacman->transform().translation() - ghost->transform().translation();
 		if (diff.length() < 1) {
-            this->gamestatus = GameStatus::CATCHED_BY_GHOST;
+			this->gamestatus = GameStatus::CATCHED_BY_GHOST;
 		}
 	}
 
-    return this->gamestatus;
-    
+	return this->gamestatus;
+
 }
 
 void Game::createGameModels(GLFWwindow* pWindow) {
@@ -153,93 +157,46 @@ void Game::createGameModels(GLFWwindow* pWindow) {
 }
 
 void Game::createPacman(GLFWwindow* pWindow, Color primary, Color secondary, float posX, float posZ) {
-	// std::cout << "PACMAN " << std::endl;
 
-		// Pacman with Model
+	Color lightColor(1, 1, 1);
     pPacman = new Pacman(posX, posZ, primary, MODEL_DIRECTORY "pacman/pacman-body.dae", false);
-    Model* ext = new Model(MODEL_DIRECTORY "pacman/pacman-ext.dae");
-    ConstantShader* cShader = new ConstantShader();
-    cShader->color(secondary);
-    ext->shader(cShader);
-    pPacman->setExt(ext);
-		// Pacman primary color
+	pPacman->setExt(MODEL_DIRECTORY "pacman/pacman-ext.dae", secondary);
     
     if(gamemode != GameMode::FirstPerson) {
         pPacman->setModelActive(true);
+		lightColor = primary;
     }
     
 	// Arrow
-    Model* arrow = new Model(MODEL_DIRECTORY "arrow/arrow.dae", false);
-    ConstantShader* pShader = new ConstantShader();
-    pShader->color(Color(1.0f, 0, 0));
-    arrow->shader(pShader, true);
-    pPacman->setArrow(arrow);
+	Color arrowColor(1.0f, 0.0f, 0.0f);
+	pPacman->setArrow(MODEL_DIRECTORY "arrow/arrow.dae", arrowColor);
 
 	// Window and Field
 	pPacman->setWindow(pWindow);
 	pPacman->setField(pField);
 
-	// Light 2
-	Vector a = Vector(0.35f, 0.35f, 0.35f);
-	float innerradius = 45;
-	float outerradius = 70;
-
-	PointLight* pl = new PointLight();
-	pl->color(Color(1,1,1));
-	pl->attenuation(a);
-	ShaderLightMapper::instance().addLight(pl);
-	pPacman->setPointLight(pl);
-
-	// spot light
-	SpotLight* sl = new SpotLight();
-	sl->color(Color(1,1,1));
-	sl->direction(Vector(0, -1, 0));
-	sl->innerRadius(innerradius);
-	sl->outerRadius(outerradius);
-	ShaderLightMapper::instance().addLight(sl);
-	pPacman->setSpotLight(sl);
+	// Lights
+	pPacman->setPointLight(Vector(0.35f, 0.35f, 0.35f), lightColor);
+	pPacman->setSpotLight(70, 45, lightColor);
 }
 
 void Game::createGhost(GLFWwindow* pWindow, Color primary, Color secondary, float posX, float posZ) {
 
-	Vector a = Vector(0.75f, 0, 0.75f);
-	float innerradius = 45;
-	float outerradius = 80;
-
-	// GHOST WHITE
 	Ghost* g = new Ghost(posX, posZ, primary, MODEL_DIRECTORY "ghost/single-ghost-body.dae", false);
-	Model* ext = new Model(MODEL_DIRECTORY "ghost/single-ghost-ext.dae");
-	ConstantShader* cShader = new ConstantShader();
-	cShader->color(secondary);
-	ext->shader(cShader);
-	g->setExt(ext);
+	g->setExt(MODEL_DIRECTORY "ghost/single-ghost-ext.dae", secondary);
 	g->setWindow(pWindow);
 	g->setField(pField);
-
-	// point light
-	PointLight* pl = new PointLight();
-	pl->color(primary);
-	pl->attenuation(a);
-	ShaderLightMapper::instance().addLight(pl);
-	g->setPointLight(pl);
-
-	// spot light
-	SpotLight* sl = new SpotLight();
-	sl->color(primary);
-	sl->direction(Vector(0, -1, 0));
-	sl->innerRadius(innerradius);
-	sl->outerRadius(outerradius);
-	ShaderLightMapper::instance().addLight(sl);
-	g->setSpotLight(sl);
+	g->setPointLight(Vector(0.75f, 0, 0.75f), primary);
+	g->setSpotLight(80, 45, primary);
 
 	Ghosts.push_back(g);
-
 }
 
 void Game::end() {
+	delete this->pPacman;
 	for (GhostList::iterator it = Ghosts.begin(); it != Ghosts.end(); ++it) {
 		delete* it;
 	}
 	this->Ghosts.clear();
-	this->pField->end();
+	delete this->pField;
 }

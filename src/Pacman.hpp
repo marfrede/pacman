@@ -12,7 +12,6 @@
 #include "TriangleBoxModel.h"
 #include "PhongShader.h"
 #include "GameCharacter.hpp"
-#include "EgoCam.hpp"
 #include "Pi.h"
 #include "FieldType.h"
 #include "GameMode.h"
@@ -30,10 +29,11 @@ public:
 	*/
 	Pacman(int posX, int posZ, Color c, const char* ModelFile, bool FitSize);
     Pacman(int posX, int posZ, Color c);
+	~Pacman();
     
     void draw(const Camera Cam);
     void moveSubs();
-	void setArrow(BaseModel* arrow);
+	void setArrow(const char* modelFile, Color color);
     void setModelActive(bool modelActive) {this->modelActive = modelActive; }
     void adjustArrow(Field* pField, GameMode gamemode);
     void changeGameMode(GameMode gamemode);

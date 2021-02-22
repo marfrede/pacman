@@ -202,6 +202,7 @@ void Field::end()
 	delete this->pShaderWall;
 	delete this->pShaderPortal;
 	delete this->pShaderPoint;
+	delete this->particlePopEmitter;
 }
 
 
@@ -338,7 +339,7 @@ void Field::initFieldTypesMap() {
 void Field::initParticleEmitter(Color color) {
 	if (this->particlePopEmitter == nullptr) {
 		if (POINT_PARTICLES_TEXTURE) {
-			PhongShader* particleShader = new PhongShader();
+			PhongShader* particleShader = new PhongShader(); // ParticleEmitter deletes shader
 			particleShader->diffuseTexture(Texture::LoadShared(TEXTURE_DIRECTORY "particle-round.png"));
 			this->particlePopEmitter = new ParticlePopEmitter(100, particleShader);
 		}

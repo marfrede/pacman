@@ -17,7 +17,7 @@ ParticleEmitter::ParticleEmitter(int maxParticles, Color color) {
 		if (g > 255) g = 255;
 		if (b > 255) r = 255;
 		cShader->color(Color(r / 255, g / 255, b / 255));
-		p->shader(cShader);
+		p->shader(cShader, true);
 		this->particles.push_back(p);
 	}
 }
@@ -31,6 +31,10 @@ ParticleEmitter::ParticleEmitter(int maxParticles, BaseShader* pShader) {
 	}
 }
 
+ParticleEmitter::~ParticleEmitter() {
+	this->end();
+}
+
 void ParticleEmitter::update(float dtime) {
 	for (std::list<Particle*>::iterator it = this->particles.begin(); it != this->particles.end(); it++) {
 		(*it)->update(dtime);
@@ -41,4 +45,11 @@ void ParticleEmitter::draw(const Camera Cam) {
 	for (std::list<Particle*>::iterator it = this->particles.begin(); it != this->particles.end(); it++) {
 		(*it)->draw(Cam);
 	}
+}
+
+void ParticleEmitter::end() {
+	for (std::list<Particle*>::iterator it = this->particles.begin(); it != this->particles.end(); it++) {
+		delete (*it);
+	}
+	this->particles.clear();
 }

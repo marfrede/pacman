@@ -14,15 +14,19 @@ Portal::Portal(int posX, int posZ, Orientation orientation, BaseShader* pShader)
 	this->transform(t * rotZ);
     
     Vector a = Vector(0.5f, 0, 0.5f);
-    PointLight* pl = new PointLight();
-    pl->color(Color(0,1,0));
-    pl->attenuation(a);
-    pl->position(this->transform().translation() + this->transform().up());
-    ShaderLightMapper::instance().addLight(pl);
+    this->pointLight = new PointLight();
+	this->pointLight->color(Color(0, 1, 0));
+	this->pointLight->attenuation(a);
+	this->pointLight->position(this->transform().translation() + this->transform().up());
+	ShaderLightMapper::instance().addLight(this->pointLight);
 }
 
 void Portal::update(float dtime) {
 	Matrix rot;
 	rot.rotationY(-dtime * 2);
 	this->transform(this->transform() * rot);
+}
+
+Portal::~Portal() {
+	delete this->pointLight;
 }

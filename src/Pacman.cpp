@@ -17,6 +17,10 @@ Pacman::Pacman(int posX, int posZ, Color c) : GameCharacter(posX, 0.5f, posZ) {
 	this->init(c);
 }
 
+Pacman::~Pacman() {
+	delete this->arrow;
+}
+
 void Pacman::init(Color c) {
 	ConstantShader* pShader = new ConstantShader();
 	pShader->color(c);
@@ -27,8 +31,11 @@ void Pacman::init(Color c) {
 	this->arrow = nullptr;
 }
 
-void Pacman::setArrow(BaseModel* arrow) {
-    this->arrow = arrow;
+void Pacman::setArrow(const char* modelFile, Color color) {
+	this->arrow = new Model(modelFile, false);
+	ConstantShader* pShader = new ConstantShader();
+	pShader->color(color);
+	this->arrow->shader(pShader, true);
     this->arrow->transform(this->transform());
 }
 

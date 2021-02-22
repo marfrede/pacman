@@ -22,6 +22,7 @@ public:
     typedef std::list<Ghost*> GhostList;
     
     Game();
+    ~Game();
     
     BaseModel* getPacman();
     

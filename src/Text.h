@@ -1,5 +1,0 @@
-class Text
-{
-public:
-    Text();
-};

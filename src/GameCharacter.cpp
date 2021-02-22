@@ -21,18 +21,32 @@ GameCharacter::GameCharacter(int posX, float y, int posZ) : Model() {
 }
 
 GameCharacter::~GameCharacter() {
+	delete this->spotLight;
+	delete this->pointLight;
+	delete this->ext;
 }
 
-void GameCharacter::setPointLight(PointLight* pL) {
-    this->pointLight = pL;
-    this->pointLight->position(this->transform().translation());
+void GameCharacter::setPointLight(Vector attenuation, Color color) {
+	this->pointLight = new PointLight();
+	this->pointLight->color(color);
+	this->pointLight->attenuation(attenuation);
+	ShaderLightMapper::instance().addLight(this->pointLight);
+	this->pointLight->position(this->transform().translation());
 }
-void GameCharacter::setSpotLight(SpotLight* sL) {
-    this->spotLight = sL;
-    this->spotLight->position(this->transform().translation());
+void GameCharacter::setSpotLight(float outerRadius, float innerRadius, Color color) {
+	this->spotLight = new SpotLight();
+	this->spotLight->color(color);
+	this->spotLight->direction(Vector(0, -1, 0));
+	this->spotLight->innerRadius(innerRadius);
+	this->spotLight->outerRadius(outerRadius);
+	ShaderLightMapper::instance().addLight(this->spotLight);
+	this->spotLight->position(this->transform().translation());
 }
-void GameCharacter::setExt(Model* ext) {
-    this->ext = ext;
+void GameCharacter::setExt(const char* modelDir, Color color) {
+	this->ext = new Model(modelDir);
+	ConstantShader* cShader = new ConstantShader();
+	cShader->color(color);
+	ext->shader(cShader, true);
     this->ext->transform(this->transform());
 }
 
@@ -284,14 +298,14 @@ void GameCharacter::reset() {
 void GameCharacter::moveSubs() {
 
 	if (pointLight) {
-        // std::cout << "Hat Punktlight" << std::endl;
+		// std::cout << "Hat Punktlight" << std::endl;
 		this->pointLight->position(this->transform().translation());
-        // std::cout << this->pointLight->position() << std::endl;
+		// std::cout << this->pointLight->position() << std::endl;
 	}
 	if (spotLight) {
-        // std::cout << "Hat Spotlight" << std::endl;
+		// std::cout << "Hat Spotlight" << std::endl;
 		this->spotLight->position(this->transform().translation());
-        // std::cout << this->spotLight->position() << std::endl;
+		// std::cout << this->spotLight->position() << std::endl;
 	}
 	if (ext) {
 		this->ext->transform(this->transform());
