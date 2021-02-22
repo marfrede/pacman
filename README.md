@@ -7,6 +7,7 @@ https://docs.google.com/document/d/1_NsiJl_KxzrHhdKXyNatwNDxgFfGJAKRWxf7x_BqGuI/
 ### GAME 
 Target of the game is to collect all points which are spread on the map!
 You lose if you get caught by one of the ghosts running around the map!
+
 _Ziel des Spiels ist es, alle Punkte zu sammeln, die auf der Karte verteilt sind!_
 _Das Spiel ist verloren, wenn Pacman von einem der Geister erwischt wird, die auf der Karte herumlaufen!_
 
