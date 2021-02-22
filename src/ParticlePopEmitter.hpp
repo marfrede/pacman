@@ -10,9 +10,10 @@
 #define ParticlePopEmitter_hpp
 
 #include <stdio.h>
-#include "ParticleEmitter.hpp"
+#include <list>
+#include "Particle.hpp"
 
-class ParticlePopEmitter : public ParticleEmitter
+class ParticlePopEmitter
 {
 public:
 	ParticlePopEmitter(int maxParticles, Color color);
@@ -22,11 +23,17 @@ public:
 
 	void update(float dtime);
 	void draw(const Camera Cam);
+	void end();
 
 	bool empty = false;
 
 protected:
 	bool triggered = false;
+
+	Vector position;
+	Color color;
+
+	std::list<Particle*> particles;
 
 };
 
