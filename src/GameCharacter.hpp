@@ -40,7 +40,7 @@ public:
 	void setField(Field* field) { pField = field; }
     void setPointLight(PointLight* pL);
     void setSpotLight(SpotLight* sL);
-	void setExt(Model* ext) { this->ext = ext; }
+    void setExt(Model* ext);
 	void setSpawnLocation(int x, int y);
 	std::pair<int, int> getSpawnLocation() { return this->spawnLocation; }
 

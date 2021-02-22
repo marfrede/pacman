@@ -52,7 +52,7 @@ void Application::update(float dtime)
         pGame->update(dtime);
         moveCamera();
     } else {
-        //hud->displayMenu(gs);
+        moveCamera();
     }
 }
 

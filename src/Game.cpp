@@ -133,7 +133,7 @@ GameStatus Game::checkGameOver() {
 void Game::createGameModels(GLFWwindow* pWindow) {
 
 	// GHOST RED
-	createGhost(pWindow, Color(242.0f / 255.0f, 5.0f / 255.0f, 3.0f / 255.0f), Color(1, 1, 1), 13, 14);
+	createGhost(pWindow, Color(242.0f / 255.0f, 5.0f / 255.0f, 3.0f / 255.0f), Color(1, 1, 1), 14, 14);
 
 	// GHOST ORANGE
 	createGhost(pWindow, Color(252.0f / 255.0f, 154.0f / 255.0f, 0.0f / 255.0f), Color(1, 1, 1), 16, 15);
@@ -169,13 +169,11 @@ void Game::createPacman(GLFWwindow* pWindow, Color primary, Color secondary, flo
     }
     
 	// Arrow
-	if (gamemode == GameMode::FirstPerson || gamemode == GameMode::Debug) {
-		Model* arrow = new Model(MODEL_DIRECTORY "arrow/arrow.dae", false);
-		ConstantShader* pShader = new ConstantShader();
-		pShader->color(Color(1.0f, 0, 0));
-		arrow->shader(pShader, true);
-		pPacman->setArrow(arrow);
-	}
+    Model* arrow = new Model(MODEL_DIRECTORY "arrow/arrow.dae", false);
+    ConstantShader* pShader = new ConstantShader();
+    pShader->color(Color(1.0f, 0, 0));
+    arrow->shader(pShader, true);
+    pPacman->setArrow(arrow);
 
 	// Window and Field
 	pPacman->setWindow(pWindow);

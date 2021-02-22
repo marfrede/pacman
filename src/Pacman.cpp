@@ -29,15 +29,18 @@ void Pacman::init(Color c) {
 
 void Pacman::setArrow(BaseModel* arrow) {
     this->arrow = arrow;
+    this->arrow->transform(this->transform());
 }
 
 void Pacman::draw(const Camera Cam) {
     if(modelActive) {
         GameCharacter::draw(Cam);
+    } else {
+        if (this->arrow) {
+            this->arrow->draw(Cam);
+        }
     }
-	if (this->arrow) {
-		this->arrow->draw(Cam);
-	}
+	
 }
 
 void Pacman::steer(float dtime) {

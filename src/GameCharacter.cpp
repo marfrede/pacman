@@ -31,6 +31,10 @@ void GameCharacter::setSpotLight(SpotLight* sL) {
     this->spotLight = sL;
     this->spotLight->position(this->transform().translation());
 }
+void GameCharacter::setExt(Model* ext) {
+    this->ext = ext;
+    this->ext->transform(this->transform());
+}
 
 void GameCharacter::update(float dtime) {
 
