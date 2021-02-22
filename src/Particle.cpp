@@ -43,15 +43,15 @@ void Particle::draw(const BaseCamera& Cam)
 	Matrix m = this->transform();
 
 	Matrix vm = Cam.getViewMatrix();
-	/* Invertiere right */
+	/* Transponiere right */
 	m.m00 = vm.m00;
 	m.m01 = vm.m10;
 	m.m02 = vm.m20;
-	/* Invertiere up */
+	/* Transponiere up */
 	m.m10 = vm.m01;
 	m.m11 = vm.m11;
 	m.m12 = vm.m21;
-	/* Invertiere forward */
+	/* Transponiere forward */
 	m.m20 = vm.m02;
 	m.m21 = vm.m12;
 	m.m22 = vm.m22;
