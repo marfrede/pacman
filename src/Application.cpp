@@ -59,9 +59,10 @@ void Application::update(float dtime)
     //Bei Start
     
     pGame->update(dtime);
-    
-    if(this->pGame->checkGameOver() != GameOver::NO) {
-        std::cout << "GAME IS OVER!" << std::endl;
+
+    GameOver go = this->pGame->checkGameOver();
+    if(go != GameOver::NO) {
+        std::cout << "GAME IS OVER! (" << gameOverToString(go) << ")" << std::endl;
         this->pGame->start(pWindow);
     }
         
