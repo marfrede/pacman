@@ -8,11 +8,12 @@
 
 #ifdef WIN32
 #define ASSET_DIRECTORY "../../assets/"
-#define TEXTURE_DIRECTORY "../../assets/texture/"
 #else
 #define ASSET_DIRECTORY "../assets/"
-#define TEXTURE_DIRECTORY "../assets/texture/"
 #endif
+
+#define MODEL_DIRECTORY ASSET_DIRECTORY "models/"
+#define TEXTURE_DIRECTORY ASSET_DIRECTORY  "texture/"
 
 #include "Game.hpp"
 #include "color.h"
@@ -140,8 +141,8 @@ void Game::createPacman(GLFWwindow* pWindow, Color primary, Color secondary, flo
 	Color lightColor;
 	if (gamemode != GameMode::FirstPerson) {
 		// Pacman with Model
-		pPacman = new Pacman(posX, posZ, primary, ASSET_DIRECTORY "pacman-body.dae", false);
-		Model* ext = new Model(ASSET_DIRECTORY "pacman-ext.dae");
+		pPacman = new Pacman(posX, posZ, primary, MODEL_DIRECTORY "pacman/pacman-body.dae", false);
+		Model* ext = new Model(MODEL_DIRECTORY "pacman/pacman-ext.dae");
 		ConstantShader* cShader = new ConstantShader();
 		cShader->color(secondary);
 		ext->shader(cShader);
@@ -158,7 +159,7 @@ void Game::createPacman(GLFWwindow* pWindow, Color primary, Color secondary, flo
 
 	// Arrow
 	if (gamemode == GameMode::FirstPerson || gamemode == GameMode::Debug) {
-		Model* arrow = new Model(ASSET_DIRECTORY "arrow.dae", false);
+		Model* arrow = new Model(MODEL_DIRECTORY "arrow/arrow.dae", false);
 		ConstantShader* pShader = new ConstantShader();
 		pShader->color(Color(1.0f, 0, 0));
 		arrow->shader(pShader, true);
@@ -197,8 +198,8 @@ void Game::createGhost(GLFWwindow* pWindow, Color primary, Color secondary, floa
 	float outerradius = 80;
 
 	// GHOST WHITE
-	Ghost* g = new Ghost(posX, posZ, primary, ASSET_DIRECTORY "single-ghost-body.dae", false);
-	Model* ext = new Model(ASSET_DIRECTORY "single-ghost-ext.dae");
+	Ghost* g = new Ghost(posX, posZ, primary, MODEL_DIRECTORY "ghost/single-ghost-body.dae", false);
+	Model* ext = new Model(MODEL_DIRECTORY "ghost/single-ghost-ext.dae");
 	ConstantShader* cShader = new ConstantShader();
 	cShader->color(secondary);
 	ext->shader(cShader);

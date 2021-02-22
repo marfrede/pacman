@@ -8,6 +8,7 @@
 #else
 #define ASSET_DIRECTORY "../assets/"
 #endif
+#define SHADER_DIRECTORY ASSET_DIRECTORY "shader/"
 
 ShaderLightMapper* ShaderLightMapper::pMapper = NULL;
 
@@ -28,7 +29,7 @@ ShaderLightMapper::ShaderLightMapper()
 {
 
 	BaseShader Shader;
-	bool loaded = Shader.load(ASSET_DIRECTORY"vslightdummy.glsl", ASSET_DIRECTORY"fslightdummy.glsl");
+	bool loaded = Shader.load(SHADER_DIRECTORY"vslightdummy.glsl", SHADER_DIRECTORY"fslightdummy.glsl");
 	assert(loaded);
 
 	GLuint BlockIndex = glGetUniformBlockIndex(Shader.openGLProgramID(), "Lights");

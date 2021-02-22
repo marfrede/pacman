@@ -28,15 +28,6 @@
 #include "model.h"
 #include "ShaderLightmapper.h"
 
-
-#ifdef WIN32
-#define ASSET_DIRECTORY "../../assets/"
-#define TEXTURE_DIRECTORY "../../assets/texture/"
-#else
-#define ASSET_DIRECTORY "../assets/"
-#define TEXTURE_DIRECTORY "../assets/texture/"
-#endif
-
 using namespace std;
 
 Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin), Paccam(pWin, NULL), pModel(NULL), ShadowGenerator(2048, 2048)

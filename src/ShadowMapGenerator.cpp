@@ -9,10 +9,11 @@
 #else
 #define ASSET_DIRECTORY "../assets/"
 #endif
+#define SHADER_DIRECTORY ASSET_DIRECTORY "shader/"
 
 ShadowMapShader::ShadowMapShader()
 {
-	bool loaded = load(ASSET_DIRECTORY"vsdepth.glsl", ASSET_DIRECTORY"fsdepth.glsl");
+	bool loaded = load(SHADER_DIRECTORY"vsdepth.glsl", SHADER_DIRECTORY"fsdepth.glsl");
 	if (!loaded)
 		throw std::exception();
 
