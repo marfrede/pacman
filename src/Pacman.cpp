@@ -51,7 +51,6 @@ void Pacman::draw(const Camera Cam) {
 }
 
 void Pacman::steer(float dtime) {
-	// std::cout << "Pacman steer!" << std::endl;
 
 	float forward = 0;
 	float leftRight = 0;
@@ -84,15 +83,6 @@ void Pacman::steer(float dtime) {
 		}
 		doCurrentAction(dtime);
 	}
-
-	// pacman, print your infos:
-	//std::cout
-		//<< this->getFieldPosition().first << ", "
-		//<< this->getFieldPosition().second << "\t"
-		//<< fieldTypeToString(this->getFieldType()) << "\t"
-		//<< fieldTypeToString(this->getFieldTypeInFront()) << "\t"
-		//<< orientationToString(this->getOrientation()) << "\t"
-		//<< (this->checkFront() ? "can go" : "can not go") << std::endl;
 }
 
 void Pacman::adjustArrow(Field* pField, GameMode gamemode) {

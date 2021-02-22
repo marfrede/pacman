@@ -161,7 +161,6 @@ void Field::draw(const Camera camera) {
 	{
 		(*wall)->draw(camera);
 	}
-    std::cout << this->Portals.size() << std::endl;
 	for (PortalList::iterator portal = this->Portals.begin(); portal != this->Portals.end(); ++portal)
 	{
 		(*portal)->draw(camera);

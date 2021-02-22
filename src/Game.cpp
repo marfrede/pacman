@@ -87,8 +87,10 @@ void Game::manageInputs(GLFWwindow* pWindow) {
         if(buttonPressed == false) {
             if(gamestatus == GameStatus::PLAYING) {
                 gamestatus = GameStatus::PAUSE;
+                std::cout << "PAUSE!" << std::endl;
             } else if (gamestatus == GameStatus::PAUSE) {
                 gamestatus = GameStatus::PLAYING;
+                std::cout << "PLAYING!" << std::endl;
             } else {
                 this->start(pWindow);
             }
@@ -109,10 +111,12 @@ void Game::switchGameMode() {
         gamemode = GameMode::ThirdPerson;
         this->pField->resetWalls(1.5f);
         this->pPacman->changeGameMode(gamemode);
+        std::cout << "SWITCHED TO THIRD PERSON!" << std::endl;
     } else {
         gamemode = GameMode::FirstPerson;
         this->pField->resetWalls(5.5f);
         this->pPacman->changeGameMode(gamemode);
+        std::cout << "SWITCHED TO FIRST PERSON!" << std::endl;
     }
 }
 
@@ -120,13 +124,14 @@ GameStatus Game::checkGameOver() {
 
 	if (!pField->pointsLeft()) {
 		this->gamestatus = GameStatus::ALL_POINTS_COLLECTED;
-
+        std::cout << "*GAME OVER* WIN! ALL POINTS COLLECTED!" << std::endl;
 	}
 
 	for (auto const& ghost : this->Ghosts) {
 		Vector diff = pPacman->transform().translation() - ghost->transform().translation();
 		if (diff.length() < 1) {
 			this->gamestatus = GameStatus::CATCHED_BY_GHOST;
+            std::cout << "*GAME OVER* LOSE! CATCHED BY GHOST!" << std::endl;
 		}
 	}
 
