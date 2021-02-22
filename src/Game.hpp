@@ -46,7 +46,7 @@ public:
     void end();
     
 private:
-    GameMode gamemode = GameMode::Debug;
+    GameMode gamemode = GameMode::FirstPerson;
     GameStatus gamestatus = GameStatus::NOT_STARTED;
     Field* pField;
     GhostList Ghosts;
