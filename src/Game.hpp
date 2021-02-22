@@ -22,6 +22,7 @@ public:
     typedef std::list<Ghost*> GhostList;
     
     Game();
+    ~Game();
     
     BaseModel* getPacman();
     
@@ -44,7 +45,7 @@ public:
     void end();
     
 private:
-    GameMode gamemode = GameMode::FirstPerson;
+    GameMode gamemode = GameMode::Debug;
     GameStatus gamestatus = GameStatus::NOT_STARTED;
     Field* pField;
     GhostList Ghosts;

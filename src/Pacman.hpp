@@ -29,10 +29,11 @@ public:
 	*/
 	Pacman(int posX, int posZ, Color c, const char* ModelFile, bool FitSize);
     Pacman(int posX, int posZ, Color c);
+	~Pacman();
     
     void draw(const Camera Cam);
     void moveSubs();
-	void setArrow(BaseModel* arrow);
+	void setArrow(const char* modelFile, Color color);
     void adjustArrow(Field* pField, GameMode gamemode);
     void reset();
 

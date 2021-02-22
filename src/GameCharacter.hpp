@@ -38,9 +38,9 @@ public:
 	~GameCharacter();
 	void setWindow(GLFWwindow* window) { pWindow = window; }
 	void setField(Field* field) { pField = field; }
-    void setPointLight(PointLight* pL);
-    void setSpotLight(SpotLight* sL);
-	void setExt(Model* ext) { this->ext = ext; }
+    void setPointLight(Vector attenuation, Color color);
+	void setSpotLight(float outerRadius, float innerRadius, Color color);
+	void setExt(const char* modelDir, Color color);
 	void setSpawnLocation(int x, int y);
 	std::pair<int, int> getSpawnLocation() { return this->spawnLocation; }
 
