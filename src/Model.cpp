@@ -148,7 +148,6 @@ void Model::loadMeshes(const aiScene* pScene, bool FitSize)
 
 void Model::loadMaterials(const aiScene* pScene)
 {
-    std::cout << "loadMat" << std::endl;
 	this->MaterialCount = pScene->mNumMaterials;
 	this->pMaterials = new Material[pScene->mNumMaterials]();
 	for (int i = 0; i < pScene->mNumMeshes; i++) {
@@ -179,17 +178,12 @@ void Model::loadMaterials(const aiScene* pScene)
 			this->pMaterials[mIndex].AmbColor.G = aiColorAmbient.g;
 			this->pMaterials[mIndex].AmbColor.B = aiColorAmbient.b;
 
-			/*cout << "colors: " << aiColorAmbient.r << " - " << aiColorSpecular.r << " - " << aiColorDiffuse.r << endl;
-			cout << "colors: " << aiColorAmbient.g << " - " << aiColorSpecular.g << " - " << aiColorDiffuse.g << endl;
-			cout << "colors: " << aiColorAmbient.b << " - " << aiColorSpecular.b << " - " << aiColorDiffuse.b << endl;*/
-
 			//String
 			aiString texturename;
 			aiGetMaterialString(aiMaterial, AI_MATKEY_TEXTURE(aiTextureType_DIFFUSE, 0), &texturename);
 			string str = texturename.C_Str();
 
 			// the diffuse texture files with the name <name>.<ext> (AI_MATKEY_TEXTURE_DIFFUSE) are loaded HERE
-			cout << "diffuse file:" << (Path + str).c_str() << endl;
 			const Texture* texture = Texture::LoadShared((Path + str).c_str());
 			this->pMaterials[mIndex].DiffTex = texture; 
 
@@ -201,7 +195,6 @@ void Model::loadMaterials(const aiScene* pScene)
                 str = str.replace(dotIndex, 0, "_n"); // append "_n" to "."
             }
 			
-			cout << "normal file: " << (Path + str).c_str() << endl;
 			// 2. load normals
 			const Texture* normal = Texture::LoadShared((Path + str).c_str()); // null if not found
 			this->pMaterials[mIndex].NormalMap = normal;

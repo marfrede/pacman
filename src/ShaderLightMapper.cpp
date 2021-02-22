@@ -58,7 +58,6 @@ ShaderLightMapper::~ShaderLightMapper()
 
 void ShaderLightMapper::addLight(BaseLight* Light)
 {
-    // std::cout << "add light" << std::endl;
 	assert(Light);
 
 	if (lights().size() >= MaxLightCount)
