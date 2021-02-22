@@ -12,7 +12,6 @@
 #include "TriangleBoxModel.h"
 #include "PhongShader.h"
 #include "GameCharacter.hpp"
-#include "EgoCam.hpp"
 #include "Pi.h"
 #include "FieldType.h"
 #include "GameMode.h"

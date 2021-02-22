@@ -17,7 +17,6 @@
 
 #include "Game.hpp"
 #include "color.h"
-#include "EgoCam.hpp"
 
 Game::Game() {
 

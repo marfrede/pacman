@@ -44,7 +44,6 @@ protected:
     Game* pGame;
     
     Camera Cam = NULL;
-    EgoCam Paccam;
     
     ModelList Models;
     GLFWwindow* pWindow;

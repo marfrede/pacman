@@ -30,7 +30,7 @@
 
 using namespace std;
 
-Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin), Paccam(pWin, NULL), pModel(NULL), ShadowGenerator(2048, 2048)
+Application::Application(GLFWwindow* pWin) : pWindow(pWin), Cam(pWin), pModel(NULL), ShadowGenerator(2048, 2048)
 {
 	createScene();
 }
@@ -118,7 +118,6 @@ void Application::createScene()
     hud = new HUD();
     pGame = new Game();
     this->pGame->createGameScene(pWindow);
-    this->Paccam.setObj(pGame->getPacman());
     
     moveCamera();
 }
