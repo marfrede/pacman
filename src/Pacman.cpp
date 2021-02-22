@@ -23,6 +23,7 @@ void Pacman::init(Color c) {
 	this->shader(pShader, true);
 	this->rotateSpeed = 350;
 	this->movingSpeed = 3.2;
+    this->primary = c;
 	this->arrow = nullptr;
 }
 
@@ -31,7 +32,9 @@ void Pacman::setArrow(BaseModel* arrow) {
 }
 
 void Pacman::draw(const Camera Cam) {
-	GameCharacter::draw(Cam);
+    if(modelActive) {
+        GameCharacter::draw(Cam);
+    }
 	if (this->arrow) {
 		this->arrow->draw(Cam);
 	}
@@ -115,6 +118,27 @@ void Pacman::adjustArrow(Field* pField, GameMode gamemode) {
 	mTotal = this->arrow->transform() * mScale * mMov * mRotY * mRotX;
 
 	this->arrow->transform(mTotal);
+}
+
+void Pacman::changeGameMode(GameMode gamemode) {
+    if(gamemode == GameMode::FirstPerson) {
+        this->modelActive = false;
+        if(pointLight) {
+            pointLight->color(Color(1,1,1));
+        }
+        if(spotLight) {
+            spotLight->color(Color(1,1,1));
+        }
+    } else {
+        this->modelActive = true;
+        if(pointLight) {
+            pointLight->color(primary);
+        }
+        if(spotLight) {
+            spotLight->color(primary);
+        }
+    }
+    
 }
 
 void Pacman::reset() {

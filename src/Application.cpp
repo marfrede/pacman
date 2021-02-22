@@ -46,17 +46,7 @@ void Application::start()
 
 void Application::update(float dtime)
 {
-    //Menüauswahl
-    //Bei Start
-    
     pGame->manageInputs(pWindow);
-    
-    /*
-    if(go != GameOver::NO) {
-        std::cout << "GAME IS OVER! (" << gameOverToString(go) << ")" << std::endl;
-        this->pGame->start(pWindow);
-    }
-     */
     
     if(this->pGame->getGameStatus() == GameStatus::PLAYING) {
         pGame->update(dtime);
@@ -76,12 +66,11 @@ void Application::draw()
 	ShaderLightMapper::instance().activate();
 	// 2. setup shaders and draw models
 
-    Camera currentCam = Cam;
-    this->pGame->draw(currentCam);
+    this->pGame->draw(Cam);
     
     for (ModelList::iterator it = Models.begin(); it != Models.end(); ++it)
     {
-        (*it)->draw(currentCam);
+        (*it)->draw(Cam);
     }
     
     if(this->pGame->getGameStatus() != GameStatus::PLAYING) {

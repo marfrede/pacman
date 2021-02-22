@@ -80,7 +80,7 @@ void Game::start(GLFWwindow* pWindow) {
 
 void Game::manageInputs(GLFWwindow* pWindow) {
     if (glfwGetKey(pWindow, GLFW_KEY_SPACE) == GLFW_PRESS) {
-        if(spacePressed == false) {
+        if(buttonPressed == false) {
             if(gamestatus == GameStatus::PLAYING) {
                 gamestatus = GameStatus::PAUSE;
             } else if (gamestatus == GameStatus::PAUSE) {
@@ -88,10 +88,27 @@ void Game::manageInputs(GLFWwindow* pWindow) {
             } else {
                 this->start(pWindow);
             }
-            spacePressed = true;
+            buttonPressed = true;
+        }
+    } else if (glfwGetKey(pWindow, GLFW_KEY_G) == GLFW_PRESS) {
+        if(buttonPressed == false) {
+            switchGameMode();
+            buttonPressed = true;
         }
     } else {
-        spacePressed = false;
+        buttonPressed = false;
+    }
+}
+
+void Game::switchGameMode() {
+    if(gamemode == GameMode::FirstPerson) {
+        gamemode = GameMode::ThirdPerson;
+        this->pField->resetWalls(1.5f);
+        this->pPacman->changeGameMode(gamemode);
+    } else {
+        gamemode = GameMode::FirstPerson;
+        this->pField->resetWalls(5.5f);
+        this->pPacman->changeGameMode(gamemode);
     }
 }
 
@@ -138,25 +155,19 @@ void Game::createGameModels(GLFWwindow* pWindow) {
 void Game::createPacman(GLFWwindow* pWindow, Color primary, Color secondary, float posX, float posZ) {
 	// std::cout << "PACMAN " << std::endl;
 
-	Color lightColor;
-	if (gamemode != GameMode::FirstPerson) {
 		// Pacman with Model
-		pPacman = new Pacman(posX, posZ, primary, MODEL_DIRECTORY "pacman/pacman-body.dae", false);
-		Model* ext = new Model(MODEL_DIRECTORY "pacman/pacman-ext.dae");
-		ConstantShader* cShader = new ConstantShader();
-		cShader->color(secondary);
-		ext->shader(cShader);
-		pPacman->setExt(ext);
+    pPacman = new Pacman(posX, posZ, primary, MODEL_DIRECTORY "pacman/pacman-body.dae", false);
+    Model* ext = new Model(MODEL_DIRECTORY "pacman/pacman-ext.dae");
+    ConstantShader* cShader = new ConstantShader();
+    cShader->color(secondary);
+    ext->shader(cShader);
+    pPacman->setExt(ext);
 		// Pacman primary color
-		lightColor = primary;
-	}
-	else {
-		// Pacman without Model
-		pPacman = new Pacman(posX, posZ, Color(0, 0, 0));
-		// Pacman white color
-		lightColor = Color(1, 1, 1);
-	}
-
+    
+    if(gamemode != GameMode::FirstPerson) {
+        pPacman->setModelActive(true);
+    }
+    
 	// Arrow
 	if (gamemode == GameMode::FirstPerson || gamemode == GameMode::Debug) {
 		Model* arrow = new Model(MODEL_DIRECTORY "arrow/arrow.dae", false);
@@ -176,14 +187,14 @@ void Game::createPacman(GLFWwindow* pWindow, Color primary, Color secondary, flo
 	float outerradius = 70;
 
 	PointLight* pl = new PointLight();
-	pl->color(lightColor);
+	pl->color(Color(1,1,1));
 	pl->attenuation(a);
 	ShaderLightMapper::instance().addLight(pl);
 	pPacman->setPointLight(pl);
 
 	// spot light
 	SpotLight* sl = new SpotLight();
-	sl->color(lightColor);
+	sl->color(Color(1,1,1));
 	sl->direction(Vector(0, -1, 0));
 	sl->innerRadius(innerradius);
 	sl->outerRadius(outerradius);

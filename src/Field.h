@@ -53,6 +53,10 @@ public:
 	/* get fieldtype (wall / point / free) in from any position @param Vector(float, float, float) */
 	FieldType getFieldType(Vector position);
 
+    void setWallHeight(float wallHeight) {this->wallHeight = wallHeight;}
+    
+    void resetWalls(float wallHeight);
+    
 	/**
 	* removes the point on the given position and delete point object
 	* @return true | when pacman has eaten the point, false | when there was no point at all on this field
@@ -83,9 +87,10 @@ private:
 	PointList Points;
     ParticlePopEmitter* particlePopEmitter;
 	void createField();
-	void createWalls(float wallHeight);
 	void createPoints();
 	void createPortals();
+    void clearWalls();
+    void createWalls(float wallHeight);
 	void initWallPositions();
 	void initFieldTypesMap();
 	void initParticleEmitter(Color color);

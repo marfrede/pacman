@@ -76,6 +76,19 @@ void Field::createWalls(float wallHeight) {
 	}
 }
 
+void Field::resetWalls(float wallHeight) {
+    this->clearWalls();
+    this->createWalls(wallHeight);
+    this->wallHeight = wallHeight;
+}
+
+void Field::clearWalls() {
+    for (ModelList::iterator it = Walls.begin(); it != Walls.end(); ++it) {
+        delete* it;
+    }
+    this->Walls.clear();
+}
+
 /**
 * adds the missing points. Initial all points and for further games only the ones missing.
 */
@@ -148,6 +161,7 @@ void Field::draw(const Camera camera) {
 	{
 		(*wall)->draw(camera);
 	}
+    std::cout << this->Portals.size() << std::endl;
 	for (PortalList::iterator portal = this->Portals.begin(); portal != this->Portals.end(); ++portal)
 	{
 		(*portal)->draw(camera);
